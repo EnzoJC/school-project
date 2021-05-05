@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ITutorRepository extends JpaRepository<Tutor, Long> {
-    public Tutor findByLogin(Login login);
+    public Tutor registrar(Tutor tutor);
 }
