@@ -12,8 +12,6 @@ public class Identification {
     @Column(name="IdentificationId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long IdentificationId;
-
-    @Column(name = "Type", nullable = false, length = 50)
     private String Type;
 
 }

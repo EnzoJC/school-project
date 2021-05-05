@@ -95,7 +95,6 @@ CREATE TABLE Login (
     LoginId int NOT NULL AUTO_INCREMENT,
     User varchar(50) NOT NULL,
     Password varchar(50) NOT NULL,
-    `Group` varchar(50) NOT NULL,
     RoleId int NOT NULL,
     CONSTRAINT Login_pk PRIMARY KEY (LoginId)
 );
