@@ -1,369 +1,312 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-05-03 05:09:18.814
+-- Last modification date: 2021-05-12 06:59:13.834
 
 -- tables
--- Table: Class
-CREATE TABLE Class (
-    ClassId int NOT NULL AUTO_INCREMENT,
-    ClassroomType varchar(50) NOT NULL,
-    StartTime time NOT NULL,
-    EndTime time NOT NULL,
-    SectionId int NOT NULL,
-    ClassroomId int NOT NULL,
-    GradeId int NOT NULL,
-    CONSTRAINT Class_pk PRIMARY KEY (ClassId)
-);
-
--- Table: Classroom
-CREATE TABLE Classroom (
-    ClassroomId int NOT NULL AUTO_INCREMENT,
-    Name varchar(50) NOT NULL,
-    CONSTRAINT Classroom_pk PRIMARY KEY (ClassroomId)
-);
-
--- Table: Course
-CREATE TABLE Course (
-    CourseId int NOT NULL AUTO_INCREMENT,
-    Description varchar(50) NOT NULL,
-    CONSTRAINT Course_pk PRIMARY KEY (CourseId)
-);
-
--- Table: Enrollment
-CREATE TABLE Enrollment (
-    EnrollmentId int NOT NULL AUTO_INCREMENT,
-    SchoolYearId int NOT NULL,
-    StudentId varchar(10) NOT NULL,
-    ClassId int NOT NULL,
-    EnrollmentStatus boolean NOT NULL,
-    CONSTRAINT Enrollment_pk PRIMARY KEY (EnrollmentId)
-);
-
--- Table: Grade
-CREATE TABLE Grade (
-    GradeId int NOT NULL AUTO_INCREMENT,
-    `Order` int NOT NULL,
-    Name varchar(10) NOT NULL,
-    Description varchar(50) NOT NULL,
-    LevelId int NOT NULL,
-    CONSTRAINT Grade_pk PRIMARY KEY (GradeId)
-);
-
--- Table: GradeCourse
-CREATE TABLE GradeCourse (
-    GradeCourseId int NOT NULL AUTO_INCREMENT,
-    CourseId int NOT NULL,
-    GradeId int NOT NULL,
-    TeacherId varchar(10) NOT NULL,
-    CONSTRAINT GradeCourse_pk PRIMARY KEY (GradeCourseId)
-);
-
--- Table: Identification
-CREATE TABLE Identification (
-    IdentificationId int NOT NULL AUTO_INCREMENT,
-    Type varchar(50) NOT NULL,
-    CONSTRAINT Identification_pk PRIMARY KEY (IdentificationId)
-);
-
--- Table: IncrementStudent
-CREATE TABLE IncrementStudent (
+-- Table: classes
+CREATE TABLE classes (
     id int NOT NULL AUTO_INCREMENT,
-    CONSTRAINT IncrementStudent_pk PRIMARY KEY (id)
+    classroom_type varchar(50) NOT NULL,
+    start_time time NOT NULL,
+    end_time time NOT NULL,
+    section_id int NOT NULL,
+    classroom_id int NOT NULL,
+    grade_id int NOT NULL,
+    CONSTRAINT classes_pk PRIMARY KEY (id)
 );
 
--- Table: IncrementTeacher
-CREATE TABLE IncrementTeacher (
+-- Table: classrooms
+CREATE TABLE classrooms (
     id int NOT NULL AUTO_INCREMENT,
-    CONSTRAINT IncrementTeacher_pk PRIMARY KEY (id)
+    name varchar(50) NOT NULL,
+    CONSTRAINT classrooms_pk PRIMARY KEY (id)
 );
 
--- Table: IncrementTutor
-CREATE TABLE IncrementTutor (
+-- Table: courses
+CREATE TABLE courses (
     id int NOT NULL AUTO_INCREMENT,
-    CONSTRAINT IncrementTutor_pk PRIMARY KEY (id)
+    description varchar(50) NOT NULL,
+    CONSTRAINT courses_pk PRIMARY KEY (id)
 );
 
--- Table: Level
-CREATE TABLE Level (
-    LevelId int NOT NULL AUTO_INCREMENT,
-    Name varchar(10) NOT NULL,
-    Description varchar(50) NOT NULL,
-    CONSTRAINT Level_pk PRIMARY KEY (LevelId)
+-- Table: enrollments
+CREATE TABLE enrollments (
+    id int NOT NULL AUTO_INCREMENT,
+    school_year_id int NOT NULL,
+    student_id varchar(10) NOT NULL,
+    class_id int NOT NULL,
+    enrollment_status boolean NOT NULL,
+    CONSTRAINT enrollments_pk PRIMARY KEY (id)
 );
 
--- Table: Login
-CREATE TABLE Login (
-    LoginId int NOT NULL AUTO_INCREMENT,
-    User varchar(50) NOT NULL,
-    Password varchar(50) NOT NULL,
-    RoleId int NOT NULL,
-    CONSTRAINT Login_pk PRIMARY KEY (LoginId)
+-- Table: grades
+CREATE TABLE grades (
+    id int NOT NULL AUTO_INCREMENT,
+    `order` int NOT NULL,
+    name varchar(10) NOT NULL,
+    description varchar(50) NOT NULL,
+    level_id int NOT NULL,
+    CONSTRAINT grades_pk PRIMARY KEY (id)
 );
 
--- Table: Pay
-CREATE TABLE Pay (
-    PayId int NOT NULL AUTO_INCREMENT,
-    Description varchar(50) NOT NULL,
-    Amount double(4,2) NOT NULL,
-    StartDate date NOT NULL,
-    ExpirationDate date NOT NULL,
-    CONSTRAINT Pay_pk PRIMARY KEY (PayId)
+-- Table: grades_courses
+CREATE TABLE grades_courses (
+    grade_course_id int NOT NULL AUTO_INCREMENT,
+    course_id int NOT NULL,
+    grade_id int NOT NULL,
+    teacher_id varchar(10) NOT NULL,
+    CONSTRAINT grades_courses_pk PRIMARY KEY (grade_course_id)
 );
 
--- Table: PaymentDetails
-CREATE TABLE PaymentDetails (
-    PaymentDetailsId int NOT NULL AUTO_INCREMENT,
-    BilligId int NOT NULL,
-    PayDate date NOT NULL,
-    Pay_PayId int NOT NULL,
-    EnrollmentId int NOT NULL,
-    CONSTRAINT PaymentDetails_pk PRIMARY KEY (PaymentDetailsId)
+-- Table: increment_parents
+CREATE TABLE increment_parents (
+    id int NOT NULL AUTO_INCREMENT,
+    CONSTRAINT increment_parents_pk PRIMARY KEY (id)
 );
 
--- Table: Role
-CREATE TABLE Role (
-    RoleId int NOT NULL AUTO_INCREMENT,
-    Name int NOT NULL,
-    CONSTRAINT Role_pk PRIMARY KEY (RoleId)
+-- Table: increment_students
+CREATE TABLE increment_students (
+    id int NOT NULL AUTO_INCREMENT,
+    CONSTRAINT increment_students_pk PRIMARY KEY (id)
 );
 
--- Table: SchoolYear
-CREATE TABLE SchoolYear (
-    SchoolYearId int NOT NULL AUTO_INCREMENT,
-    Year int NOT NULL,
-    StartDate date NOT NULL,
-    FinishDate date NOT NULL,
-    CONSTRAINT SchoolYear_pk PRIMARY KEY (SchoolYearId)
+-- Table: increment_teachers
+CREATE TABLE increment_teachers (
+    id int NOT NULL AUTO_INCREMENT,
+    CONSTRAINT increment_teachers_pk PRIMARY KEY (id)
 );
 
--- Table: Section
-CREATE TABLE Section (
-    SectionID int NOT NULL AUTO_INCREMENT,
-    Name varchar(50) NOT NULL,
-    Descripcion varchar(50) NOT NULL,
-    GradeId int NOT NULL,
-    CONSTRAINT Section_pk PRIMARY KEY (SectionID)
+-- Table: levels
+CREATE TABLE levels (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(10) NOT NULL,
+    description varchar(50) NOT NULL,
+    UNIQUE INDEX Level_ak_1 (name),
+    CONSTRAINT levels_pk PRIMARY KEY (id)
 );
 
--- Table: Student
-CREATE TABLE Student (
-    StudentId varchar(10) NOT NULL,
-    GivenNames varchar(50) NOT NULL,
-    FirstLastName varchar(50) NOT NULL,
-    SecondLastName varchar(50) NOT NULL,
-    BirthDate date NOT NULL,
-    Campus varchar(50) NOT NULL,
-    Address varchar(50) NOT NULL,
-    Gender varchar(50) NOT NULL,
-    Nationality varchar(50) NOT NULL,
-    Status boolean NOT NULL,
-    StudentEmail varchar(50) NOT NULL,
-    IdentificationId int NOT NULL,
-    TutorId varchar(10) NOT NULL,
-    LoginId int NOT NULL,
-    CONSTRAINT Student_pk PRIMARY KEY (StudentId)
+-- Table: parents
+CREATE TABLE parents (
+    id varchar(10) NOT NULL,
+    given_names varchar(50) NOT NULL,
+    first_last_name varchar(50) NOT NULL,
+    second_last_name varchar(50) NOT NULL,
+    document_type varchar(50) NOT NULL,
+    document_number varchar(20) NOT NULL,
+    birth_date date NOT NULL,
+    address varchar(50) NOT NULL,
+    gender varchar(50) NOT NULL,
+    nationality varchar(50) NULL,
+    phone_number varchar(20) NOT NULL,
+    email_address varchar(50) NOT NULL,
+    family_relationship varchar(50) NULL,
+    status boolean NOT NULL DEFAULT 1,
+    UNIQUE INDEX Tutor_ak_1 (document_number,email_address,phone_number),
+    CONSTRAINT parents_pk PRIMARY KEY (id)
 );
 
-ALTER TABLE Student AUTO_INCREMENT = 20210;
-
-DELIMITER $$
-CREATE TRIGGER tg_studentId
-BEFORE INSERT ON Student
-FOR EACH ROW
-BEGIN
-  INSERT INTO increment VALUES (NULL);
-  SET NEW.StudentId = CONCAT('ST2021', LPAD(LAST_INSERT_ID(), 4, '0'));
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE TRIGGER tg_emailStudent
-BEFORE INSERT ON Student
-FOR EACH ROW
-BEGIN
- SET NEW.StudentEmail = CONCAT(NEW.StudentId, '@colegiosprisma.edu');
-END$$
-DELIMITER ;
-
-
-DELIMITER $$
-CREATE TRIGGER tg_studentLogin
-BEFORE INSERT ON Student
-FOR EACH ROW
-BEGIN
-  INSERT INTO `Login` (`User`, `Password`, `Group`) VALUES (New.StudentId, New.FirstLastName, 'Estudiantes');
-  SET NEW.LoginId = LAST_INSERT_ID();
-END$$
-DELIMITER ;
-
--- Table: Teacher
-CREATE TABLE Teacher (
-    TeacherId varchar(10) NOT NULL,
-    GivenNames varchar(50) NOT NULL,
-    FirstLastName varchar(50) NOT NULL,
-    SecondLastName varchar(50) NOT NULL,
-    PhoneNumber int NOT NULL,
-    Status boolean NOT NULL,
-    Address varchar(50) NOT NULL,
-    EmailAddress varchar(50) NOT NULL,
-    TeacherEmail varchar(50) NOT NULL,
-    IdentificationId int NOT NULL,
-    LoginId int NOT NULL,
-    CONSTRAINT Teacher_pk PRIMARY KEY (TeacherId)
+-- Table: payments_details
+CREATE TABLE payments_details (
+    id int NOT NULL AUTO_INCREMENT,
+    billing_id int NOT NULL,
+    pay_date date NOT NULL,
+    pay_id int NOT NULL,
+    enrollment_id int NOT NULL,
+    CONSTRAINT payments_details_pk PRIMARY KEY (id)
 );
 
-ALTER TABLE Teacher AUTO_INCREMENT = 20210;
-
-DELIMITER $$
-CREATE TRIGGER tg_teacherId
-BEFORE INSERT ON Teacher
-FOR EACH ROW
-BEGIN
-  INSERT INTO increment VALUES (NULL);
-  SET NEW.TeacherId = CONCAT('PR2021', LPAD(LAST_INSERT_ID(), 4, '0'));
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE TRIGGER tg_emailTeacher
-BEFORE INSERT ON Teacher
-FOR EACH ROW
-BEGIN
- SET NEW.TeacherEmail = CONCAT(NEW.TeacherId, '@colegiosprisma.edu');
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE TRIGGER tg_teacherLogin
-BEFORE INSERT ON Teacher
-FOR EACH ROW
-BEGIN
-  INSERT INTO `Login` (`User`, `Password`, `Group`) VALUES (New.TeacherId, New.FirstLastName, 'Docentes');
-  SET NEW.LoginId = LAST_INSERT_ID();
-END$$
-DELIMITER ;
-
--- Table: Tutor
-CREATE TABLE Tutor (
-    TutorId varchar(10) NOT NULL,
-    GivenNames varchar(50) NOT NULL,
-    FirstLastName varchar(50) NOT NULL,
-    SecondLastName varchar(50) NOT NULL,
-    IdCard int NOT NULL,
-    PhoneNumber int NOT NULL,
-    FamilyRelationship varchar(50) NOT NULL,
-    Status boolean NOT NULL,
-    EmailAddress varchar(50) NOT NULL,
-    IdentificationId int NOT NULL,
-    LoginId int NOT NULL,
-    CONSTRAINT Tutor_pk PRIMARY KEY (TutorId)
+-- Table: pays
+CREATE TABLE pays (
+    id int NOT NULL AUTO_INCREMENT,
+    description varchar(50) NOT NULL,
+    amount double(4,2) NOT NULL,
+    start_date date NOT NULL,
+    expiration_date date NOT NULL,
+    CONSTRAINT pays_pk PRIMARY KEY (id)
 );
 
-ALTER TABLE Tutor AUTO_INCREMENT = 20210;
+-- Table: permissions
+CREATE TABLE permissions (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(50) NOT NULL,
+    CONSTRAINT permissions_pk PRIMARY KEY (id)
+);
 
-DELIMITER $$
-CREATE TRIGGER tg_tutorId
-BEFORE INSERT ON Tutor
-FOR EACH ROW
-BEGIN
-  INSERT INTO increment VALUES (NULL);
-  SET NEW.TutorId = CONCAT('TU2021', LPAD(LAST_INSERT_ID(), 4, '0'));
-END$$
-DELIMITER ;
+-- Table: roles
+CREATE TABLE roles (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(50) NOT NULL,
+    UNIQUE INDEX Role_ak_1 (name),
+    CONSTRAINT roles_pk PRIMARY KEY (id)
+);
 
-DELIMITER $$
-CREATE TRIGGER tg_tutorLogin
-BEFORE INSERT ON Tutor
-FOR EACH ROW
-BEGIN
-  INSERT INTO `Login` (`User`, `Password`, `Group`) VALUES (New.TutorId, New.FirstLastName, 'Apoderados');
-  SET NEW.LoginId = LAST_INSERT_ID();
-END$$
-DELIMITER ;
+-- Table: roles_permissions
+CREATE TABLE roles_permissions (
+    id int NOT NULL AUTO_INCREMENT,
+    role_id int NOT NULL,
+    permission_id int NOT NULL,
+    CONSTRAINT roles_permissions_pk PRIMARY KEY (id)
+);
+
+-- Table: school_years
+CREATE TABLE school_years (
+    id int NOT NULL AUTO_INCREMENT,
+    year int NOT NULL,
+    start_date date NOT NULL,
+    finish_date date NOT NULL,
+    CONSTRAINT school_years_pk PRIMARY KEY (id)
+);
+
+-- Table: sections
+CREATE TABLE sections (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(50) NOT NULL,
+    descripcion varchar(50) NOT NULL,
+    grade_id int NOT NULL,
+    CONSTRAINT sections_pk PRIMARY KEY (id)
+);
+
+-- Table: students
+CREATE TABLE students (
+    id varchar(10) NOT NULL,
+    given_names varchar(50) NOT NULL,
+    first_last_name varchar(50) NOT NULL,
+    second_last_name varchar(50) NOT NULL,
+    document_type varchar(50) NOT NULL,
+    document_number varchar(20) NOT NULL,
+    birth_date date NOT NULL,
+    campus varchar(50) NULL,
+    address varchar(50) NOT NULL,
+    gender varchar(50) NOT NULL,
+    nationality varchar(50) NOT NULL,
+    student_email varchar(50) NOT NULL,
+    status boolean NOT NULL DEFAULT 1,
+    parent_id varchar(10) NOT NULL,
+    UNIQUE INDEX Student_ak_1 (student_email,document_number),
+    CONSTRAINT students_pk PRIMARY KEY (id)
+);
+
+-- Table: teachers
+CREATE TABLE teachers (
+    id varchar(10) NOT NULL,
+    given_names varchar(50) NOT NULL,
+    first_last_name varchar(50) NOT NULL,
+    second_last_name varchar(50) NOT NULL,
+    document_type varchar(50) NOT NULL,
+    document_number varchar(20) NOT NULL,
+    birth_date date NOT NULL,
+    address varchar(50) NOT NULL,
+    gender varchar(50) NOT NULL,
+    nationality varchar(50) NOT NULL,
+    phone_number varchar(20) NOT NULL,
+    email_address varchar(50) NOT NULL,
+    institutional_email varchar(50) NOT NULL,
+    status boolean NOT NULL DEFAULT 1,
+    UNIQUE INDEX Teacher_ak_1 (phone_number,institutional_email,document_number),
+    CONSTRAINT teachers_pk PRIMARY KEY (id)
+);
+
+-- Table: users
+CREATE TABLE users (
+    id varchar(10) NOT NULL,
+    username varchar(50) NOT NULL,
+    password varchar(100) NOT NULL,
+    status boolean NOT NULL DEFAULT 1,
+    UNIQUE INDEX User_ak_1 (username),
+    CONSTRAINT users_pk PRIMARY KEY (id)
+);
+
+-- Table: users_roles
+CREATE TABLE users_roles (
+    id int NOT NULL AUTO_INCREMENT,
+    user_id varchar(10) NOT NULL,
+    role_id int NOT NULL,
+    CONSTRAINT users_roles_pk PRIMARY KEY (id)
+);
 
 -- foreign keys
--- Reference: Class_Classroom (table: Class)
-ALTER TABLE Class ADD CONSTRAINT Class_Classroom FOREIGN KEY Class_Classroom (ClassroomId)
-    REFERENCES Classroom (ClassroomId);
+-- Reference: classes_classrooms (table: classes)
+ALTER TABLE classes ADD CONSTRAINT classes_classrooms FOREIGN KEY classes_classrooms (classroom_id)
+    REFERENCES classrooms (id);
 
--- Reference: Class_Grade (table: Class)
-ALTER TABLE Class ADD CONSTRAINT Class_Grade FOREIGN KEY Class_Grade (GradeId)
-    REFERENCES Grade (GradeId);
+-- Reference: classes_grades (table: classes)
+ALTER TABLE classes ADD CONSTRAINT classes_grades FOREIGN KEY classes_grades (grade_id)
+    REFERENCES grades (id);
 
--- Reference: Class_Section (table: Class)
-ALTER TABLE Class ADD CONSTRAINT Class_Section FOREIGN KEY Class_Section (SectionId)
-    REFERENCES Section (SectionID);
+-- Reference: classes_sections (table: classes)
+ALTER TABLE classes ADD CONSTRAINT classes_sections FOREIGN KEY classes_sections (section_id)
+    REFERENCES sections (id);
 
--- Reference: Enrollment_Class (table: Enrollment)
-ALTER TABLE Enrollment ADD CONSTRAINT Enrollment_Class FOREIGN KEY Enrollment_Class (ClassId)
-    REFERENCES Class (ClassId);
+-- Reference: enrollments_classes (table: enrollments)
+ALTER TABLE enrollments ADD CONSTRAINT enrollments_classes FOREIGN KEY enrollments_classes (class_id)
+    REFERENCES classes (id);
 
--- Reference: Enrollment_SchoolYear (table: Enrollment)
-ALTER TABLE Enrollment ADD CONSTRAINT Enrollment_SchoolYear FOREIGN KEY Enrollment_SchoolYear (SchoolYearId)
-    REFERENCES SchoolYear (SchoolYearId);
+-- Reference: enrollments_school_years (table: enrollments)
+ALTER TABLE enrollments ADD CONSTRAINT enrollments_school_years FOREIGN KEY enrollments_school_years (school_year_id)
+    REFERENCES school_years (id);
 
--- Reference: Enrollment_Student (table: Enrollment)
-ALTER TABLE Enrollment ADD CONSTRAINT Enrollment_Student FOREIGN KEY Enrollment_Student (StudentId)
-    REFERENCES Student (StudentId);
+-- Reference: enrollments_students (table: enrollments)
+ALTER TABLE enrollments ADD CONSTRAINT enrollments_students FOREIGN KEY enrollments_students (student_id)
+    REFERENCES students (id);
 
--- Reference: GradeCourse_Course (table: GradeCourse)
-ALTER TABLE GradeCourse ADD CONSTRAINT GradeCourse_Course FOREIGN KEY GradeCourse_Course (CourseId)
-    REFERENCES Course (CourseId);
+-- Reference: grades_courses_courses (table: grades_courses)
+ALTER TABLE grades_courses ADD CONSTRAINT grades_courses_courses FOREIGN KEY grades_courses_courses (course_id)
+    REFERENCES courses (id);
 
--- Reference: GradeCourse_Grade (table: GradeCourse)
-ALTER TABLE GradeCourse ADD CONSTRAINT GradeCourse_Grade FOREIGN KEY GradeCourse_Grade (GradeId)
-    REFERENCES Grade (GradeId);
+-- Reference: grades_courses_grades (table: grades_courses)
+ALTER TABLE grades_courses ADD CONSTRAINT grades_courses_grades FOREIGN KEY grades_courses_grades (grade_id)
+    REFERENCES grades (id);
 
--- Reference: GradeCourse_Teacher (table: GradeCourse)
-ALTER TABLE GradeCourse ADD CONSTRAINT GradeCourse_Teacher FOREIGN KEY GradeCourse_Teacher (TeacherId)
-    REFERENCES Teacher (TeacherId);
+-- Reference: grades_courses_teachers (table: grades_courses)
+ALTER TABLE grades_courses ADD CONSTRAINT grades_courses_teachers FOREIGN KEY grades_courses_teachers (teacher_id)
+    REFERENCES teachers (id);
 
--- Reference: Grade_Level (table: Grade)
-ALTER TABLE Grade ADD CONSTRAINT Grade_Level FOREIGN KEY Grade_Level (LevelId)
-    REFERENCES Level (LevelId);
+-- Reference: grades_levels (table: grades)
+ALTER TABLE grades ADD CONSTRAINT grades_levels FOREIGN KEY grades_levels (level_id)
+    REFERENCES levels (id);
 
--- Reference: Login_Role (table: Login)
-ALTER TABLE Login ADD CONSTRAINT Login_Role FOREIGN KEY Login_Role (RoleId)
-    REFERENCES Role (RoleId);
+-- Reference: parents_users (table: parents)
+ALTER TABLE parents ADD CONSTRAINT parents_users FOREIGN KEY parents_users (id)
+    REFERENCES users (id);
 
--- Reference: PaymentDetails_Enrollment (table: PaymentDetails)
-ALTER TABLE PaymentDetails ADD CONSTRAINT PaymentDetails_Enrollment FOREIGN KEY PaymentDetails_Enrollment (EnrollmentId)
-    REFERENCES Enrollment (EnrollmentId);
+-- Reference: payments_details_enrollments (table: payments_details)
+ALTER TABLE payments_details ADD CONSTRAINT payments_details_enrollments FOREIGN KEY payments_details_enrollments (enrollment_id)
+    REFERENCES enrollments (id);
 
--- Reference: PaymentDetails_Pay (table: PaymentDetails)
-ALTER TABLE PaymentDetails ADD CONSTRAINT PaymentDetails_Pay FOREIGN KEY PaymentDetails_Pay (Pay_PayId)
-    REFERENCES Pay (PayId);
+-- Reference: payments_details_pays (table: payments_details)
+ALTER TABLE payments_details ADD CONSTRAINT payments_details_pays FOREIGN KEY payments_details_pays (pay_id)
+    REFERENCES pays (id);
 
--- Reference: Section_Grade (table: Section)
-ALTER TABLE Section ADD CONSTRAINT Section_Grade FOREIGN KEY Section_Grade (GradeId)
-    REFERENCES Grade (GradeId);
+-- Reference: roles_permissions_permissions (table: roles_permissions)
+ALTER TABLE roles_permissions ADD CONSTRAINT roles_permissions_permissions FOREIGN KEY roles_permissions_permissions (permission_id)
+    REFERENCES permissions (id);
 
--- Reference: Student_Identification (table: Student)
-ALTER TABLE Student ADD CONSTRAINT Student_Identification FOREIGN KEY Student_Identification (IdentificationId)
-    REFERENCES Identification (IdentificationId);
+-- Reference: roles_permissions_roles (table: roles_permissions)
+ALTER TABLE roles_permissions ADD CONSTRAINT roles_permissions_roles FOREIGN KEY roles_permissions_roles (role_id)
+    REFERENCES roles (id);
 
--- Reference: Student_Login (table: Student)
-ALTER TABLE Student ADD CONSTRAINT Student_Login FOREIGN KEY Student_Login (LoginId)
-    REFERENCES Login (LoginId);
+-- Reference: sections_grades (table: sections)
+ALTER TABLE sections ADD CONSTRAINT sections_grades FOREIGN KEY sections_grades (grade_id)
+    REFERENCES grades (id);
 
--- Reference: Student_Tutor (table: Student)
-ALTER TABLE Student ADD CONSTRAINT Student_Tutor FOREIGN KEY Student_Tutor (TutorId)
-    REFERENCES Tutor (TutorId);
+-- Reference: students_parents (table: students)
+ALTER TABLE students ADD CONSTRAINT students_parents FOREIGN KEY students_parents (parent_id)
+    REFERENCES parents (id);
 
--- Reference: Teacher_Identification (table: Teacher)
-ALTER TABLE Teacher ADD CONSTRAINT Teacher_Identification FOREIGN KEY Teacher_Identification (IdentificationId)
-    REFERENCES Identification (IdentificationId);
+-- Reference: students_users (table: students)
+ALTER TABLE students ADD CONSTRAINT students_users FOREIGN KEY students_users (id)
+    REFERENCES users (id);
 
--- Reference: Teacher_Login (table: Teacher)
-ALTER TABLE Teacher ADD CONSTRAINT Teacher_Login FOREIGN KEY Teacher_Login (LoginId)
-    REFERENCES Login (LoginId);
+-- Reference: teachers_users (table: teachers)
+ALTER TABLE teachers ADD CONSTRAINT teachers_users FOREIGN KEY teachers_users (id)
+    REFERENCES users (id);
 
--- Reference: Tutor_Identification (table: Tutor)
-ALTER TABLE Tutor ADD CONSTRAINT Tutor_Identification FOREIGN KEY Tutor_Identification (IdentificationId)
-    REFERENCES Identification (IdentificationId);
+-- Reference: users_roles_roles (table: users_roles)
+ALTER TABLE users_roles ADD CONSTRAINT users_roles_roles FOREIGN KEY users_roles_roles (role_id)
+    REFERENCES roles (id);
 
--- Reference: Tutor_Login (table: Tutor)
-ALTER TABLE Tutor ADD CONSTRAINT Tutor_Login FOREIGN KEY Tutor_Login (LoginId)
-    REFERENCES Login (LoginId);
+-- Reference: users_roles_users (table: users_roles)
+ALTER TABLE users_roles ADD CONSTRAINT users_roles_users FOREIGN KEY users_roles_users (user_id)
+    REFERENCES users (id);
 
 -- End of file.
 
