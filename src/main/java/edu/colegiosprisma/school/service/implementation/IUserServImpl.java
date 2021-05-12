@@ -1,22 +1,22 @@
 package edu.colegiosprisma.school.service.implementation;
 
-import edu.colegiosprisma.school.entity.Tutor;
-import edu.colegiosprisma.school.repository.ITutorRepository;
-import edu.colegiosprisma.school.service.ITutorService;
+import edu.colegiosprisma.school.entity.User;
+import edu.colegiosprisma.school.repository.IUserRepository;
+import edu.colegiosprisma.school.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ITutorServImpl implements ITutorService {
+public class IUserServImpl implements IUserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private ITutorRepository iTutorRepository;
+    private IUserRepository iUserRepository;
 
     @Override
-    public Tutor registrar(Tutor tutor) {
-        return null;
+    public User findByUsername(String user) {
+        return iUserRepository.findByUsername(user);
     }
 }

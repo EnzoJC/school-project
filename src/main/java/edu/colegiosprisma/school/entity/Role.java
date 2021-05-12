@@ -11,8 +11,9 @@ public class Role implements Serializable {
     private static final long serialVersUID = 1L;
 
     @Id
-    @Column(name="RoleId")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long RoleId;
+    @Column(name="id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    @Column(name="name")
     private String Name;
 }
