@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Entity
 @Data
-@Table(name = "role")
+@Table(name = "roles")
 public class Role implements Serializable {
     private static final long serialVersUID = 1L;
 

@@ -2,13 +2,14 @@ package edu.colegiosprisma.school.entity;
 
 import lombok.Data;
 import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Data
-@Table(name="parent")
+@Table(name="parents")
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(
                 name = "spInsertParent",
@@ -42,6 +43,7 @@ public class Parent {
     @Column(name="document_number", unique=true)
     private String documentNumber;
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="birth_date")
     private Date birthDate;
     @Column(name="address")

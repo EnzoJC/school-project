@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
-public interface IPArentRepository extends JpaRepository<Parent, String> {
+public interface IParentRepository{
     public void guardar(Parent parent);
 
 }

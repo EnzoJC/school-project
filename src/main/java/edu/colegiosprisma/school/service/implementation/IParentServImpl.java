@@ -18,7 +18,7 @@ public class IParentServImpl implements IParentService {
     @Override
     public void guardar(Parent parent){
 
-        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("spInsertParent");
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_insert_parent");
 
         query.registerStoredProcedureParameter(1, String.class, ParameterMode.IN);
         query.registerStoredProcedureParameter(2, String.class, ParameterMode.IN);
