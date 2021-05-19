@@ -12,9 +12,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserDetailsServImpl implements UserDetailsService {
@@ -22,25 +25,17 @@ public class UserDetailsServImpl implements UserDetailsService {
     private IUserRepository userRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         edu.colegiosprisma.school.entity.User user = userRepository.findByUsername(username);
-        UserBuilder builder =  null;
+        if (user == null) throw new UsernameNotFoundException(username);
+        // UserBuilder builder =  null;
 
-        if (user != null) {
-            builder = User.withUsername(username);
-            builder.disabled(false);
-            builder.password(user.getPassword());
-
-//            List roleList = new ArrayList();
-//            for (Role role: user.getRoles()) {
-//                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
-//                roleList.add(grantedAuthority);
-//            }
-            builder.authorities("ROLE_USER");
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        for (Role role : user.getRoles()){
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-        else throw new UsernameNotFoundException("Usuario no encontrado");
 
-        return builder.build();
-
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }

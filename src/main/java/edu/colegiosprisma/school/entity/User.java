@@ -27,4 +27,8 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
+
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private Parent parent;
 }
