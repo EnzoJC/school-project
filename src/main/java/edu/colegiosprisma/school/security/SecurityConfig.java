@@ -9,50 +9,60 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserDetailsService userDetailsService;
 
-    String[] resources = new String[]{
-            "/include/**","/css/**","/icons/**","/img/**","/js/**","/layer/**"
-    };
+    @Autowired
+    private LoggingAccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    AuthenticationSuccessHandler successHandler;
+
+    @Autowired
+    UserDetailsService userDetailsService;
 
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(4);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(resources).permitAll()
-                .antMatchers("/", "/css/**", "/index", "/registro").permitAll()
-                .antMatchers("/admin*").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/user*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(
+                        "/",
+                        "/js/**",
+                        "/css/**",
+                        "/img/**").permitAll()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
-                    .defaultSuccessUrl("/menu")
+                    .successHandler(successHandler)
                     .failureUrl("/login?error=true")
-                    .usernameParameter("username")
-                    .passwordParameter("password")
+//                    .usernameParameter("username")
+//                    .passwordParameter("password")
                     .and()
                 .logout()
-                    .permitAll()
-                    .logoutSuccessUrl("/login?logout");
+                    .logoutSuccessUrl("/login?logout")
+                    .and()
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler);
     }
 }

@@ -62,6 +62,6 @@ public class Parent {
     private boolean status;
 
     @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JoinColumn(name = "id", referencedColumnName = "username")
     private User user;
 }

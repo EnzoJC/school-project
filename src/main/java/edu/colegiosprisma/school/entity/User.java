@@ -12,8 +12,6 @@ public class User implements Serializable {
     private static final long serialVersUID = 1L;
 
     @Id
-    @Column(name="id")
-    private String id;
     @Column(name="username")
     private String username;
     @Column(name="password")
@@ -23,12 +21,12 @@ public class User implements Serializable {
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
+                    name = "user_id", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
     @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JoinColumn(name = "username", referencedColumnName = "id")
     private Parent parent;
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class AppController {
     @Autowired
@@ -32,10 +34,10 @@ public class AppController {
         return "index";
     }
 
-    @GetMapping("/menu")
-    public String menu() {
-        return "menu";
-    }
+//    @GetMapping("/menu")
+//    public String menu() {
+//        return "menu";
+//    }
 
     @GetMapping("/user")
     public String user() {
@@ -45,6 +47,18 @@ public class AppController {
     @GetMapping("/admin")
     public String admin() {
         return "admin";
+    }
+
+    @GetMapping("/default")
+    public String defaultAfterLogin(HttpServletRequest request) {
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            return "redirect:/admin/";
+        }
+        return "redirect:/user/";
+    }
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "/error/access-denied";
     }
 
 }
