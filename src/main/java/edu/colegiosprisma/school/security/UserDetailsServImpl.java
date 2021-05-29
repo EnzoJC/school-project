@@ -23,7 +23,7 @@ public class UserDetailsServImpl implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         edu.colegiosprisma.school.entity.User user = userRepository.findByUsername(username);
-        if (user == null) throw new UsernameNotFoundException(username);
+        if (user == null) throw new UsernameNotFoundException("No se pudo encontrar el usuario: " + username);
         // UserBuilder builder =  null;
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
