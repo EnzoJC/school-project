@@ -1,4 +1,4 @@
-package edu.colegiosprisma.school.controller;
+/*package edu.colegiosprisma.school.controller;
 
 import edu.colegiosprisma.school.entity.Parent;
 import edu.colegiosprisma.school.service.implementation.IParentServImpl;
@@ -20,7 +20,7 @@ public class AppController {
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute("userForm") Parent parent) {
-        parentServ.guardar(parent);
+        //parentServ.guardar(parent);
         return "redirect:/bienvenido";
     }
 
@@ -44,4 +44,4 @@ public class AppController {
         return "/error/access-denied";
     }
 
-}
+}*/

@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-05-12 06:59:13.834
+-- Last modification date: 2021-06-02 02:09:00.221
 
 -- tables
 -- Table: classes
@@ -50,11 +50,11 @@ CREATE TABLE grades (
 
 -- Table: grades_courses
 CREATE TABLE grades_courses (
-    grade_course_id int NOT NULL AUTO_INCREMENT,
+    id int NOT NULL AUTO_INCREMENT,
     course_id int NOT NULL,
     grade_id int NOT NULL,
     teacher_id varchar(10) NOT NULL,
-    CONSTRAINT grades_courses_pk PRIMARY KEY (grade_course_id)
+    CONSTRAINT grades_courses_pk PRIMARY KEY (id)
 );
 
 -- Table: increment_parents
@@ -86,21 +86,8 @@ CREATE TABLE levels (
 
 -- Table: parents
 CREATE TABLE parents (
-    id varchar(10) NOT NULL,
-    given_names varchar(50) NOT NULL,
-    first_last_name varchar(50) NOT NULL,
-    second_last_name varchar(50) NOT NULL,
-    document_type varchar(50) NOT NULL,
-    document_number varchar(20) NOT NULL,
-    birth_date date NOT NULL,
-    address varchar(50) NOT NULL,
-    gender varchar(50) NOT NULL,
-    nationality varchar(50) NULL,
-    phone_number varchar(20) NOT NULL,
-    email_address varchar(50) NOT NULL,
+    id varchar(10) NOT NULL references users,
     family_relationship varchar(50) NULL,
-    status boolean NOT NULL DEFAULT 1,
-    UNIQUE INDEX Tutor_ak_1 (document_number,email_address,phone_number),
     CONSTRAINT parents_pk PRIMARY KEY (id)
 );
 
@@ -118,7 +105,7 @@ CREATE TABLE payments_details (
 CREATE TABLE pays (
     id int NOT NULL AUTO_INCREMENT,
     description varchar(50) NOT NULL,
-    amount double(4,2) NOT NULL,
+    amount decimal(4,2) NOT NULL,
     start_date date NOT NULL,
     expiration_date date NOT NULL,
     CONSTRAINT pays_pk PRIMARY KEY (id)
@@ -167,59 +154,49 @@ CREATE TABLE sections (
 
 -- Table: students
 CREATE TABLE students (
-    id varchar(10) NOT NULL,
-    given_names varchar(50) NOT NULL,
-    first_last_name varchar(50) NOT NULL,
-    second_last_name varchar(50) NOT NULL,
-    document_type varchar(50) NOT NULL,
-    document_number varchar(20) NOT NULL,
-    birth_date date NOT NULL,
-    campus varchar(50) NULL,
-    address varchar(50) NOT NULL,
-    gender varchar(50) NOT NULL,
-    nationality varchar(50) NOT NULL,
+    id varchar(10) NOT NULL references users,
     student_email varchar(50) NOT NULL,
-    status boolean NOT NULL DEFAULT 1,
     parent_id varchar(10) NOT NULL,
-    UNIQUE INDEX Student_ak_1 (student_email,document_number),
+    UNIQUE INDEX Student_ak_1 (student_email),
     CONSTRAINT students_pk PRIMARY KEY (id)
 );
 
 -- Table: teachers
 CREATE TABLE teachers (
-    id varchar(10) NOT NULL,
-    given_names varchar(50) NOT NULL,
-    first_last_name varchar(50) NOT NULL,
-    second_last_name varchar(50) NOT NULL,
-    document_type varchar(50) NOT NULL,
-    document_number varchar(20) NOT NULL,
-    birth_date date NOT NULL,
-    address varchar(50) NOT NULL,
-    gender varchar(50) NOT NULL,
-    nationality varchar(50) NOT NULL,
-    phone_number varchar(20) NOT NULL,
-    email_address varchar(50) NOT NULL,
+    id varchar(10) NOT NULL references users,
     institutional_email varchar(50) NOT NULL,
-    status boolean NOT NULL DEFAULT 1,
-    UNIQUE INDEX Teacher_ak_1 (phone_number,institutional_email,document_number),
+    UNIQUE INDEX Teacher_ak_1 (institutional_email),
     CONSTRAINT teachers_pk PRIMARY KEY (id)
 );
 
 -- Table: users
 CREATE TABLE users (
     id varchar(10) NOT NULL,
-    username varchar(50) NOT NULL,
+    given_names varchar(50) NOT NULL,
+    first_last_name varchar(50) NOT NULL,
+    second_last_name varchar(50) NOT NULL,
+    document_type varchar(50) NOT NULL,
+    document_number varchar(20) NOT NULL,
+    birth_date date NOT NULL,
+    address varchar(50) NOT NULL,
+    gender varchar(50) NOT NULL,
+    nationality varchar(50) NULL,
+    phone_number varchar(20) NULL,
+    email_address varchar(50) NULL,
+    family_relationship varchar(50) NULL,
+    type varchar(50) NOT NULL,
+    username varchar(10) NOT NULL,
     password varchar(100) NOT NULL,
     status boolean NOT NULL DEFAULT 1,
-    UNIQUE INDEX User_ak_1 (username),
+    UNIQUE INDEX Tutor_ak_1 (document_number,email_address,phone_number),
     CONSTRAINT users_pk PRIMARY KEY (id)
 );
 
 -- Table: users_roles
 CREATE TABLE users_roles (
     id int NOT NULL AUTO_INCREMENT,
-    user_id varchar(10) NOT NULL,
     role_id int NOT NULL,
+    users_id varchar(10) NOT NULL,
     CONSTRAINT users_roles_pk PRIMARY KEY (id)
 );
 
@@ -305,7 +282,7 @@ ALTER TABLE users_roles ADD CONSTRAINT users_roles_roles FOREIGN KEY users_roles
     REFERENCES roles (id);
 
 -- Reference: users_roles_users (table: users_roles)
-ALTER TABLE users_roles ADD CONSTRAINT users_roles_users FOREIGN KEY users_roles_users (user_id)
+ALTER TABLE users_roles ADD CONSTRAINT users_roles_users FOREIGN KEY users_roles_users (users_id)
     REFERENCES users (id);
 
 -- End of file.
