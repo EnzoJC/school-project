@@ -7,9 +7,7 @@ import java.io.Serializable;
 @Entity
 @Data
 @Table(name = "roles")
-public class Role implements Serializable {
-    private static final long serialVersUID = 1L;
-
+public class Role {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.AUTO)

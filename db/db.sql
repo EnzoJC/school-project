@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-06-02 02:09:00.221
+-- Last modification date: 2021-06-20 03:55:42.046
 
 -- tables
 -- Table: classes
@@ -86,7 +86,7 @@ CREATE TABLE levels (
 
 -- Table: parents
 CREATE TABLE parents (
-    id varchar(10) NOT NULL references users,
+    id varchar(10) NOT NULL,
     family_relationship varchar(50) NULL,
     CONSTRAINT parents_pk PRIMARY KEY (id)
 );
@@ -154,7 +154,7 @@ CREATE TABLE sections (
 
 -- Table: students
 CREATE TABLE students (
-    id varchar(10) NOT NULL references users,
+    id varchar(10) NOT NULL,
     student_email varchar(50) NOT NULL,
     parent_id varchar(10) NOT NULL,
     UNIQUE INDEX Student_ak_1 (student_email),
@@ -163,7 +163,7 @@ CREATE TABLE students (
 
 -- Table: teachers
 CREATE TABLE teachers (
-    id varchar(10) NOT NULL references users,
+    id varchar(10) NOT NULL,
     institutional_email varchar(50) NOT NULL,
     UNIQUE INDEX Teacher_ak_1 (institutional_email),
     CONSTRAINT teachers_pk PRIMARY KEY (id)
@@ -183,10 +183,9 @@ CREATE TABLE users (
     nationality varchar(50) NULL,
     phone_number varchar(20) NULL,
     email_address varchar(50) NULL,
-    family_relationship varchar(50) NULL,
-    type varchar(50) NOT NULL,
     username varchar(10) NOT NULL,
     password varchar(100) NOT NULL,
+    type varchar(50) NOT NULL,
     status boolean NOT NULL DEFAULT 1,
     UNIQUE INDEX Tutor_ak_1 (document_number,email_address,phone_number),
     CONSTRAINT users_pk PRIMARY KEY (id)

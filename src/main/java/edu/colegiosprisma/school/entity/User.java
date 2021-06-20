@@ -1,20 +1,22 @@
 package edu.colegiosprisma.school.entity;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
 @Entity
 @Data
-@Table(name="users")
-@DiscriminatorColumn(name="type", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
+
     @Id
-    @Column(name="id", length = 10)
+    @Column(name = "id", nullable = false, length = 10)
     private String id;
     @Column(name="given_names")
     private String givenNames;
@@ -46,6 +48,8 @@ public class User {
     private String password;
     @Column(name="status")
     private boolean status;
+    @Column(name="type")
+    private String type;
 
     @ManyToMany
     @JoinTable(
@@ -55,8 +59,4 @@ public class User {
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
-
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private Parent parent;
 }
