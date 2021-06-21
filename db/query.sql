@@ -53,6 +53,10 @@ BEGIN
 			INSERT INTO increment_teachers VALUES (NULL);
 			SET sp_id = CONCAT('T02021', LPAD(LAST_INSERT_ID(), 4, '0'));
             select sp_id;
+		ELSEIF sp_type = 'Admin' THEN
+			INSERT INTO increment_users VALUES (NULL);
+			SET sp_id = CONCAT('U02021', LPAD(LAST_INSERT_ID(), 4, '0'));
+            select sp_id;
 		END IF;
 	COMMIT;
 END $$
@@ -100,6 +104,8 @@ BEGIN
 		INSERT INTO `users_roles` (`role_id`, `users_id`) VALUES (3, NEW.username);
     ELSEIF NEW.type = 'Teacher' THEN
 		INSERT INTO `users_roles` (`role_id`, `users_id`) VALUES (2, NEW.username);
+	ELSEIF NEW.type = 'Admin' THEN
+		INSERT INTO `users_roles` (`role_id`, `users_id`) VALUES (1, NEW.username);
     END IF;
 END$$
 DELIMITER ;

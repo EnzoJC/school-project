@@ -20,13 +20,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private LoggingAccessDeniedHandler accessDeniedHandler;
 
     @Autowired
-    AuthenticationSuccessHandler successHandler;
+    private SimpleAuthenticationSuccessHandler successHandler;
 
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
+
     }
 
     @Bean
@@ -54,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(
-                        "/", "/registro", "/js/**", "/css/**", "/img/**").permitAll()
+                        "/", "/registro", "/js/**", "/css/**", "/img/**", "/error/**").permitAll()
                 .antMatchers("/admin/**" ).hasRole("ADMIN")
                 .antMatchers("/teacher/**").hasAnyRole("TEACHER", "ADMIN")
                 .antMatchers("/parent/**").hasAnyRole("PARENT", "ADMIN")

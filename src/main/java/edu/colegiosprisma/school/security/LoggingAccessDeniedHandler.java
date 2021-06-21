@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class LoggingAccessDeniedHandler  implements AccessDeniedHandler {
+public class LoggingAccessDeniedHandler implements AccessDeniedHandler {
     private static Logger log = LoggerFactory.getLogger(LoggingAccessDeniedHandler.class);
 
     @Override

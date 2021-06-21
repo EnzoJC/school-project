@@ -7,5 +7,4 @@ import org.springframework.stereotype.Component;
 @Component
 public interface IUserService {
     User findByUsername(String user);
-    Parent create(Parent parent);
 }

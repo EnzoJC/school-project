@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-06-20 03:55:42.046
+-- Last modification date: 2021-06-20 19:45:13.301
 
 -- tables
 -- Table: classes
@@ -73,6 +73,12 @@ CREATE TABLE increment_students (
 CREATE TABLE increment_teachers (
     id int NOT NULL AUTO_INCREMENT,
     CONSTRAINT increment_teachers_pk PRIMARY KEY (id)
+);
+
+-- Table: increment_users
+CREATE TABLE increment_users (
+    id int NOT NULL AUTO_INCREMENT,
+    CONSTRAINT increment_users_pk PRIMARY KEY (id)
 );
 
 -- Table: levels

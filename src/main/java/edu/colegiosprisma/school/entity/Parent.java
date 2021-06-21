@@ -1,9 +1,9 @@
 package edu.colegiosprisma.school.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -13,4 +13,7 @@ public class Parent extends User{
 
     @Column(name="family_relationship")
     private String familyRelationship;
+
+    @OneToMany(mappedBy = "parent")
+    List<Student> students;
 }
