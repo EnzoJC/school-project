@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "parents")
-@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn(name = "parent_id")
 public class Parent extends User{
 
     @Column(name="family_relationship")

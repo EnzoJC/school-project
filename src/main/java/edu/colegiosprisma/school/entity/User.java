@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -16,47 +18,45 @@ import java.util.Date;
 public class User {
 
     @Id
-    @Column(name = "id", nullable = false, length = 10)
+    @Column(name = "user_id", nullable = false, length = 10)
     private String id;
-    @Column(name="given_names")
+    @Column(name = "given_names")
     private String givenNames;
-    @Column(name="first_last_name")
+    @Column(name = "first_last_name")
     private String firstLastName;
-    @Column(name="second_last_name")
+    @Column(name = "second_last_name")
     private String secondLastName;
-    @Column(name="document_type")
+    @Column(name = "document_type")
     private String documentType;
-    @Column(name="document_number", unique=true)
+    @Column(name = "document_number", unique = true)
     private String documentNumber;
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name="birth_date")
+    @Column(name = "birth_date")
     private Date birthDate;
-    @Column(name="address")
+    @Column(name = "address")
     private String address;
-    @Column(name="gender")
+    @Column(name = "gender")
     private String gender;
-    @Column(name="nationality")
+    @Column(name = "nationality")
     private String nationality;
-    @Column(name="phone_number", unique=true)
+    @Column(name = "phone", unique = true)
     private String phoneNumber;
-    @Column(name="email_address", unique=true)
+    @Column(name = "email", unique = true)
     private String emailAddress;
-    @Column(name="username")
+    @Column(name = "username")
     private String username;
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
-    @Column(name="status")
+    @Column(name = "is_active")
     private boolean status;
-    @Column(name="type")
+    @Column(name = "type")
     private String type;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "users_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    List<Role> roles;
 }

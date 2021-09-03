@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 
 @Service("IUserServImpl")
-public class IUserServImpl implements IUserService {
+public class UserServImpl implements IUserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 

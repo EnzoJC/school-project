@@ -16,7 +16,7 @@ import javax.persistence.StoredProcedureQuery;
 import java.util.List;
 
 @Service("IParentServImpl")
-public class IParentServImpl implements IParentService {
+public class ParentServImpl implements IParentService {
     @Autowired
     private IParentRepository parentRepository;
 
