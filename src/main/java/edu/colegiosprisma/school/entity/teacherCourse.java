@@ -1,4 +1,4 @@
 package edu.colegiosprisma.school.entity;
 
-public class classCourse {
+public class teacherCourse {
 }
