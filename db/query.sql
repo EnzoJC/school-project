@@ -133,13 +133,13 @@ CREATE TRIGGER tg_role_insert
     FOR EACH ROW
 BEGIN
     IF NEW.type = 'Student' THEN
-        INSERT INTO `users_roles` (`role_id`, `users_id`) VALUES (4, NEW.username);
+        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (4, NEW.username);
     ELSEIF NEW.type = 'Parent' THEN
-        INSERT INTO `users_roles` (`role_id`, `users_id`) VALUES (3, NEW.username);
+        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (3, NEW.username);
     ELSEIF NEW.type = 'Teacher' THEN
-        INSERT INTO `users_roles` (`role_id`, `users_id`) VALUES (2, NEW.username);
+        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (2, NEW.username);
     ELSEIF NEW.type = 'Admin' THEN
-        INSERT INTO `users_roles` (`role_id`, `users_id`) VALUES (1, NEW.username);
+        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (1, NEW.username);
     END IF;
 END$$
 DELIMITER ;
