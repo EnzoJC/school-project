@@ -1,11 +1,16 @@
 package edu.colegiosprisma.school.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
-@Entity
-public class userRole {
+@Getter
+@Setter
+@Entity(name = "users_roles")
+public class UserRole {
     @EmbeddedId
-    userRoleKey id;
+    UserRoleKey id;
 
     @ManyToOne
     @MapsId("userId")

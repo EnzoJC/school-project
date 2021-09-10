@@ -1,50 +1,29 @@
-INSERT INTO roles (`name`)
-VALUES ('ROLE_ADMIN');
-INSERT INTO roles (`name`)
-VALUES ('ROLE_TEACHER');
-INSERT INTO roles (`name`)
-VALUES ('ROLE_PARENT');
-INSERT INTO roles (`name`)
-VALUES ('ROLE_STUDENT');
+INSERT INTO roles (`name`) VALUES ('ROLE_ADMIN');
+INSERT INTO roles (`name`) VALUES ('ROLE_TEACHER');
+INSERT INTO roles (`name`) VALUES ('ROLE_PARENT');
+INSERT INTO roles (`name`) VALUES ('ROLE_STUDENT');
 
-INSERT INTO `school_db`.`permissions` (`name`)
-VALUES ('update');
-INSERT INTO `school_db`.`permissions` (`name`)
-VALUES ('write');
-INSERT INTO `school_db`.`permissions` (`name`)
-VALUES ('read');
-INSERT INTO `school_db`.`permissions` (`name`)
-VALUES ('delete');
+INSERT INTO `school_db`.`permissions` (`name`) VALUES ('update');
+INSERT INTO `school_db`.`permissions` (`name`) VALUES ('write');
+INSERT INTO `school_db`.`permissions` (`name`) VALUES ('read');
+INSERT INTO `school_db`.`permissions` (`name`) VALUES ('delete');
 
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (2, 1);
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (2, 2);
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (2, 3);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (2, 1);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (2, 2);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (2, 3);
 
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (1, 1);
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (1, 2);
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (1, 3);
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (1, 4);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (1, 1);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (1, 2);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (1, 3);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (1, 4);
 
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (3, 1);
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (3, 2);
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (3, 3);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (3, 1);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (3, 2);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (3, 3);
 
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (4, 1);
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (4, 2);
-INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`)
-VALUES (4, 3);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (4, 1);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (4, 2);
+INSERT INTO `school_db`.`roles_permissions` (`role_id`, `permission_id`) VALUES (4, 3);
 
 /*------------------------------------------------------------------------------------------------------*/
 DROP PROCEDURE IF EXISTS sp_generate_id;
@@ -92,9 +71,9 @@ END $$
 DELIMITER ;
 
 CALL sp_generate_id("Parent", @var);
-select @var
+select @var;
 /*------------------------------------------------------------------------------------------------------*/
-           DELIMITER $$
+DELIMITER $$
 CREATE TRIGGER tg_student_insert
     BEFORE INSERT
     ON `students`
@@ -106,8 +85,7 @@ DELIMITER ;
 
 DROP TRIGGER IF EXISTS tg_student_insert;
 
-INSERT INTO `school_db`.`students` (`id`, `parent_id`)
-VALUES ('S020210001', 'P020210001');
+INSERT INTO `school_db`.`students` (`id`, `parent_id`) VALUES ('S020210001', 'P020210001');
 
 /*------------------------------------------------------------------------------------------------------*/
 DELIMITER $$
@@ -122,8 +100,7 @@ DELIMITER ;
 
 DROP TRIGGER IF EXISTS tg_teacher_insert;
 
-INSERT INTO `school_db`.`teachers` (`id`)
-VALUES ('T020210001');
+INSERT INTO `school_db`.`teachers` (`id`) VALUES ('T020210001');
 
 /*------------------------------------------------------------------------------------------------------*/
 DELIMITER $$

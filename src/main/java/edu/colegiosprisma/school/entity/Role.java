@@ -16,6 +16,8 @@ public class Role {
     @Column(name="name")
     private String Name;
 
-    @ManyToMany
-    Set<User> users;
+//    @ManyToMany
+//    Set<User> users;
+    @OneToMany(mappedBy = "role")
+    Set<UserRole> ratings;
 }
