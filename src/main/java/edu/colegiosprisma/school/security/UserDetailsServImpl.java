@@ -1,7 +1,7 @@
 package edu.colegiosprisma.school.security;
 
+import edu.colegiosprisma.school.entity.Role;
 import edu.colegiosprisma.school.entity.User;
-import edu.colegiosprisma.school.entity.UserRole;
 import edu.colegiosprisma.school.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,8 +33,8 @@ public class UserDetailsServImpl implements UserDetailsService {
         // UserBuilder builder =  null;
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (UserRole role : user.getUserRoles()){
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole().getName()));
+        for (Role role : user.getRoles()){
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);

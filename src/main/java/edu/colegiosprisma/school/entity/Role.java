@@ -18,6 +18,4 @@ public class Role {
 
 //    @ManyToMany
 //    Set<User> users;
-    @OneToMany(mappedBy = "role")
-    Set<UserRole> ratings;
 }
