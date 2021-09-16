@@ -1,6 +1,7 @@
--- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-09-03 04:25:07.285
+CREATE DATABASE school_db;
+USE school_sb;
 
+-- Creación de Tablas
 -- tables
 -- Table: classes
 CREATE TABLE classes
@@ -416,3 +417,130 @@ ALTER TABLE users_roles
 
 -- End of file.
 
+/*------------------------------------------------------------------------------------------------------*/
+-- Creación de Queries
+
+INSERT INTO roles (`name`) VALUES ('ROLE_ADMIN');
+INSERT INTO roles (`name`) VALUES ('ROLE_TEACHER');
+INSERT INTO roles (`name`) VALUES ('ROLE_PARENT');
+INSERT INTO roles (`name`) VALUES ('ROLE_STUDENT');
+
+INSERT INTO `permissions` (`name`) VALUES ('update');
+INSERT INTO `permissions` (`name`) VALUES ('write');
+INSERT INTO `permissions` (`name`) VALUES ('read');
+INSERT INTO `permissions` (`name`) VALUES ('delete');
+
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (2, 1);
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (2, 2);
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (2, 3);
+
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (1, 1);
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (1, 2);
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (1, 3);
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (1, 4);
+
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (3, 1);
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (3, 2);
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (3, 3);
+
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (4, 1);
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (4, 2);
+INSERT INTO `roles_permissions` (`role_id`, `permission_id`) VALUES (4, 3);
+
+/*------------------------------------------------------------------------------------------------------*/
+DROP PROCEDURE IF EXISTS sp_generate_id;
+DELIMITER $$
+CREATE PROCEDURE sp_generate_id(IN sp_type varchar(50), OUT sp_id varchar(10))
+BEGIN
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        BEGIN
+            GET DIAGNOSTICS CONDITION 1 @sqlstate = RETURNED_SQLSTATE,
+                @errno = MYSQL_ERRNO, @text = MESSAGE_TEXT;
+            SET @full_error = CONCAT('ERROR ', @errno, ' (', @sqlstate, '): ', @text);
+            ROLLBACK;
+            SELECT @full_error;
+        END;
+    DECLARE EXIT HANDLER FOR SQLWARNING
+        BEGIN
+            GET DIAGNOSTICS CONDITION 1 @sqlstate = RETURNED_SQLSTATE,
+                @errno = MYSQL_ERRNO, @text = MESSAGE_TEXT;
+            SET @full_error = CONCAT('ERROR ', @errno, ' (', @sqlstate, '): ', @text);
+            ROLLBACK;
+            SELECT @full_error;
+        END;
+
+    START TRANSACTION;
+    IF sp_type = 'Student' THEN
+        INSERT INTO increment_students VALUES (NULL);
+        SET sp_id = CONCAT('S02021', LPAD(LAST_INSERT_ID(), 4, '0'));
+        select sp_id;
+    ELSEIF sp_type = 'Parent' THEN
+        INSERT INTO increment_parents VALUES (NULL);
+        SET sp_id = CONCAT('P02021', LPAD(LAST_INSERT_ID(), 4, '0'));
+        select sp_id;
+    ELSEIF sp_type = 'Teacher' THEN
+        INSERT INTO increment_teachers VALUES (NULL);
+        SET sp_id = CONCAT('T02021', LPAD(LAST_INSERT_ID(), 4, '0'));
+        select sp_id;
+    ELSEIF sp_type = 'Admin' THEN
+        INSERT INTO increment_users VALUES (NULL);
+        SET sp_id = CONCAT('U02021', LPAD(LAST_INSERT_ID(), 4, '0'));
+        select sp_id;
+    END IF;
+    COMMIT;
+END $$
+DELIMITER ;
+
+-- CALL sp_generate_id("Parent", @var);
+-- select @var;
+
+/*------------------------------------------------------------------------------------------------------*/
+DELIMITER $$
+CREATE TRIGGER tg_student_insert
+    BEFORE INSERT
+    ON `students`
+    FOR EACH ROW
+BEGIN
+    SET NEW.student_email = CONCAT(NEW.student_id, '@colegiosprisma.edu');
+END$$
+DELIMITER ;
+
+-- DROP TRIGGER IF EXISTS tg_student_insert;
+-- INSERT INTO `school_db`.`students` (`id`, `parent_id`) VALUES ('S020210001', 'P020210001');
+
+/*------------------------------------------------------------------------------------------------------*/
+DELIMITER $$
+CREATE TRIGGER tg_teacher_insert
+    BEFORE INSERT
+    ON `teachers`
+    FOR EACH ROW
+BEGIN
+    SET NEW.institutional_email = CONCAT(NEW.teacher_id, '@colegiosprisma.edu');
+END$$
+DELIMITER ;
+
+-- DROP TRIGGER IF EXISTS tg_teacher_insert;
+-- INSERT INTO `school_db`.`teachers` (`id`) VALUES ('T020210001');
+
+/*------------------------------------------------------------------------------------------------------*/
+DELIMITER $$
+CREATE TRIGGER tg_role_insert
+    AFTER INSERT
+    ON `users`
+    FOR EACH ROW
+BEGIN
+    IF NEW.type = 'Student' THEN
+        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (4, NEW.username);
+    ELSEIF NEW.type = 'Parent' THEN
+        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (3, NEW.username);
+    ELSEIF NEW.type = 'Teacher' THEN
+        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (2, NEW.username);
+    ELSEIF NEW.type = 'Admin' THEN
+        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (1, NEW.username);
+    END IF;
+END$$
+DELIMITER ;
+
+-- DROP TRIGGER IF EXISTS tg_role_insert;
+/*------------------------------------------------------------------------------------------------------*/

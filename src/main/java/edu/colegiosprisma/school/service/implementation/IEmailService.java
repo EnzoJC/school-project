@@ -1,6 +1,6 @@
 package edu.colegiosprisma.school.service.implementation;
 
-import edu.colegiosprisma.school.api.EmailPort;
+import edu.colegiosprisma.school.api.IEmailPort;
 import edu.colegiosprisma.school.dto.EmailBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +13,9 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
-public class EmailService implements EmailPort {
+public class IEmailService implements IEmailPort {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IEmailService.class);
 
     @Autowired
     private JavaMailSender sender;

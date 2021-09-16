@@ -8,6 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
-public interface EmailPort {
+public interface IEmailPort {
     public boolean sendEmail(EmailBody emailBody);
 }

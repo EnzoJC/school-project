@@ -1,79 +1,66 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Iniciar Sesión</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        .user-form {
-            width: 340px;
-            margin: 50px auto;
-            font-size: 15px;
-        }
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
-        .user-form form {
-            margin-bottom: 15px;
-            background: #f7f7f7;
-            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-        }
 
-        .user-form h2 {
-            margin: 0 0 15px;
-        }
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/d3e9f7af7c.js" crossorigin="anonymous"></script>
 
-        .form-control,
-        .btn {
-            min-height: 38px;
-            border-radius: 2px;
-        }
+    <link rel="preload" href="/css/style.css" as="style">
+    <link rel="stylesheet" href="/css/style.css">
 
-        .btn {
-            font-size: 15px;
-            font-weight: bold;
-        }
-    </style>
+    <title>Iniciar Sesi&oacute;n</title>
 </head>
 
-<body>
-<div class="user-form">
-    <form th:action="@{/login}" method="POST">
-        <h2 class="text-center">¡Bienvenido a Colegios Prisma!</h2>
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Código" name="username"/>
+<body class="fondo">
+<div class="container">
+    <div class="square row">
+        <div class="col align-self-center">
+            <form th:action="@{/login}" method="POST">
+
+                <h2 class="text-center mb-5">&iexcl;Bienvenido a Colegios Prisma!</h2>
+
+                <div class="form-group mb-2 mt-2">
+                    <input type="text" class="form-control" placeholder="C&oacute;digo" name="username" />
+                </div>
+
+                <div class="form-group mb-2 mt-2">
+                    <input type="password" class="form-control" placeholder="Contrase&ntilde;a" name="password" />
+                </div>
+
+                <div class="form-group mb-4 mt-4">
+                    <button type="submit" class="form-control btn btn-primary">Ingresar</button>
+                </div>
+                <!-- <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                    Invalid username and password.
+                </div>
+                <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                    You have been logged out.
+                </div> -->
+                <div class="clearfix">
+                    <label class="float-start form-check-label"><input type="checkbox"> Recordar</label>
+                    <a th:href="@{registro}" href="#" class="link float-end">Crear cuenta</a>
+                </div>
+
+            </form>
         </div>
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="Contraseña" name="password"/>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Ingresar</button>
-        </div>
-        <div th:if="${param.error}" class="alert alert-danger" role="alert">
-            Invalid username and password.
-        </div>
-        <div th:if="${param.logout}" class="alert alert-success" role="alert">
-            You have been logged out.
-        </div>
-        <div class="clearfix">
-            <label class="float-left form-check-label"><input type="checkbox"> Recordar</label>
-            <a th:href="@{registro}" href="#" class="float-right">Crear cuenta</a>
-        </div>
-    </form>
+    </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
 </body>
 
