@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/d3e9f7af7c.js" crossorigin="anonymous"></script>
@@ -18,15 +19,127 @@
     <title>Registrar Padre</title>
 </head>
 
-<body>
-    <div class="container">
-        <form class="form-horizontal" action="#" th:action="@{/registro}" th:object="${parent}" method="POST">
-
-        </form>
-    </div>
+<body class="fondo-principal">
+<div class="container border p-4 mt-5 shadow-sm bg-white rounded-lg fondo-formulario">
+    <h2 class="text-center pb-2">Formulario de registro</h2>
+    <form class="form-horizontal row" action="#" th:action="@{/registro}" th:object="${parent}" method="POST">
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="given-names">Nombres</label>
+                <input type="text" class="form-control" id="given-names" th:field="*{givenNames}">
+            </div>
+        </div>
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="first-last-name">Primer Apellido</label>
+                <input type="text" class="form-control" id="first-last-name" th:field="*{firstLastName}">
+            </div>
+        </div>
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="second-last-name">Segundo Apellido</label>
+                <input type="text" class="form-control" id="second-last-name" th:field="*{secondLastName}">
+            </div>
+        </div>
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="document-type">Tipo de documento</label>
+                <select id="document-type" class="form-control" th:field="documentType">
+                    <option selected disabled="disabled">Seleccione un tipo de documento</option>
+                    <option th:value="DNI">DNI</option>
+                    <option th:value="Carné de extranjería">Carné de extranjería</option>
+                    <option th:value="Otro">Otro</option>
+                </select>
+            </div>
+        </div>
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="document-number">Número de documento</label>
+                <input type="text" class="form-control" id="document-number" th:field="documentNumber">
+            </div>
+        </div>
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="birth-date">Fecha de nacimiento</label>
+                <input type="date" class="form-control" id="birth-date" th:field="birthDate">
+            </div>
+        </div>
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="address">Dirección</label>
+                <input type="text" class="form-control" id="address" th:field="address">
+            </div>
+        </div>
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="gender">Género</label>
+                <select id="gender" class="form-control" th:field="gender">
+                    <option selected disabled="disabled">Seleccione un género</option>
+                    <option th:value="Femenino">Femenino</option>
+                    <option th:value="Masculino">Masculino</option>
+                    <option th:value="Otro">Otro</option>
+                </select>
+            </div>
+        </div>
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="nationality">Nacionalidad</label>
+                <select id="nationality" class="form-control" th:field="nationality">
+                    <option selected disabled="disabled">Seleccione un país</option>
+                    <option th:value="'Perú'">Perú</option>
+                    <option th:value="'Argentina'">Argentina</option>
+                    <option th:value="'Bolivia'">Bolivia</option>
+                    <option th:value="'Brasil'">Brasil</option>
+                    <option th:value="'Chile'">Chile</option>
+                    <option th:value="'Colombia'">Colombia</option>
+                    <option th:value="'Costa Rica'">Costa Rica</option>
+                    <option th:value="'Cuba'">Cuba</option>
+                    <option th:value="'Ecuador'">Ecuador</option>
+                    <option th:value="'El Salvador'">El Salvador</option>
+                    <option th:value="'Estados Unidos'">Estados Unidos</option>
+                    <option th:value="'Guayana Francesa'">Guayana Francesa</option>
+                    <option th:value="'Granada'">Granada</option>
+                    <option th:value="'Guatemala'">Guatemala</option>
+                    <option th:value="'Guayana'">Guayana</option>
+                    <option th:value="'Haití'">Haití</option>
+                    <option th:value="'Honduras'">Honduras</option>
+                    <option th:value="'Jamaica'">Jamaica</option>
+                    <option th:value="'México'">México</option>
+                    <option th:value="'Nicaragua'">Nicaragua</option>
+                    <option th:value="'Paraguay'">Paraguay</option>
+                    <option th:value="'Panamá'">Panamá</option>
+                    <option th:value="'Puerto Rico'">Puerto Rico</option>
+                    <option th:value="'República Dominicana'">República Dominicana</option>
+                    <option th:value="'Surinam'">Surinam</option>
+                    <option th:value="'Uruguay'">Uruguay</option>
+                    <option th:value="'Venezuela'">Venezuela</option>
+                </select>
+            </div>
+        </div>
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="phone-number">Celular</label>
+                <input type="text" class="form-control" id="phone-number" th:field="phoneNumber">
+            </div>
+        </div>
+        <div class='col-xl-6 col-md-12'>
+            <div class="form-group">
+                <label for="email-address">Correo electrónico</label>
+                <input type="text" class="form-control" id="email-address" th:field="emailAddress">
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-success btn-lg btn-block">Registrar ahora</button>
+        </div>
+    </form>
+</div>
 <!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
