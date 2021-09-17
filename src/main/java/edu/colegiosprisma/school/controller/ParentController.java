@@ -23,7 +23,7 @@ public class ParentController {
     @GetMapping("/registro")
     public String agregar(Model model) {
         model.addAttribute("parent", new Parent());
-        return "registro.html";
+        return "registro";
     }
 
     @PostMapping("/registro")
@@ -36,7 +36,7 @@ public class ParentController {
                             "Estes es tu usuario: " + parent.getUsername() + ". " +
                             "Este es tu contraseña: " + parent.getDocumentNumber());
         emailController.enviarEmail(emailBody);
-        return "redirect:/registro";
+        return "redirect:/";
     }
 
 }
