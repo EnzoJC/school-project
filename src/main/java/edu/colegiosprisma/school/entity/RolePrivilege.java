@@ -4,10 +4,10 @@ package edu.colegiosprisma.school.entity;
 import javax.persistence.*;
 
 @Entity
-public class rolePermission{
+public class RolePrivilege {
 
     @EmbeddedId
-    rolePermissionKey id;
+    RolePrivilegeKey id;
 
     @ManyToOne
     @MapsId("role_id")
@@ -17,5 +17,5 @@ public class rolePermission{
     @ManyToOne
     @MapsId("permission_id")
     @JoinColumn(name = "permission_id")
-    Permission permission;
+    Privilege privilege;
 }

@@ -1,4 +1,4 @@
-package edu.colegiosprisma.school.security;
+package edu.colegiosprisma.school.service.implementation;
 
 import edu.colegiosprisma.school.entity.Role;
 import edu.colegiosprisma.school.entity.User;

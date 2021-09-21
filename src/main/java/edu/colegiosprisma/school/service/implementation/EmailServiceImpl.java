@@ -13,9 +13,9 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
-public class IEmailService implements IEmailPort {
+public class EmailServiceImpl implements IEmailPort {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IEmailService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
 
     @Autowired
     private JavaMailSender sender;

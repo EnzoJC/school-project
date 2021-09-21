@@ -5,7 +5,7 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class rolePermissionKey implements Serializable {
+public class RolePrivilegeKey implements Serializable {
 
     @Column(name = "role_id")
     int role_id;

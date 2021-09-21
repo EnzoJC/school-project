@@ -1,7 +1,9 @@
 package edu.colegiosprisma.school.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,13 +13,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+// Permite indicar que la clase está correlacionada con una tabla de la base datos
 @Entity
-@Data
+// Permite que se generen los Getter y Setter automáticamente
+@Getter
+@Setter
+// Permite especificar los detalles de la tabla, en este caso su nombre
 @Table(name = "users")
+// Define la estrategia de herencia que se utilizará para una jerarquía de clases de entidad
+// En este caso se usa JOINED para que tabla se asigne a una clase
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
-
+    // Permite especificar la PK de la entidad
     @Id
+    // Permite definir aspectos de la columna
     @Column(name = "user_id", nullable = false, length = 10)
     private String id;
     @Column(name = "given_names")
@@ -30,7 +39,10 @@ public class User {
     private String documentType;
     @Column(name = "document_number", unique = true)
     private String documentNumber;
+    // Permite mapear las fechas de la base de datos de forma simple,
+    // en este caso solo se tomará la fecha (sin hora)
     @Temporal(TemporalType.DATE)
+    // Indica como se debe formatear la fecha
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_date")
     private Date birthDate;
@@ -44,7 +56,7 @@ public class User {
     private String phoneNumber;
     @Column(name = "email", unique = true)
     private String emailAddress;
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;
