@@ -1,25 +1,25 @@
 package edu.colegiosprisma.school.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-// Permite indicar que la clase está correlacionada con una tabla de la base datos
-@Entity
 // Permite que se generen los Getter y Setter automáticamente
 @Getter
 @Setter
-// Permite especificar los detalles de la tabla, en este caso su nombre
-@Table(name = "users")
+// Permite especificar los detalles de la tabla, en este caso su nombre y sus campos unicos
+@Table(name = "users", indexes = {
+        @Index(name = "email_ak_3", columnList = "email", unique = true),
+        @Index(name = "document_number_ak_1", columnList = "document_number", unique = true),
+        @Index(name = "username_ak_4", columnList = "username", unique = true),
+        @Index(name = "phone_ak_2", columnList = "phone", unique = true)
+})
+// Permite indicar que la clase está correlacionada con una tabla de la base datos
+@Entity
 // Define la estrategia de herencia que se utilizará para una jerarquía de clases de entidad
 // En este caso se usa JOINED para que tabla se asigne a una clase
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -29,41 +29,58 @@ public class User {
     // Permite definir aspectos de la columna
     @Column(name = "user_id", nullable = false, length = 10)
     private String id;
-    @Column(name = "given_names")
+
+    @Column(name = "given_names", nullable = false, length = 50)
     private String givenNames;
-    @Column(name = "first_last_name")
+
+    @Column(name = "first_last_name", nullable = false, length = 50)
     private String firstLastName;
-    @Column(name = "second_last_name")
+
+    @Column(name = "second_last_name", nullable = false, length = 50)
     private String secondLastName;
-    @Column(name = "document_type")
-    private String documentType;
-    @Column(name = "document_number", unique = true)
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "document_type_id", nullable = false)
+    private DocumentType documentType;
+
+    @Column(name = "document_number", nullable = false, length = 20)
     private String documentNumber;
+
     // Permite mapear las fechas de la base de datos de forma simple,
     // en este caso solo se tomará la fecha (sin hora)
     @Temporal(TemporalType.DATE)
     // Indica como se debe formatear la fecha
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "birth_date")
+    @Column(name = "birth_date", nullable = false)
     private Date birthDate;
-    @Column(name = "address")
+
+    @Column(name = "address", nullable = false, length = 50)
     private String address;
-    @Column(name = "gender")
+
+    @Column(name = "gender", nullable = false, length = 50)
     private String gender;
-    @Column(name = "nationality")
-    private String nationality;
-    @Column(name = "phone", unique = true)
-    private String phoneNumber;
-    @Column(name = "email", unique = true)
-    private String emailAddress;
-    @Column(name = "username", unique = true)
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "nationality_id", nullable = false)
+    private Nationality nationality;
+
+    @Column(name = "phone", length = 20)
+    private String phone;
+
+    @Column(name = "email", length = 50)
+    private String email;
+
+    @Column(name = "username", nullable = false, length = 10)
     private String username;
-    @Column(name = "password")
+
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
-    @Column(name = "is_active")
-    private boolean status;
-    @Column(name = "type")
+
+    @Column(name = "type", nullable = false, length = 50)
     private String type;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = false;
 
     @ManyToMany
     @JoinTable(

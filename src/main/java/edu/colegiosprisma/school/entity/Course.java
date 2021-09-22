@@ -11,7 +11,7 @@ import java.util.Set;
 public class Course {
     @Id
     @Column(name = "course_id")
-    private int id;
+    private  Integer id;
     @Column(name = "name")
     private String name;
     @Column(name = "academic_hours")

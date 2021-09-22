@@ -441,6 +441,24 @@ INSERT INTO `privileges` (`name`) VALUES ('write');
 INSERT INTO `privileges` (`name`) VALUES ('read');
 INSERT INTO `privileges` (`name`) VALUES ('delete');
 
+insert into `document_types` (name) values ('DNI');
+insert into `document_types` (name) values ('Carné de Extranjería');
+insert into `document_types` (name) values ('Pasaporte');
+insert into `document_types` (name) values ('Libreta Militar');
+insert into `document_types` (name) values ('Partida de Nacimiento');
+
+insert into `nationalities` (name)values ('Argentina');
+insert into `nationalities` (name)values ('Boliviana');
+insert into `nationalities` (name)values ('Brasileña');
+insert into `nationalities` (name)values ('Chilena');
+insert into `nationalities` (name)values ('Colombiana');
+insert into `nationalities` (name)values ('Ecuatoriana');
+insert into `nationalities` (name)values ('Guyanes');
+insert into `nationalities` (name)values ('Paraguaya');
+insert into `nationalities` (name)values ('Peruana');
+insert into `nationalities` (name)values ('Uruguaya');
+insert into `nationalities` (name)values ('Venezolana');
+
 INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (2, 1);
 INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (2, 2);
 INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (2, 3);
