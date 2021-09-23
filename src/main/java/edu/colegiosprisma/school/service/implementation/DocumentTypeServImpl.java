@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("DocumentTypeServImpl")
+@Service()
 public class DocumentTypeServImpl implements IDocumentTypeService {
     @Autowired
     private IDocumentTypeRepository documentTypeRepository;
     @Override
-    public List<DocumentType> getAllDocumenTypes() {
+    public List<DocumentType> getAllDocumentTypes() {
         return documentTypeRepository.findAll();
     }
 }

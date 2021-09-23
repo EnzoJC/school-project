@@ -21,110 +21,80 @@
 <body class="fondo-principal">
     <div class="contenedor-formulario container border p-4 shadow-sm bg-white rounded-lg fondo-formulario">
         <h2 class="text-center pb-2">Formulario de registro</h2>
-        <form class="form-horizontal row" th:action="@{/registro}" th:object="${parent}" method="POST">
+        <form class="form-horizontal row needs-validation" th:action="@{/registro}" th:object="${parent}" method="POST" novalidate>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="given-names">Nombres</label>
-                    <input type="text" class="form-control" id="given-names" th:field="*{givenNames}">
+                    <input type="text" class="form-control" id="given-names" th:field="*{givenNames}" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="first-last-name">Primer Apellido</label>
-                    <input type="text" class="form-control" id="first-last-name" th:field="*{firstLastName}">
+                    <input type="text" class="form-control" id="first-last-name" th:field="*{firstLastName}" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="second-last-name">Segundo Apellido</label>
-                    <input type="text" class="form-control" id="second-last-name" th:field="*{secondLastName}">
+                    <input type="text" class="form-control" id="second-last-name" th:field="*{secondLastName}" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="document-type">Tipo de documento</label>
-                    <select id="document-type" class="form-control" th:field="*{documentType}">
-                        <option class="seleccionado" value="0" selected>Seleccione tipo de documento</option>
-                        <option th:each="doc : ${listDocTypes}" th:value="${doc.id}" th:text="${doc.name}"></option>
+                    <select id="document-type" class="form-control" th:field="*{documentType}" required>
+                        <option class="seleccionado" value="" selected>Seleccione un tipo de documento</option>
+                        <option th:each="doc : ${documentTypeList}" th:value="${doc.id}" th:text="${doc.name}"></option>
                     </select>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="document-number">Número de documento</label>
-                    <input type="text" class="form-control" id="document-number" th:field="*{documentNumber}">
+                    <input type="text" class="form-control" id="document-number" th:field="*{documentNumber}" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="birth-date">Fecha de nacimiento</label>
-                    <input type="date" class="form-control" id="birth-date" th:field="*{birthDate}">
+                    <input type="date" class="form-control" id="birth-date" th:field="*{birthDate}" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="address">Dirección</label>
-                    <input type="text" class="form-control" id="address" th:field="*{address}">
+                    <input type="text" class="form-control" id="address" th:field="*{address}" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="gender">Género</label>
-                    <select id="gender" class="form-control" th:field="*{gender}">
-                        <option class="seleccionado" value="0" selected>Seleccione tipo de documento</option>
-                        <option th:each="doc : ${listDocTypes}" th:value="${doc.id}" th:text="${doc.name}"></option>
-<!--                        <option value="" th:disabled="disabled" th:selected="selected">Seleccione un género</option>-->
-<!--                        <option th:value="'Femenino'">Femenino</option>-->
-<!--                        <option th:value="'Masculino'">Masculino</option>-->
-<!--                        <option th:value="'Otro'">Otro</option>-->
+                    <select id="gender" class="form-control" th:field="*{gender}" required>
+                        <option class="seleccionado" value="" selected>Seleccione un género</option>
+                        <option th:each="gender : ${genderList}" th:value="${gender.id}" th:text="${gender.name}"></option>
                     </select>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="nationality">Nacionalidad</label>
-                    <select id="nationality" class="form-control" th:field="*{nationality}">
-<!--                        <option th:value="''" disabled selected>Seleccione un país</option>-->
-<!--                        <option th:value="'HDP'">CHileno</option>-->
-<!--                        <option th:value="'Argentina'">Argentina</option>-->
-<!--                        <option th:value="'Bolivia'">Bolivia</option>-->
-<!--                        <option th:value="'Brasil'">Brasil</option>-->
-<!--                        <option th:value="'Chile'">Chile</option>-->
-<!--                        <option th:value="'Colombia'">Colombia</option>-->
-<!--                        <option th:value="'Costa Rica'">Costa Rica</option>-->
-<!--                        <option th:value="'Cuba'">Cuba</option>-->
-<!--                        <option th:value="'Ecuador'">Ecuador</option>-->
-<!--                        <option th:value="'El Salvador'">El Salvador</option>-->
-<!--                        <option th:value="'Estados Unidos'">Estados Unidos</option>-->
-<!--                        <option th:value="'Guayana Francesa'">Guayana Francesa</option>-->
-<!--                        <option th:value="'Granada'">Granada</option>-->
-<!--                        <option th:value="'Guatemala'">Guatemala</option>-->
-<!--                        <option th:value="'Guayana'">Guayana</option>-->
-<!--                        <option th:value="'Haití'">Haití</option>-->
-<!--                        <option th:value="'Honduras'">Honduras</option>-->
-<!--                        <option th:value="'Jamaica'">Jamaica</option>-->
-<!--                        <option th:value="'México'">México</option>-->
-<!--                        <option th:value="'Nicaragua'">Nicaragua</option>-->
-<!--                        <option th:value="'Paraguay'">Paraguay</option>-->
-<!--                        <option th:value="'Panamá'">Panamá</option>-->
-<!--                        <option th:value="'Puerto Rico'">Puerto Rico</option>-->
-<!--                        <option th:value="'República Dominicana'">República Dominicana</option>-->
-<!--                        <option th:value="'Surinam'">Surinam</option>-->
-<!--                        <option th:value="'Uruguay'">Uruguay</option>-->
-<!--                        <option th:value="'Venezuela'">Venezuela</option>-->
+                    <select id="nationality" class="form-control" th:field="*{nationality}" required>
+                        <option class="seleccionado" value="" selected>Seleccione una nacionalidad</option>
+                        <option th:each="nationality : ${nationalityList}" th:value="${nationality.id}" th:text="${nationality.name}"></option>
                     </select>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="phone-number">Celular</label>
-                    <input type="text" class="form-control" id="phone-number" th:field="*{phone}">
+                    <input type="text" class="form-control" id="phone-number" th:field="*{phone}" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12'>
                 <div class="form-group">
                     <label for="email-address">Correo electrónico</label>
-                    <input type="text" class="form-control" id="email-address" th:field="*{email}">
+                    <input type="text" class="form-control" id="email-address" th:field="*{email}" required>
                 </div>
             </div>
             <div class="col-12">
@@ -132,13 +102,28 @@
             </div>
         </form>
     </div>
+
     <script>
-        var op = document.getElementsByClassName("seleccionado");
-        if(op.value == "0")
-            op.disabled = true;
-        else
-            op.disabled = false;
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
     </script>
+
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

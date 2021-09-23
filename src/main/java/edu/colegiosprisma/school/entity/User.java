@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -57,8 +58,9 @@ public class User {
     @Column(name = "address", nullable = false, length = 50)
     private String address;
 
-    @Column(name = "gender", nullable = false, length = 50)
-    private String gender;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "gender_id", nullable = false)
+    private Gender gender;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "nationality_id", nullable = false)
@@ -79,8 +81,8 @@ public class User {
     @Column(name = "type", nullable = false, length = 50)
     private String type;
 
-    @Column(name = "is_active", nullable = false)
-    private Boolean isActive = false;
+    @Column(name = "is_active", nullable = false, columnDefinition = "boolean DEFAULT true")
+    private Boolean isActive = true;
 
     @ManyToMany
     @JoinTable(

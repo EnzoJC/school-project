@@ -13,7 +13,7 @@ import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 
-@Service("ParentServImpl")
+@Service()
 public class ParentServImpl implements IParentService{
     @Autowired
     private IParentRepository parentRepository;
@@ -32,7 +32,6 @@ public class ParentServImpl implements IParentService{
         query.execute();
 
         String id = (String) query.getSingleResult();
-        System.out.println("ID: " + id);
 
         parent.setId(id);
         parent.setType("Parent");

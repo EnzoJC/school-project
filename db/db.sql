@@ -36,7 +36,7 @@ CREATE TABLE days
 (
     day_id int         NOT NULL AUTO_INCREMENT,
     name   varchar(12) NOT NULL,
-    UNIQUE INDEX days_ak_1 (name),
+    UNIQUE INDEX name_ak_1 (name),
     CONSTRAINT days_pk PRIMARY KEY (day_id)
 );
 
@@ -45,7 +45,7 @@ CREATE TABLE document_types
 (
     document_type_id int         NOT NULL AUTO_INCREMENT,
     name             varchar(50) NOT NULL,
-    UNIQUE INDEX document_types_ak_1 (name),
+    UNIQUE INDEX name_ak_1 (name),
     CONSTRAINT document_types_pk PRIMARY KEY (document_type_id)
 );
 
@@ -66,8 +66,17 @@ CREATE TABLE family_relationships
 (
     family_relationship_id int         NOT NULL,
     name                   varchar(50) NOT NULL,
-    UNIQUE INDEX family_relationships_ak_1 (name),
+    UNIQUE INDEX name_ak_1 (name),
     CONSTRAINT family_relationships_pk PRIMARY KEY (family_relationship_id)
+);
+
+-- Table: genders
+CREATE TABLE genders
+(
+    gender_id int NOT NULL AUTO_INCREMENT,
+    name      int NOT NULL,
+    UNIQUE INDEX name_ak_1 (name),
+    CONSTRAINT genders_pk PRIMARY KEY (gender_id)
 );
 
 -- Table: grades
@@ -124,7 +133,7 @@ CREATE TABLE levels
     level_id    int         NOT NULL AUTO_INCREMENT,
     name        varchar(10) NOT NULL,
     description varchar(50) NOT NULL,
-    UNIQUE INDEX Level_ak_1 (name),
+    UNIQUE INDEX name_ak_1 (name),
     CONSTRAINT levels_pk PRIMARY KEY (level_id)
 );
 
@@ -133,7 +142,7 @@ CREATE TABLE nationalities
 (
     nationality_id int         NOT NULL AUTO_INCREMENT,
     name           varchar(50) NOT NULL,
-    UNIQUE INDEX nationalities_ak_1 (name),
+    UNIQUE INDEX name_ak_1 (name),
     CONSTRAINT nationalities_pk PRIMARY KEY (nationality_id)
 );
 
@@ -172,7 +181,7 @@ CREATE TABLE privileges
 (
     privilege_id int         NOT NULL AUTO_INCREMENT,
     name         varchar(50) NOT NULL,
-    UNIQUE INDEX privileges_ak_1 (name),
+    UNIQUE INDEX name_ak_1 (name),
     CONSTRAINT privileges_pk PRIMARY KEY (privilege_id)
 );
 
@@ -181,7 +190,7 @@ CREATE TABLE roles
 (
     role_id int         NOT NULL AUTO_INCREMENT,
     name    varchar(50) NOT NULL,
-    UNIQUE INDEX roles_ak_1 (name),
+    UNIQUE INDEX name_ak_1 (name),
     CONSTRAINT roles_pk PRIMARY KEY (role_id)
 );
 
@@ -246,7 +255,7 @@ CREATE TABLE students
     student_id    varchar(10) NOT NULL,
     student_email varchar(50) NOT NULL,
     parent_id     varchar(10) NOT NULL,
-    UNIQUE INDEX students_ak_1 (student_email),
+    UNIQUE INDEX student_email_ak_1 (student_email),
     CONSTRAINT students_pk PRIMARY KEY (student_id)
 );
 
@@ -263,7 +272,7 @@ CREATE TABLE teachers
 (
     teacher_id          varchar(10) NOT NULL,
     institutional_email varchar(50) NOT NULL,
-    UNIQUE INDEX teachers_ak_1 (institutional_email),
+    UNIQUE INDEX inst_email_ak_1 (institutional_email),
     CONSTRAINT teachers_pk PRIMARY KEY (teacher_id)
 );
 
@@ -278,7 +287,7 @@ CREATE TABLE users
     document_number  varchar(20)  NOT NULL,
     birth_date       date         NOT NULL,
     address          varchar(50)  NOT NULL,
-    gender           varchar(50)  NOT NULL,
+    gender_id        int          NOT NULL,
     nationality_id   int          NOT NULL,
     phone            varchar(20)  NULL,
     email            varchar(50)  NULL,
@@ -286,7 +295,10 @@ CREATE TABLE users
     password         varchar(100) NOT NULL,
     type             varchar(50)  NOT NULL,
     is_active        boolean      NOT NULL DEFAULT 1,
-    UNIQUE INDEX users_ak_1 (document_number, email, phone, username),
+    UNIQUE INDEX document_number_ak_1 (document_number),
+    UNIQUE INDEX phone_ak_2 (phone),
+    UNIQUE INDEX email_ak_3 (email),
+    UNIQUE INDEX username_ak_4 (username),
     CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
 
@@ -300,132 +312,169 @@ CREATE TABLE users_roles
 
 -- foreign keys
 -- Reference: class_teacher (table: classes)
-ALTER TABLE classes ADD CONSTRAINT class_teacher FOREIGN KEY class_teacher (tutor_id)
-    REFERENCES teachers (teacher_id);
+ALTER TABLE classes
+    ADD CONSTRAINT class_teacher FOREIGN KEY class_teacher (tutor_id)
+        REFERENCES teachers (teacher_id);
 
 -- Reference: classes_classroom (table: classes)
-ALTER TABLE classes ADD CONSTRAINT classes_classroom FOREIGN KEY classes_classroom (classroom_id)
-    REFERENCES classrooms (classroom_id);
+ALTER TABLE classes
+    ADD CONSTRAINT classes_classroom FOREIGN KEY classes_classroom (classroom_id)
+        REFERENCES classrooms (classroom_id);
 
 -- Reference: classes_grades (table: classes)
-ALTER TABLE classes ADD CONSTRAINT classes_grades FOREIGN KEY classes_grades (grade_id)
-    REFERENCES grades (grade_id);
+ALTER TABLE classes
+    ADD CONSTRAINT classes_grades FOREIGN KEY classes_grades (grade_id)
+        REFERENCES grades (grade_id);
 
 -- Reference: classes_section (table: classes)
-ALTER TABLE classes ADD CONSTRAINT classes_section FOREIGN KEY classes_section (section_id)
-    REFERENCES sections (section_id);
+ALTER TABLE classes
+    ADD CONSTRAINT classes_section FOREIGN KEY classes_section (section_id)
+        REFERENCES sections (section_id);
 
 -- Reference: enrollments_class (table: enrollments)
-ALTER TABLE enrollments ADD CONSTRAINT enrollments_class FOREIGN KEY enrollments_class (class_id)
-    REFERENCES classes (class_id);
+ALTER TABLE enrollments
+    ADD CONSTRAINT enrollments_class FOREIGN KEY enrollments_class (class_id)
+        REFERENCES classes (class_id);
 
 -- Reference: enrollments_grade (table: enrollments)
-ALTER TABLE enrollments ADD CONSTRAINT enrollments_grade FOREIGN KEY enrollments_grade (grade_id)
-    REFERENCES grades (grade_id);
+ALTER TABLE enrollments
+    ADD CONSTRAINT enrollments_grade FOREIGN KEY enrollments_grade (grade_id)
+        REFERENCES grades (grade_id);
 
 -- Reference: enrollments_school_years (table: enrollments)
-ALTER TABLE enrollments ADD CONSTRAINT enrollments_school_years FOREIGN KEY enrollments_school_years (school_year_id)
-    REFERENCES school_years (school_year_id);
+ALTER TABLE enrollments
+    ADD CONSTRAINT enrollments_school_years FOREIGN KEY enrollments_school_years (school_year_id)
+        REFERENCES school_years (school_year_id);
 
 -- Reference: enrollments_students (table: enrollments)
-ALTER TABLE enrollments ADD CONSTRAINT enrollments_students FOREIGN KEY enrollments_students (student_id)
-    REFERENCES students (student_id);
+ALTER TABLE enrollments
+    ADD CONSTRAINT enrollments_students FOREIGN KEY enrollments_students (student_id)
+        REFERENCES students (student_id);
 
 -- Reference: gc_course (table: grades_courses)
-ALTER TABLE grades_courses ADD CONSTRAINT gc_course FOREIGN KEY gc_course (course_id)
-    REFERENCES courses (course_id);
+ALTER TABLE grades_courses
+    ADD CONSTRAINT gc_course FOREIGN KEY gc_course (course_id)
+        REFERENCES courses (course_id);
 
 -- Reference: gc_grade (table: grades_courses)
-ALTER TABLE grades_courses ADD CONSTRAINT gc_grade FOREIGN KEY gc_grade (grade_id)
-    REFERENCES grades (grade_id);
+ALTER TABLE grades_courses
+    ADD CONSTRAINT gc_grade FOREIGN KEY gc_grade (grade_id)
+        REFERENCES grades (grade_id);
 
 -- Reference: grades_levels (table: grades)
-ALTER TABLE grades ADD CONSTRAINT grades_levels FOREIGN KEY grades_levels (level_id)
-    REFERENCES levels (level_id);
+ALTER TABLE grades
+    ADD CONSTRAINT grades_levels FOREIGN KEY grades_levels (level_id)
+        REFERENCES levels (level_id);
 
 -- Reference: parent_user (table: parents)
-ALTER TABLE parents ADD CONSTRAINT parent_user FOREIGN KEY parent_user (parent_id)
-    REFERENCES users (user_id);
+ALTER TABLE parents
+    ADD CONSTRAINT parent_user FOREIGN KEY parent_user (parent_id)
+        REFERENCES users (user_id);
 
 -- Reference: parents_family_relationships (table: parents)
-ALTER TABLE parents ADD CONSTRAINT parents_family_relationships FOREIGN KEY parents_family_relationships (family_relationship_id)
-    REFERENCES family_relationships (family_relationship_id);
+ALTER TABLE parents
+    ADD CONSTRAINT parents_family_relationships FOREIGN KEY parents_family_relationships (family_relationship_id)
+        REFERENCES family_relationships (family_relationship_id);
 
 -- Reference: payments_details_enrollment (table: payments_details)
-ALTER TABLE payments_details ADD CONSTRAINT payments_details_enrollment FOREIGN KEY payments_details_enrollment (enrollment_id)
-    REFERENCES enrollments (enrollment_id);
+ALTER TABLE payments_details
+    ADD CONSTRAINT payments_details_enrollment FOREIGN KEY payments_details_enrollment (enrollment_id)
+        REFERENCES enrollments (enrollment_id);
 
 -- Reference: payments_details_pay (table: payments_details)
-ALTER TABLE payments_details ADD CONSTRAINT payments_details_pay FOREIGN KEY payments_details_pay (pay_id)
-    REFERENCES pays (pay_id);
+ALTER TABLE payments_details
+    ADD CONSTRAINT payments_details_pay FOREIGN KEY payments_details_pay (pay_id)
+        REFERENCES pays (pay_id);
 
 -- Reference: rp_privilege (table: roles_privileges)
-ALTER TABLE roles_privileges ADD CONSTRAINT rp_privilege FOREIGN KEY rp_privilege (privilege_id)
-    REFERENCES privileges (privilege_id);
+ALTER TABLE roles_privileges
+    ADD CONSTRAINT rp_privilege FOREIGN KEY rp_privilege (privilege_id)
+        REFERENCES privileges (privilege_id);
 
 -- Reference: rp_role (table: roles_privileges)
-ALTER TABLE roles_privileges ADD CONSTRAINT rp_role FOREIGN KEY rp_role (role_id)
-    REFERENCES roles (role_id);
+ALTER TABLE roles_privileges
+    ADD CONSTRAINT rp_role FOREIGN KEY rp_role (role_id)
+        REFERENCES roles (role_id);
 
 -- Reference: sc_schedule (table: sessions_schedules)
-ALTER TABLE sessions_schedules ADD CONSTRAINT sc_schedule FOREIGN KEY sc_schedule (schedule_id)
-    REFERENCES schedules (schedule_id);
+ALTER TABLE sessions_schedules
+    ADD CONSTRAINT sc_schedule FOREIGN KEY sc_schedule (schedule_id)
+        REFERENCES schedules (schedule_id);
 
 -- Reference: sc_session (table: sessions_schedules)
-ALTER TABLE sessions_schedules ADD CONSTRAINT sc_session FOREIGN KEY sc_session (session_id)
-    REFERENCES sessions (session_id);
+ALTER TABLE sessions_schedules
+    ADD CONSTRAINT sc_session FOREIGN KEY sc_session (session_id)
+        REFERENCES sessions (session_id);
 
 -- Reference: schedules_day (table: schedules)
-ALTER TABLE schedules ADD CONSTRAINT schedules_day FOREIGN KEY schedules_day (day_id)
-    REFERENCES days (day_id);
+ALTER TABLE schedules
+    ADD CONSTRAINT schedules_day FOREIGN KEY schedules_day (day_id)
+        REFERENCES days (day_id);
 
 -- Reference: sessions_class (table: sessions)
-ALTER TABLE sessions ADD CONSTRAINT sessions_class FOREIGN KEY sessions_class (class_id)
-    REFERENCES classes (class_id);
+ALTER TABLE sessions
+    ADD CONSTRAINT sessions_class FOREIGN KEY sessions_class (class_id)
+        REFERENCES classes (class_id);
 
 -- Reference: sessions_course (table: sessions)
-ALTER TABLE sessions ADD CONSTRAINT sessions_course FOREIGN KEY sessions_course (course_id)
-    REFERENCES courses (course_id);
+ALTER TABLE sessions
+    ADD CONSTRAINT sessions_course FOREIGN KEY sessions_course (course_id)
+        REFERENCES courses (course_id);
 
 -- Reference: sessions_teacher (table: sessions)
-ALTER TABLE sessions ADD CONSTRAINT sessions_teacher FOREIGN KEY sessions_teacher (teacher_id)
-    REFERENCES teachers (teacher_id);
+ALTER TABLE sessions
+    ADD CONSTRAINT sessions_teacher FOREIGN KEY sessions_teacher (teacher_id)
+        REFERENCES teachers (teacher_id);
 
 -- Reference: student_user (table: students)
-ALTER TABLE students ADD CONSTRAINT student_user FOREIGN KEY student_user (student_id)
-    REFERENCES users (user_id);
+ALTER TABLE students
+    ADD CONSTRAINT student_user FOREIGN KEY student_user (student_id)
+        REFERENCES users (user_id);
 
 -- Reference: students_parent (table: students)
-ALTER TABLE students ADD CONSTRAINT students_parent FOREIGN KEY students_parent (parent_id)
-    REFERENCES parents (parent_id);
+ALTER TABLE students
+    ADD CONSTRAINT students_parent FOREIGN KEY students_parent (parent_id)
+        REFERENCES parents (parent_id);
 
 -- Reference: tc_course (table: teacher_courses)
-ALTER TABLE teacher_courses ADD CONSTRAINT tc_course FOREIGN KEY tc_course (course_id)
-    REFERENCES courses (course_id);
+ALTER TABLE teacher_courses
+    ADD CONSTRAINT tc_course FOREIGN KEY tc_course (course_id)
+        REFERENCES courses (course_id);
 
 -- Reference: tc_teacher (table: teacher_courses)
-ALTER TABLE teacher_courses ADD CONSTRAINT tc_teacher FOREIGN KEY tc_teacher (teacher_id)
-    REFERENCES teachers (teacher_id);
+ALTER TABLE teacher_courses
+    ADD CONSTRAINT tc_teacher FOREIGN KEY tc_teacher (teacher_id)
+        REFERENCES teachers (teacher_id);
 
 -- Reference: teacher_user (table: teachers)
-ALTER TABLE teachers ADD CONSTRAINT teacher_user FOREIGN KEY teacher_user (teacher_id)
-    REFERENCES users (user_id);
+ALTER TABLE teachers
+    ADD CONSTRAINT teacher_user FOREIGN KEY teacher_user (teacher_id)
+        REFERENCES users (user_id);
 
 -- Reference: ur_role (table: users_roles)
-ALTER TABLE users_roles ADD CONSTRAINT ur_role FOREIGN KEY ur_role (role_id)
-    REFERENCES roles (role_id);
+ALTER TABLE users_roles
+    ADD CONSTRAINT ur_role FOREIGN KEY ur_role (role_id)
+        REFERENCES roles (role_id);
 
 -- Reference: ur_user (table: users_roles)
-ALTER TABLE users_roles ADD CONSTRAINT ur_user FOREIGN KEY ur_user (user_id)
-    REFERENCES users (user_id);
+ALTER TABLE users_roles
+    ADD CONSTRAINT ur_user FOREIGN KEY ur_user (user_id)
+        REFERENCES users (user_id);
 
 -- Reference: users_document_type (table: users)
-ALTER TABLE users ADD CONSTRAINT users_document_type FOREIGN KEY users_document_type (document_type_id)
-    REFERENCES document_types (document_type_id);
+ALTER TABLE users
+    ADD CONSTRAINT users_document_type FOREIGN KEY users_document_type (document_type_id)
+        REFERENCES document_types (document_type_id);
+
+-- Reference: users_gender (table: users)
+ALTER TABLE users
+    ADD CONSTRAINT users_gender FOREIGN KEY users_gender (gender_id)
+        REFERENCES genders (gender_id);
 
 -- Reference: users_nationality (table: users)
-ALTER TABLE users ADD CONSTRAINT users_nationality FOREIGN KEY users_nationality (nationality_id)
-    REFERENCES nationalities (nationality_id);
+ALTER TABLE users
+    ADD CONSTRAINT users_nationality FOREIGN KEY users_nationality (nationality_id)
+        REFERENCES nationalities (nationality_id);
 
 -- End of file.
 /*------------------------------------------------------------------------------------------------------*/
