@@ -22,8 +22,8 @@ public class EmailServiceImpl implements IEmailPort {
 
     @Override
     public boolean sendEmail(EmailBody emailBody)  {
-        LOGGER.info("EmailBody: {}", emailBody.toString());
-        return sendEmailTool(emailBody.getContent(), emailBody.getEmail(), emailBody.getSubject());
+//        LOGGER.info("EmailBody: {}", emailBody.toString());
+        return sendEmailTool(emailBody.getContent(), emailBody.getTo(), emailBody.getSubject());
     }
 
     private boolean sendEmailTool(String textMessage, String email, String subject) {

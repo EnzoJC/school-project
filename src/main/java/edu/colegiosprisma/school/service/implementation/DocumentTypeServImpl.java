@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service()
+@Service
 public class DocumentTypeServImpl implements IDocumentTypeService {
     @Autowired
     private IDocumentTypeRepository documentTypeRepository;

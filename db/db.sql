@@ -480,15 +480,26 @@ ALTER TABLE users
 /*------------------------------------------------------------------------------------------------------*/
 -- Creación de Queries
 
-INSERT INTO roles (`name`) VALUES ('ROLE_ADMIN');
-INSERT INTO roles (`name`) VALUES ('ROLE_TEACHER');
-INSERT INTO roles (`name`) VALUES ('ROLE_PARENT');
-INSERT INTO roles (`name`) VALUES ('ROLE_STUDENT');
+INSERT INTO roles (`name`) VALUES ('ROLE_ADMIN');       -- ID = 1
+INSERT INTO roles (`name`) VALUES ('ROLE_TEACHER');     -- ID = 2
+INSERT INTO roles (`name`) VALUES ('ROLE_PARENT');      -- ID = 3
+INSERT INTO roles (`name`) VALUES ('ROLE_STUDENT');     -- ID = 4
 
-INSERT INTO `privileges` (`name`) VALUES ('update');
-INSERT INTO `privileges` (`name`) VALUES ('write');
-INSERT INTO `privileges` (`name`) VALUES ('read');
-INSERT INTO `privileges` (`name`) VALUES ('delete');
+INSERT INTO `privileges` (`name`) VALUES ('UPDATE_PRIVILEGE');      -- ID = 1
+INSERT INTO `privileges` (`name`) VALUES ('WRITE_PRIVILEGE');       -- ID = 2
+INSERT INTO `privileges` (`name`) VALUES ('READ_PRIVILEGE');        -- ID = 3
+INSERT INTO `privileges` (`name`) VALUES ('DELETE_PRIVILEGE');      -- ID = 4
+
+INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (1, 1);
+INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (1, 2);
+INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (1, 3);
+INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (1, 4);
+INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (2, 2);
+INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (2, 3);
+INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (3, 2);
+INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (3, 3);
+INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (4, 2);
+INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (4, 3);
 
 insert into `document_types` (name) values ('DNI');
 insert into `document_types` (name) values ('Carné de Extranjería');

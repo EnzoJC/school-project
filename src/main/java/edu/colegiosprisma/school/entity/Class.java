@@ -13,7 +13,7 @@ public class Class{
     @Id
     @Column(name="class_id")
     private int id;
-/*
+    /*
     @ManyToOne
     @JoinColumn(name = "section_id")
     Section section; ANDREA
