@@ -15,9 +15,9 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/parent")
+    @GetMapping({"/parent", "/parent/admision"})
     public String parent() {
-        return "parent";
+        return "admision";
     }
 
     @GetMapping("/admin")

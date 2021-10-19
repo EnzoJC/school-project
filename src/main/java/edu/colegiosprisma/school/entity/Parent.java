@@ -14,9 +14,6 @@ import java.util.List;
 @Entity
 @PrimaryKeyJoinColumn(name = "parent_id")
 public class Parent extends User{
-    @ManyToOne
-    @JoinColumn(name = "family_relationship_id")
-    private FamilyRelationship familyRelationship;
 
     @OneToMany(mappedBy = "parent")
     List<Student> students;

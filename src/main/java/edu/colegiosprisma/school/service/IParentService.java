@@ -9,5 +9,5 @@ import java.util.List;
 public interface IParentService {
     Parent create(Parent parent);
 //    List<User> selectAll();
-//    User selectByUsername(String username);
+    Parent selectByUsername(String username);
 }

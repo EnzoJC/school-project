@@ -7,13 +7,13 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Table(name = "family_relationships", indexes = {
+@Table(name = "relationships", indexes = {
         @Index(name = "name_ak_1", columnList = "name", unique = true)
 })
 @Entity
-public class FamilyRelationship {
+public class Relationship {
     @Id
-    @Column(name = "family_relationship_id", nullable = false)
+    @Column(name = "relationship_id", nullable = false)
     private Integer id;
 
     @Column(name = "name", nullable = false, length = 50)

@@ -1,5 +1,4 @@
 CREATE DATABASE school_db;
--- USE school_sb;
 
 -- tables
 -- Table: classes
@@ -61,20 +60,11 @@ CREATE TABLE enrollments
     CONSTRAINT enrollments_pk PRIMARY KEY (enrollment_id)
 );
 
--- Table: family_relationships
-CREATE TABLE family_relationships
-(
-    family_relationship_id int         NOT NULL,
-    name                   varchar(50) NOT NULL,
-    UNIQUE INDEX name_ak_1 (name),
-    CONSTRAINT family_relationships_pk PRIMARY KEY (family_relationship_id)
-);
-
 -- Table: genders
 CREATE TABLE genders
 (
-    gender_id int NOT NULL AUTO_INCREMENT,
-    name      int NOT NULL,
+    gender_id int         NOT NULL AUTO_INCREMENT,
+    name      varchar(50) NOT NULL,
     UNIQUE INDEX name_ak_1 (name),
     CONSTRAINT genders_pk PRIMARY KEY (gender_id)
 );
@@ -149,8 +139,8 @@ CREATE TABLE nationalities
 -- Table: parents
 CREATE TABLE parents
 (
-    parent_id              varchar(10) NOT NULL,
-    family_relationship_id int         NULL,
+    parent_id  varchar(10) NOT NULL,
+    occupation varchar(50) NOT NULL,
     CONSTRAINT parents_pk PRIMARY KEY (parent_id)
 );
 
@@ -183,6 +173,15 @@ CREATE TABLE privileges
     name         varchar(50) NOT NULL,
     UNIQUE INDEX name_ak_1 (name),
     CONSTRAINT privileges_pk PRIMARY KEY (privilege_id)
+);
+
+-- Table: relationships
+CREATE TABLE relationships
+(
+    relationship_id int         NOT NULL,
+    name            varchar(50) NOT NULL,
+    UNIQUE INDEX name_ak_1 (name),
+    CONSTRAINT relationships_pk PRIMARY KEY (relationship_id)
 );
 
 -- Table: roles
@@ -252,9 +251,10 @@ CREATE TABLE sessions_schedules
 -- Table: students
 CREATE TABLE students
 (
-    student_id    varchar(10) NOT NULL,
-    student_email varchar(50) NOT NULL,
-    parent_id     varchar(10) NOT NULL,
+    student_id             varchar(10) NOT NULL,
+    student_email          varchar(50) NOT NULL,
+    parent_id              varchar(10) NOT NULL,
+    family_relationship_id int         NOT NULL,
     UNIQUE INDEX student_email_ak_1 (student_email),
     CONSTRAINT students_pk PRIMARY KEY (student_id)
 );
@@ -371,11 +371,6 @@ ALTER TABLE parents
     ADD CONSTRAINT parent_user FOREIGN KEY parent_user (parent_id)
         REFERENCES users (user_id);
 
--- Reference: parents_family_relationships (table: parents)
-ALTER TABLE parents
-    ADD CONSTRAINT parents_family_relationships FOREIGN KEY parents_family_relationships (family_relationship_id)
-        REFERENCES family_relationships (family_relationship_id);
-
 -- Reference: payments_details_enrollment (table: payments_details)
 ALTER TABLE payments_details
     ADD CONSTRAINT payments_details_enrollment FOREIGN KEY payments_details_enrollment (enrollment_id)
@@ -436,6 +431,11 @@ ALTER TABLE students
     ADD CONSTRAINT students_parent FOREIGN KEY students_parent (parent_id)
         REFERENCES parents (parent_id);
 
+-- Reference: students_relationships (table: students)
+ALTER TABLE students
+    ADD CONSTRAINT students_relationships FOREIGN KEY students_relationships (family_relationship_id)
+        REFERENCES relationships (relationship_id);
+
 -- Reference: tc_course (table: teacher_courses)
 ALTER TABLE teacher_courses
     ADD CONSTRAINT tc_course FOREIGN KEY tc_course (course_id)
@@ -477,6 +477,7 @@ ALTER TABLE users
         REFERENCES nationalities (nationality_id);
 
 -- End of file.
+
 /*------------------------------------------------------------------------------------------------------*/
 -- Creación de Queries
 
@@ -489,17 +490,6 @@ INSERT INTO `privileges` (`name`) VALUES ('UPDATE_PRIVILEGE');      -- ID = 1
 INSERT INTO `privileges` (`name`) VALUES ('WRITE_PRIVILEGE');       -- ID = 2
 INSERT INTO `privileges` (`name`) VALUES ('READ_PRIVILEGE');        -- ID = 3
 INSERT INTO `privileges` (`name`) VALUES ('DELETE_PRIVILEGE');      -- ID = 4
-
-INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (1, 1);
-INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (1, 2);
-INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (1, 3);
-INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (1, 4);
-INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (2, 2);
-INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (2, 3);
-INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (3, 2);
-INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (3, 3);
-INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (4, 2);
-INSERT INTO school_db.roles_privileges (role_id, privilege_id) VALUES (4, 3);
 
 insert into `document_types` (name) values ('DNI');
 insert into `document_types` (name) values ('Carné de Extranjería');
@@ -536,6 +526,16 @@ INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (4, 1);
 INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (4, 2);
 INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (4, 3);
 
+INSERT INTO `genders` (`name`) VALUES ('Masculino');
+INSERT INTO `genders` (`name`) VALUES ('Femenino');
+
+INSERT INTO `relationships`(`name`) VALUES ('Hijo(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Sobrino(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Primo(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Nieto(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Apoderado(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Ahijado(a)');
+
 /*------------------------------------------------------------------------------------------------------*/
 DROP PROCEDURE IF EXISTS sp_generate_id;
 DELIMITER $$
@@ -565,53 +565,3 @@ DELIMITER ;
 
 -- CALL sp_generate_id("Parent", @var);
 -- select @var;
-
-/*------------------------------------------------------------------------------------------------------*/
-DELIMITER $$
-CREATE TRIGGER tg_student_insert
-    BEFORE INSERT
-    ON `students`
-    FOR EACH ROW
-BEGIN
-    SET NEW.student_email = CONCAT(NEW.student_id, '@colegiosprisma.edu');
-END$$
-DELIMITER ;
-
--- DROP TRIGGER IF EXISTS tg_student_insert;
--- INSERT INTO `school_db`.`students` (`id`, `parent_id`) VALUES ('S020210001', 'P020210001');
-
-/*------------------------------------------------------------------------------------------------------*/
-DELIMITER $$
-CREATE TRIGGER tg_teacher_insert
-    BEFORE INSERT
-    ON `teachers`
-    FOR EACH ROW
-BEGIN
-    SET NEW.institutional_email = CONCAT(NEW.teacher_id, '@colegiosprisma.edu');
-END$$
-DELIMITER ;
-
--- DROP TRIGGER IF EXISTS tg_teacher_insert;
--- INSERT INTO `school_db`.`teachers` (`id`) VALUES ('T020210001');
-
-/*------------------------------------------------------------------------------------------------------*/
-DELIMITER $$
-CREATE TRIGGER tg_role_insert
-    AFTER INSERT
-    ON `users`
-    FOR EACH ROW
-BEGIN
-    IF NEW.type = 'Student' THEN
-        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (4, NEW.username);
-    ELSEIF NEW.type = 'Parent' THEN
-        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (3, NEW.username);
-    ELSEIF NEW.type = 'Teacher' THEN
-        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (2, NEW.username);
-    ELSEIF NEW.type = 'Admin' THEN
-        INSERT INTO `users_roles` (`role_id`, `user_id`) VALUES (1, NEW.username);
-    END IF;
-END$$
-DELIMITER ;
-
--- DROP TRIGGER IF EXISTS tg_role_insert;
-/*------------------------------------------------------------------------------------------------------*/

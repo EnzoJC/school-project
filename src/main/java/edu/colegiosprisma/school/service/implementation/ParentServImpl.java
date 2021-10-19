@@ -2,6 +2,7 @@ package edu.colegiosprisma.school.service.implementation;
 
 import edu.colegiosprisma.school.entity.Parent;
 import edu.colegiosprisma.school.entity.Role;
+import edu.colegiosprisma.school.entity.User;
 import edu.colegiosprisma.school.repository.IParentRepository;
 import edu.colegiosprisma.school.repository.IRoleRepository;
 import edu.colegiosprisma.school.service.IParentService;
@@ -17,7 +18,7 @@ import javax.persistence.StoredProcedureQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service()
+@Service
 public class ParentServImpl implements IParentService{
     @Autowired
     private IParentRepository parentRepository;
@@ -59,5 +60,10 @@ public class ParentServImpl implements IParentService{
         parent.setRoles(listaRolesParent);
 
         return parentRepository.save(parent);
+    }
+
+    @Override
+    public Parent selectByUsername(String username) {
+        return (Parent) parentRepository.findByUsername(username);
     }
 }

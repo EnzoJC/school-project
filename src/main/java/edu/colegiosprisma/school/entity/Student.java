@@ -16,4 +16,8 @@ public class Student extends User{
     @ManyToOne
     @JoinColumn(name = "parent_id")
     Parent parent;
+
+    @ManyToOne
+    @JoinColumn(name = "family_relationship_id")
+    private Relationship relationship;
 }
