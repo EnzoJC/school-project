@@ -178,7 +178,7 @@ CREATE TABLE privileges
 -- Table: relationships
 CREATE TABLE relationships
 (
-    relationship_id int         NOT NULL,
+    relationship_id int         NOT NULL AUTO_INCREMENT,
     name            varchar(50) NOT NULL,
     UNIQUE INDEX name_ak_1 (name),
     CONSTRAINT relationships_pk PRIMARY KEY (relationship_id)
@@ -251,10 +251,10 @@ CREATE TABLE sessions_schedules
 -- Table: students
 CREATE TABLE students
 (
-    student_id             varchar(10) NOT NULL,
-    student_email          varchar(50) NOT NULL,
-    parent_id              varchar(10) NOT NULL,
-    family_relationship_id int         NOT NULL,
+    student_id      varchar(10) NOT NULL,
+    student_email   varchar(50) NOT NULL,
+    parent_id       varchar(10) NOT NULL,
+    relationship_id int         NOT NULL,
     UNIQUE INDEX student_email_ak_1 (student_email),
     CONSTRAINT students_pk PRIMARY KEY (student_id)
 );
@@ -433,7 +433,7 @@ ALTER TABLE students
 
 -- Reference: students_relationships (table: students)
 ALTER TABLE students
-    ADD CONSTRAINT students_relationships FOREIGN KEY students_relationships (family_relationship_id)
+    ADD CONSTRAINT students_relationships FOREIGN KEY students_relationships (relationship_id)
         REFERENCES relationships (relationship_id);
 
 -- Reference: tc_course (table: teacher_courses)
