@@ -140,7 +140,7 @@ CREATE TABLE nationalities
 CREATE TABLE parents
 (
     parent_id  varchar(10) NOT NULL,
-    occupation varchar(50) NOT NULL,
+    occupation varchar(50) NULL,
     CONSTRAINT parents_pk PRIMARY KEY (parent_id)
 );
 
@@ -536,6 +536,27 @@ INSERT INTO `relationships`(`name`) VALUES ('Nieto(a)');
 INSERT INTO `relationships`(`name`) VALUES ('Apoderado(a)');
 INSERT INTO `relationships`(`name`) VALUES ('Ahijado(a)');
 
+insert into `school_years` (`year`, `start_date`, `finish_date`) values (2019, '2019-03-01', '2019-12-15');
+insert into `school_years` (`year`, `start_date`, `finish_date`) values (2020, '2020-03-01', '2020-12-15');
+insert into `school_years` (`year`, `start_date`, `finish_date`) values (2021, '2021-03-01', '2021-12-15');
+
+
+alter table `grades` modify `name` varchar(20) not null;
+
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (01, '3 Años', '3 años de inicial', 1);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (02, '4 años', '4 años de inicial', 1);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (03, '5 años', '5 años de inicial', 1);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (04, '1° Primaria', 'Primer grado de primaria', 2);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (05, '2° Primaria', 'Segundo grado de primaria', 2);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (06, '3° Primaria', 'Tercer grado de primaria', 2);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (07, '4° Primaria', 'Cuarto grado de primaria', 2);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (08, '5° Primaria', 'Quinto grado de primaria', 2);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (09, '6° Primaria', 'Sexto grado de primaria', 2);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (10, '1° Secundaria', 'Primer año de secundaria', 3);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (11, '2° Secundaria', 'Segundo año de secundaria', 3);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (12, '3° Secundaria', 'Tercer año de secundaria', 3);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (13, '4° Secundaria', 'Cuarto año de secundaria', 3);
+insert into `grades` (`order`, `name`, `description`, `level_id`) values (14, '5° Secundaria', 'Quinto año de secundaria', 3);
 /*------------------------------------------------------------------------------------------------------*/
 DROP PROCEDURE IF EXISTS sp_generate_id;
 DELIMITER $$

@@ -1,36 +1,36 @@
 package edu.colegiosprisma.school.entity;
 
-import lombok.Data;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Data
+import javax.persistence.*;
+
+@Getter
+@Setter
 @Table(name = "enrollments")
-public class Enrollment{
+@Entity
+public class Enrollment {
     @Id
-    @Column(name="enrollment_id")
-    private int id;
-/*
-    @ManyToOne
-    @JoinColumn(name = "school_year_id")
-    SchoolYear schoolYear;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "enrollment_id", nullable = false)
+    private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    Student student;*/
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "school_year_id", nullable = false)
+    private SchoolYear schoolYear;
 
-    @Column(name = "enrollment_status")
-    private boolean enrollmentStatus;
-/*
-    @ManyToOne
-    @JoinColumn(name = "grade_id")
-    Grade grade;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
+
+    @Column(name = "enrollment_status", nullable = false)
+    private Boolean enrollmentStatus = false;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "grade_id", nullable = false)
+    private Grade grade;
 
     @ManyToOne
     @JoinColumn(name = "class_id")
-    Class class;*/
-
+    private Class _class;
 }

@@ -2,7 +2,6 @@ package edu.colegiosprisma.school.service.implementation;
 
 import edu.colegiosprisma.school.entity.Parent;
 import edu.colegiosprisma.school.entity.Role;
-import edu.colegiosprisma.school.entity.User;
 import edu.colegiosprisma.school.repository.IParentRepository;
 import edu.colegiosprisma.school.repository.IRoleRepository;
 import edu.colegiosprisma.school.service.IParentService;

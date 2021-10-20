@@ -41,12 +41,12 @@ public class StudentServImpl implements IStudentService {
         String id = (String) query.getSingleResult();
 
         student.setId(id);
-        student.setType("Parent");
+        student.setType("Student");
         student.setUsername(id);
         student.setPassword(new BCryptPasswordEncoder(4).encode(student.getDocumentNumber()));
         student.setStudentEmail(id + "@colegiosprisma.edu.pe");
         List<Role> listaRolesParent = new ArrayList<>();
-        Role auxRole = roleRepository.findByName("ROLE_PARENT");
+        Role auxRole = roleRepository.findByName("ROLE_STUDENT");
         listaRolesParent.add(auxRole);
         student.setRoles(listaRolesParent);
 

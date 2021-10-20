@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th=="https://www.thymeleaf.org">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,8 +7,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Padres - Inicio</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <link th:href="@{/css/styles.css}" rel="stylesheet" />
+        <link rel="preload" th:href="@{/css/styles.css}" as="style">
+        <link rel="stylesheet" th:href="@{/css/styles.css}">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
@@ -46,30 +46,30 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Conectado como:</div>
-                        Nadia Mendoza
+                        <span th:text="${nombresCompletos}"></span>
                     </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <div class="card tarjeta">
+                        <div class="card tarjeta" th:each="estudiante : ${listaEstudiantes}">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    Juan Romario Lopez
+                                    <span th:text="${estudiante.givenNames} + ' ' + ${estudiante.firstLastName} + ' ' + ${estudiante.secondLastName}"></span>
                                 </h5>
                                 <div class="container-fluid">
                                     <div class="row align-items-center">
                                         <div class="col-lg-1 my-2">
-                                            <div class="text-center"><img src="/img/boy.png" alt="" width="64px" height="auto"></div>
+                                            <div class="text-center"><img th:src="${estudiante.gender.name == 'Masculino' ? '/img/boy.png' : '/img/girl.png'}" alt="" width="64px" height="auto"></div>
                                         </div>
                                         <div class="col-lg-4">
-                                            <p class="mb-0"><span class="fw-bold">DNI: </span>75550335</p>
+                                            <p class="mb-0"><span class="fw-bold">Número de documento: </span><span th:text="${estudiante.documentNumber}"></span></p>
                                             <p class="mb-0"><span class="fw-bold">Grado: </span>5° Primaria</p>
                                         </div>
                                         <div class="col-lg-4">
-                                            <p class="mb-0"><span class="fw-bold">Fecha de nacimiento: </span>15/02/2010</p>
-                                            <p class="mb-0"><span class="fw-bold">Parentesco: </span>Hijo</p>
+                                            <p class="mb-0"><span class="fw-bold">Fecha de nacimiento: </span> <span th:text="${estudiante.birthDate}"></span></p>
+                                            <p class="mb-0"><span class="fw-bold">Parentesco: </span> <span th:text="${estudiante.relationship.name}"></span></p>
                                         </div>
                                         <div class="col-lg-3 my-2">
                                             <div class="d-grid gap-2">

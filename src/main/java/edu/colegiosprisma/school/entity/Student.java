@@ -18,6 +18,6 @@ public class Student extends User{
     Parent parent;
 
     @ManyToOne
-    @JoinColumn(name = "family_relationship_id")
+    @JoinColumn(name = "relationship_id")
     private Relationship relationship;
 }

@@ -9,6 +9,9 @@ import edu.colegiosprisma.school.service.IGenderService;
 import edu.colegiosprisma.school.service.INationalityService;
 import edu.colegiosprisma.school.service.IParentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -68,5 +71,16 @@ public class ParentController {
 //                            "Este es tu contraseña: " + parent.getDocumentNumber());
 //        emailController.enviarEmail(emailBody);
         return "redirect:/index.html";
+    }
+
+    @GetMapping({"/parent", "/parent/admision"})
+    public String admision(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Parent parent = parentService.selectByUsername(userDetails.getUsername());
+
+        model.addAttribute("listaEstudiantes", parent.getStudents());
+        model.addAttribute("nombresCompletos", parent.getGivenNames());
+        return "admision";
     }
 }

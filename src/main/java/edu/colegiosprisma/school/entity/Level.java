@@ -1,21 +1,25 @@
 package edu.colegiosprisma.school.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
+@Getter
+@Setter
+@Table(name = "levels", indexes = {
+        @Index(name = "name_ak_1", columnList = "name", unique = true)
+})
 @Entity
-@Data
-@Table(name = "levels")
 public class Level {
     @Id
-    @Column(name = "level_id")
-    private Long id;
-    @Column(name = "name")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "level_id", nullable = false)
+    private Integer id;
+
+    @Column(name = "name", nullable = false, length = 10)
     private String name;
-    @Column(name = "description")
+
+    @Column(name = "description", nullable = false, length = 50)
     private String description;
-    @OneToMany(mappedBy = "level")
-    List<Grade> grades;
 }
