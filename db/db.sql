@@ -540,6 +540,9 @@ insert into `school_years` (`year`, `start_date`, `finish_date`) values (2019, '
 insert into `school_years` (`year`, `start_date`, `finish_date`) values (2020, '2020-03-01', '2020-12-15');
 insert into `school_years` (`year`, `start_date`, `finish_date`) values (2021, '2021-03-01', '2021-12-15');
 
+insert into `levels`(`name`,`description`) values ('Inicial','Inicial');
+insert into `levels`(`name`,`description`) values ('Primaria','Primaria');
+insert into `levels`(`name`,`description`) values ('Secundaria','Secundaria');
 
 alter table `grades` modify `name` varchar(20) not null;
 
