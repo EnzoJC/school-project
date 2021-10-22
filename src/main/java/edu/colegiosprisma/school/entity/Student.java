@@ -1,8 +1,10 @@
 package edu.colegiosprisma.school.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,4 +22,8 @@ public class Student extends User{
     @ManyToOne
     @JoinColumn(name = "relationship_id")
     private Relationship relationship;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
+    @Where(clause = "current_year = true")
+    private List<Enrollment> enrollments;
 }

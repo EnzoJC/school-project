@@ -43,9 +43,9 @@ public class ParentController {
     private IGenderService genderService;
 
     /**
-     * Cuando se llame a .../registro se abrira una solicitud tipo GET que llamara al metodo agregar.
-     * Este metodo cargara los combos (desde la base de datos) y preparara un objeto de tipo Parent,
-     * por ultimo devuelve la vista registro.html
+     * Cuando se llame a .../registro se abrira una solicitud tipo GET que llamara al método agregar.
+     * Este método cargara los combos (desde la base de datos) y preparara un objeto de tipo Parent,
+     * por último devuelve la vista registro.html
      */
     @GetMapping("/registro")
     public String agregar(Model model) {

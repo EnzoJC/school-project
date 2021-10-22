@@ -3,8 +3,6 @@ package edu.colegiosprisma.school.controller;
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,6 +57,7 @@ public class StudentController {
 
         model.addAttribute("nombresCompletos", parent.getGivenNames());
         model.addAttribute("student", new Student());
+        model.addAttribute("enrollment", new Enrollment());
         model.addAttribute("documentTypeList", documentTypeList);
         model.addAttribute("genderList", genderList);
         model.addAttribute("nationalityList", nationalityList);
@@ -68,15 +67,19 @@ public class StudentController {
     }
 
     @PostMapping("/parent/postulante")
-    public String registrar(Student student) {
+    public String registrar(Student student, Enrollment enrollment) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Parent parent = parentService.selectByUsername(userDetails.getUsername());
         student.setParent(parent);
-        studentService.create(student); // Inserta en la base de datos
+        studentService.create(student, enrollment); // Inserta en la base de datos
         return "redirect:/parent";
     }
-
+    
+    /**
+     * Permite obtener todos los grados de un nivel.
+     * Este metodo ayuda en el llendado de los drop-down de la vista Postulante (Nivel y grado)
+     */
     @GetMapping(value = "/parent/postulante/grados")
     public @ResponseBody List<Grade> getGradosPorNivel(@RequestParam(value = "levelId", required = true) Integer levelId) {
         Optional<Level> level = levelService.getLevel(levelId);

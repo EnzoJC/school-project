@@ -133,7 +133,7 @@
                         <div class="row">
                             <div class="col-lg-6 my-2">
                                 <label class="form-label">Nivel</label>
-                                <select id="level" class="form-control" th:field="*{relationship}" required>
+                                <select id="level" class="form-control" required>
                                     <option class="seleccionado" value="" selected>Seleccione un nivel</option>
                                     <option th:each="level : ${levelList}" th:value="${level.id}"
                                             th:text="${level.name}"></option>
@@ -141,7 +141,7 @@
                             </div>
                             <div class="col-lg-6 my-2">
                                 <label class="form-label">Grado</label>
-                                <select id="grade" class="form-control" th:field="*{relationship}" required>
+                                <select id="grade" class="form-control" th:field="${enrollment.grade.id}" required>
                                     <option class="seleccionado" value="" selected>Seleccione un grado</option>
                                 </select>
                             </div>

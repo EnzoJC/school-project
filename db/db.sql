@@ -148,8 +148,8 @@ CREATE TABLE parents
 CREATE TABLE payments_details
 (
     payment_detail_id int     NOT NULL AUTO_INCREMENT,
-    billing_id        int     NOT NULL,
-    pay_date          date    NOT NULL,
+    billing_id        int     NULL,
+    pay_date          date    NULL,
     pay_id            int     NOT NULL,
     enrollment_id     int     NOT NULL,
     payment_status        boolean NOT NULL,
@@ -483,151 +483,96 @@ ALTER TABLE users
 /*------------------------------------------------------------------------------------------------------*/
 -- Creación de Queries
 
-INSERT INTO roles (`name`)
-VALUES ('ROLE_ADMIN'); -- ID = 1
-INSERT INTO roles (`name`)
-VALUES ('ROLE_TEACHER'); -- ID = 2
-INSERT INTO roles (`name`)
-VALUES ('ROLE_PARENT'); -- ID = 3
-INSERT INTO roles (`name`)
-VALUES ('ROLE_STUDENT'); -- ID = 4
+INSERT INTO roles (`name`) VALUES ('ROLE_ADMIN'); -- ID = 1
+INSERT INTO roles (`name`) VALUES ('ROLE_TEACHER'); -- ID = 2
+INSERT INTO roles (`name`) VALUES ('ROLE_PARENT'); -- ID = 3
+INSERT INTO roles (`name`) VALUES ('ROLE_STUDENT'); -- ID = 4
 
-INSERT INTO `privileges` (`name`)
-VALUES ('UPDATE_PRIVILEGE'); -- ID = 1
-INSERT INTO `privileges` (`name`)
-VALUES ('WRITE_PRIVILEGE'); -- ID = 2
-INSERT INTO `privileges` (`name`)
-VALUES ('READ_PRIVILEGE'); -- ID = 3
-INSERT INTO `privileges` (`name`)
-VALUES ('DELETE_PRIVILEGE'); -- ID = 4
+INSERT INTO `privileges` (`name`) VALUES ('UPDATE_PRIVILEGE'); -- ID = 1
+INSERT INTO `privileges` (`name`) VALUES ('WRITE_PRIVILEGE'); -- ID = 2
+INSERT INTO `privileges` (`name`) VALUES ('READ_PRIVILEGE'); -- ID = 3
+INSERT INTO `privileges` (`name`) VALUES ('DELETE_PRIVILEGE'); -- ID = 4
 
-insert into `document_types` (name)
-values ('DNI');
-insert into `document_types` (name)
-values ('Carné de Extranjería');
-insert into `document_types` (name)
-values ('Pasaporte');
-insert into `document_types` (name)
-values ('Libreta Militar');
-insert into `document_types` (name)
-values ('Partida de Nacimiento');
+INSERT INTO `document_types` (name) VALUES ('DNI');
+INSERT INTO `document_types` (name) VALUES ('Carné de Extranjería');
+INSERT INTO `document_types` (name) VALUES ('Pasaporte');
+INSERT INTO `document_types` (name) VALUES ('Libreta Militar');
+INSERT INTO `document_types` (name) VALUES ('Partida de Nacimiento');
 
-insert into `nationalities` (name)
-values ('Argentina');
-insert into `nationalities` (name)
-values ('Boliviana');
-insert into `nationalities` (name)
-values ('Brasileña');
-insert into `nationalities` (name)
-values ('Chilena');
-insert into `nationalities` (name)
-values ('Colombiana');
-insert into `nationalities` (name)
-values ('Ecuatoriana');
-insert into `nationalities` (name)
-values ('Guyanes');
-insert into `nationalities` (name)
-values ('Paraguaya');
-insert into `nationalities` (name)
-values ('Peruana');
-insert into `nationalities` (name)
-values ('Uruguaya');
-insert into `nationalities` (name)
-values ('Venezolana');
+INSERT INTO `nationalities` (name) VALUES ('Argentina');
+INSERT INTO `nationalities` (name) VALUES ('Boliviana');
+INSERT INTO `nationalities` (name) VALUES ('Brasileña');
+INSERT INTO `nationalities` (name) VALUES ('Chilena');
+INSERT INTO `nationalities` (name) VALUES ('Colombiana');
+INSERT INTO `nationalities` (name) VALUES ('Ecuatoriana');
+INSERT INTO `nationalities` (name) VALUES ('Guyanes');
+INSERT INTO `nationalities` (name) VALUES ('Paraguaya');
+INSERT INTO `nationalities` (name) VALUES ('Peruana');
+INSERT INTO `nationalities` (name) VALUES ('Uruguaya');
+INSERT INTO `nationalities` (name) VALUES ('Venezolana');
 
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (2, 1);
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (2, 2);
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (2, 3);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (2, 1);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (2, 2);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (2, 3);
 
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (1, 1);
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (1, 2);
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (1, 3);
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (1, 4);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (1, 1);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (1, 2);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (1, 3);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (1, 4);
 
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (3, 1);
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (3, 2);
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (3, 3);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (3, 1);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (3, 2);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (3, 3);
 
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (4, 1);
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (4, 2);
-INSERT INTO `roles_privileges` (`role_id`, `privilege_id`)
-VALUES (4, 3);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (4, 1);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (4, 2);
+INSERT INTO `roles_privileges` (`role_id`, `privilege_id`) VALUES (4, 3);
 
-INSERT INTO `genders` (`name`)
-VALUES ('Masculino');
-INSERT INTO `genders` (`name`)
-VALUES ('Femenino');
+INSERT INTO `genders` (`name`) VALUES ('Masculino');
+INSERT INTO `genders` (`name`) VALUES ('Femenino');
 
-INSERT INTO `relationships`(`name`)
-VALUES ('Hijo(a)');
-INSERT INTO `relationships`(`name`)
-VALUES ('Sobrino(a)');
-INSERT INTO `relationships`(`name`)
-VALUES ('Primo(a)');
-INSERT INTO `relationships`(`name`)
-VALUES ('Nieto(a)');
-INSERT INTO `relationships`(`name`)
-VALUES ('Apoderado(a)');
-INSERT INTO `relationships`(`name`)
-VALUES ('Ahijado(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Hijo(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Sobrino(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Primo(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Nieto(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Apoderado(a)');
+INSERT INTO `relationships`(`name`) VALUES ('Ahijado(a)');
 
-insert into `school_years` (`year`, `start_date`, `finish_date`)
-values (2019, '2019-03-01', '2019-12-15');
-insert into `school_years` (`year`, `start_date`, `finish_date`)
-values (2020, '2020-03-01', '2020-12-15');
-insert into `school_years` (`year`, `start_date`, `finish_date`)
-values (2021, '2021-03-01', '2021-12-15');
+INSERT INTO `school_years` (`year`, `start_date`, `finish_date`) VALUES (2019, '2019-03-01', '2019-12-15');
+INSERT INTO `school_years` (`year`, `start_date`, `finish_date`) VALUES (2020, '2020-03-01', '2020-12-15');
+INSERT INTO `school_years` (`year`, `start_date`, `finish_date`) VALUES (2021, '2021-03-01', '2021-12-15');
 
-insert into `levels`(`name`, `description`)
-values ('Inicial', 'Inicial');
-insert into `levels`(`name`, `description`)
-values ('Primaria', 'Primaria');
-insert into `levels`(`name`, `description`)
-values ('Secundaria', 'Secundaria');
+INSERT INTO `levels`(`name`, `description`) VALUES ('Inicial', 'Inicial');
+INSERT INTO `levels`(`name`, `description`) VALUES ('Primaria', 'Primaria');
+INSERT INTO `levels`(`name`, `description`) VALUES ('Secundaria', 'Secundaria');
 
-# alter table `grades`
-#     modify `name` varchar(20) not null;
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (01, '3 Años', '3 años de inicial', 1);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (02, '4 años', '4 años de inicial', 1);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (03, '5 años', '5 años de inicial', 1);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (04, '1° Primaria', 'Primer grado de primaria', 2);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (05, '2° Primaria', 'Segundo grado de primaria', 2);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (06, '3° Primaria', 'Tercer grado de primaria', 2);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (07, '4° Primaria', 'Cuarto grado de primaria', 2);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (08, '5° Primaria', 'Quinto grado de primaria', 2);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (09, '6° Primaria', 'Sexto grado de primaria', 2);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (10, '1° Secundaria', 'Primer año de secundaria', 3);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (11, '2° Secundaria', 'Segundo año de secundaria', 3);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (12, '3° Secundaria', 'Tercer año de secundaria', 3);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (13, '4° Secundaria', 'Cuarto año de secundaria', 3);
+INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (14, '5° Secundaria', 'Quinto año de secundaria', 3);
 
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (01, '3 Años', '3 años de inicial', 1);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (02, '4 años', '4 años de inicial', 1);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (03, '5 años', '5 años de inicial', 1);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (04, '1° Primaria', 'Primer grado de primaria', 2);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (05, '2° Primaria', 'Segundo grado de primaria', 2);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (06, '3° Primaria', 'Tercer grado de primaria', 2);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (07, '4° Primaria', 'Cuarto grado de primaria', 2);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (08, '5° Primaria', 'Quinto grado de primaria', 2);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (09, '6° Primaria', 'Sexto grado de primaria', 2);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (10, '1° Secundaria', 'Primer año de secundaria', 3);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (11, '2° Secundaria', 'Segundo año de secundaria', 3);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (12, '3° Secundaria', 'Tercer año de secundaria', 3);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (13, '4° Secundaria', 'Cuarto año de secundaria', 3);
-insert into `grades` (`order`, `name`, `description`, `level_id`)
-values (14, '5° Secundaria', 'Quinto año de secundaria', 3);
+INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Marzo', 250, '2021-03-20', '2021-03-31');
+INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Abril', 250, '2021-04-20', '2021-04-30');
+INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Mayo', 250, '2021-05-20', '2021-05-31');
+INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Junio', 250, '2021-06-20', '2021-06-30');
+INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Julio', 250, '2021-07-20', '2021-07-31');
+INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Agosto', 250, '2021-08-20', '2021-08-31');
+INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Septiembre', 250, '2021-09-20', '2021-09-30');
+INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Octubre', 250, '2021-10-20', '2021-10-31');
+INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Noviembre', 250, '2021-11-20', '2021-11-30');
+INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Diciembre', 150, '2021-12-05', '2021-12-20');
+INSERT INTO `pays` (`description`, `amount`) VALUES ('Matrícula ', 200);
+
 /*------------------------------------------------------------------------------------------------------*/
 DROP PROCEDURE IF EXISTS sp_generate_id;
 DELIMITER $$

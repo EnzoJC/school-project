@@ -1,9 +1,8 @@
 package edu.colegiosprisma.school.service;
 
 import edu.colegiosprisma.school.entity.Enrollment;
-import edu.colegiosprisma.school.entity.Parent;
 import edu.colegiosprisma.school.entity.Student;
 
-public interface IStudentService {
-    Student create(Student student, Enrollment enrollment);
+public interface IEnrollmentService {
+    Enrollment create(Enrollment enrollment, Student student);
 }

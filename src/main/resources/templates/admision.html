@@ -64,11 +64,11 @@
                                             <div class="text-center"><img th:src="${estudiante.gender.name == 'Masculino' ? '/img/boy.png' : '/img/girl.png'}" alt="" width="64px" height="auto"></div>
                                         </div>
                                         <div class="col-lg-4">
-                                            <p class="mb-0"><span class="fw-bold">Número de documento: </span><span th:text="${estudiante.documentNumber}"></span></p>
-                                            <p class="mb-0"><span class="fw-bold">Grado: </span>5° Primaria</p>
+                                            <p class="mb-0"><span class="fw-bold" th:text="${estudiante.documentType.name} + ': '"></span><span th:text="${estudiante.documentNumber}" class="idNumber"></span></p>
+                                            <p class="mb-0"><span class="fw-bold">Grado: </span><span th:each="enrollment : ${estudiante.enrollments}" th:text="${enrollment.grade.name}"></span></p>
                                         </div>
                                         <div class="col-lg-4">
-                                            <p class="mb-0"><span class="fw-bold">Fecha de nacimiento: </span> <span th:text="${estudiante.birthDate}"></span></p>
+                                            <p class="mb-0"><span class="fw-bold">Edad: </span> <span th:text="${estudiante.getAge()}"></span></p>
                                             <p class="mb-0"><span class="fw-bold">Parentesco: </span> <span th:text="${estudiante.relationship.name}"></span></p>
                                         </div>
                                         <div class="col-lg-3 my-2">

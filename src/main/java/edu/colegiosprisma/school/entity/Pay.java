@@ -1,25 +1,36 @@
 package edu.colegiosprisma.school.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
-@Data
 @Table(name = "pays")
+@Entity
+@Getter
+@Setter
 public class Pay {
     @Id
-    @Column(name = "pay_id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
-    @Column(name = "description")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pay_id", nullable = false)
+    private Integer id;
+
+    @Column(name = "description", nullable = false, length = 50)
     private String description;
-    @Column(name = "amount")
+
+    @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "start_date")
     private Date startDate;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "expiration_date")
     private Date expirationDate;
 }

@@ -5,7 +5,10 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -90,4 +93,15 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     List<Role> roles;
+
+    public int getAge() {
+        LocalDate localDate = Instant.ofEpochMilli(birthDate.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        int year  = localDate.getYear();
+        int month = localDate.getMonthValue();
+        int day   = localDate.getDayOfMonth();
+        return Period.between(LocalDate.of(year, month, day), LocalDate.now()).getYears();
+    }
+
 }

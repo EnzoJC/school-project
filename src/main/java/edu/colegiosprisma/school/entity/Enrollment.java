@@ -5,10 +5,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
 @Table(name = "enrollments")
 @Entity
+@Getter
+@Setter
 public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +32,8 @@ public class Enrollment {
 
     @ManyToOne
     @JoinColumn(name = "class_id")
-    private Class _class;
+    private Class class_;
+
+    @Column(name = "current_year", nullable = false)
+    private Boolean currentYear = false;
 }

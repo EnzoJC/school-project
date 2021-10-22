@@ -1,11 +1,12 @@
 package edu.colegiosprisma.school.service.implementation;
 
-import edu.colegiosprisma.school.entity.Parent;
-import edu.colegiosprisma.school.entity.Role;
-import edu.colegiosprisma.school.entity.Student;
+import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.repository.IParentRepository;
+import edu.colegiosprisma.school.repository.IPaymentRepository;
 import edu.colegiosprisma.school.repository.IRoleRepository;
 import edu.colegiosprisma.school.repository.IStudentRepository;
+import edu.colegiosprisma.school.service.IEnrollmentService;
+import edu.colegiosprisma.school.service.IPaymentService;
 import edu.colegiosprisma.school.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,11 +28,17 @@ public class StudentServImpl implements IStudentService {
     @Autowired
     private IRoleRepository roleRepository;
 
+    @Autowired
+    private IPaymentService paymentService;
+
+    @Autowired
+    private IEnrollmentService enrollmentService;
+
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public Student create(Student student) {
+    public Student create(Student student, Enrollment enrollment) {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_generate_id");
         query.registerStoredProcedureParameter(1, String.class, ParameterMode.IN);
         query.registerStoredProcedureParameter(2, String.class, ParameterMode.OUT);
@@ -49,7 +56,8 @@ public class StudentServImpl implements IStudentService {
         Role auxRole = roleRepository.findByName("ROLE_STUDENT");
         listaRolesParent.add(auxRole);
         student.setRoles(listaRolesParent);
-
-        return studentRepository.save(student);
+//        Payment payment =
+        enrollmentService.create(enrollment, studentRepository.save(student));
+        return student;
     }
 }
