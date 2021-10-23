@@ -1,4 +1,5 @@
 CREATE DATABASE school_db;
+USE school_db;
 
 -- tables
 -- Table: classes
@@ -39,6 +40,19 @@ CREATE TABLE days
     CONSTRAINT days_pk PRIMARY KEY (day_id)
 );
 
+-- Table: debts
+CREATE TABLE debts
+(
+    debt_id         int     NOT NULL AUTO_INCREMENT,
+    billing_id      int     NULL,
+    payment_date    date    NULL,
+    payment_id      int     NOT NULL,
+    enrollment_id   int     NOT NULL,
+    payment_status  boolean NOT NULL DEFAULT 0,
+    expiration_date date    NULL,
+    CONSTRAINT debts_pk PRIMARY KEY (debt_id)
+);
+
 -- Table: document_types
 CREATE TABLE document_types
 (
@@ -54,7 +68,8 @@ CREATE TABLE enrollments
     enrollment_id     int         NOT NULL AUTO_INCREMENT,
     school_year_id    int         NOT NULL,
     student_id        varchar(10) NOT NULL,
-    enrollment_status boolean     NOT NULL,
+    current_year      boolean     NOT NULL DEFAULT 1,
+    enrollment_status boolean     NOT NULL DEFAULT 0,
     grade_id          int         NOT NULL,
     class_id          int         NULL,
     CONSTRAINT enrollments_pk PRIMARY KEY (enrollment_id)
@@ -144,28 +159,33 @@ CREATE TABLE parents
     CONSTRAINT parents_pk PRIMARY KEY (parent_id)
 );
 
--- Table: payments_details
-CREATE TABLE payments_details
+-- Table: payment_codes
+CREATE TABLE payment_codes
 (
-    payment_detail_id int     NOT NULL AUTO_INCREMENT,
-    billing_id        int     NULL,
-    pay_date          date    NULL,
-    pay_id            int     NOT NULL,
-    enrollment_id     int     NOT NULL,
-    payment_status        boolean NOT NULL,
-    expiration_date   date    NULL,
-    CONSTRAINT payments_details_pk PRIMARY KEY (payment_detail_id)
+    payment_code_id int NOT NULL AUTO_INCREMENT,
+    CONSTRAINT payment_codes_pk PRIMARY KEY (payment_code_id)
 );
 
--- Table: pays
-CREATE TABLE pays
+-- Table: payment_types
+CREATE TABLE payment_types
 (
-    pay_id          int            NOT NULL AUTO_INCREMENT,
+    payment_type_id int         NOT NULL AUTO_INCREMENT,
+    name            varchar(30) NOT NULL,
+    UNIQUE INDEX name_ak_1 (name),
+    CONSTRAINT payment_types_pk PRIMARY KEY (payment_type_id)
+);
+
+-- Table: payments
+CREATE TABLE payments
+(
+    payment_id      int            NOT NULL AUTO_INCREMENT,
     description     varchar(50)    NOT NULL,
     amount          decimal(10, 2) NOT NULL,
     start_date      date           NULL,
     expiration_date date           NULL,
-    CONSTRAINT pays_pk PRIMARY KEY (pay_id)
+    current_year    boolean        NOT NULL DEFAULT 1,
+    payment_type_id int            NOT NULL,
+    CONSTRAINT payments_pk PRIMARY KEY (payment_id)
 );
 
 -- Table: privileges
@@ -333,6 +353,16 @@ ALTER TABLE classes
     ADD CONSTRAINT classes_section FOREIGN KEY classes_section (section_id)
         REFERENCES sections (section_id);
 
+-- Reference: debts_enrollment (table: debts)
+ALTER TABLE debts
+    ADD CONSTRAINT debts_enrollment FOREIGN KEY debts_enrollment (enrollment_id)
+        REFERENCES enrollments (enrollment_id);
+
+-- Reference: debts_payment (table: debts)
+ALTER TABLE debts
+    ADD CONSTRAINT debts_payment FOREIGN KEY debts_payment (payment_id)
+        REFERENCES payments (payment_id);
+
 -- Reference: enrollments_class (table: enrollments)
 ALTER TABLE enrollments
     ADD CONSTRAINT enrollments_class FOREIGN KEY enrollments_class (class_id)
@@ -373,15 +403,10 @@ ALTER TABLE parents
     ADD CONSTRAINT parent_user FOREIGN KEY parent_user (parent_id)
         REFERENCES users (user_id);
 
--- Reference: payments_details_enrollment (table: payments_details)
-ALTER TABLE payments_details
-    ADD CONSTRAINT payments_details_enrollment FOREIGN KEY payments_details_enrollment (enrollment_id)
-        REFERENCES enrollments (enrollment_id);
-
--- Reference: payments_details_pay (table: payments_details)
-ALTER TABLE payments_details
-    ADD CONSTRAINT payments_details_pay FOREIGN KEY payments_details_pay (pay_id)
-        REFERENCES pays (pay_id);
+-- Reference: payments_payment_types (table: payments)
+ALTER TABLE payments
+    ADD CONSTRAINT payments_payment_types FOREIGN KEY payments_payment_types (payment_type_id)
+        REFERENCES payment_types (payment_type_id);
 
 -- Reference: rp_privilege (table: roles_privileges)
 ALTER TABLE roles_privileges
@@ -481,7 +506,7 @@ ALTER TABLE users
 -- End of file.
 
 /*------------------------------------------------------------------------------------------------------*/
--- Creación de Queries
+-- Poblado de tablas
 
 INSERT INTO roles (`name`) VALUES ('ROLE_ADMIN'); -- ID = 1
 INSERT INTO roles (`name`) VALUES ('ROLE_TEACHER'); -- ID = 2
@@ -561,17 +586,22 @@ INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (12, '3
 INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (13, '4° Secundaria', 'Cuarto año de secundaria', 3);
 INSERT INTO `grades` (`order`, `name`, `description`, `level_id`) VALUES (14, '5° Secundaria', 'Quinto año de secundaria', 3);
 
-INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Marzo', 250, '2021-03-20', '2021-03-31');
-INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Abril', 250, '2021-04-20', '2021-04-30');
-INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Mayo', 250, '2021-05-20', '2021-05-31');
-INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Junio', 250, '2021-06-20', '2021-06-30');
-INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Julio', 250, '2021-07-20', '2021-07-31');
-INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Agosto', 250, '2021-08-20', '2021-08-31');
-INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Septiembre', 250, '2021-09-20', '2021-09-30');
-INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Octubre', 250, '2021-10-20', '2021-10-31');
-INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Noviembre', 250, '2021-11-20', '2021-11-30');
-INSERT INTO `pays` (`description`, `amount`, `start_date`, `expiration_date`) VALUES ('Mensualidad de Diciembre', 150, '2021-12-05', '2021-12-20');
-INSERT INTO `pays` (`description`, `amount`) VALUES ('Matrícula ', 200);
+INSERT INTO `payment_types` (`name`) VALUES ('Mensualidad');
+INSERT INTO `payment_types` (`name`) VALUES ('Matrícula');
+INSERT INTO `payment_types` (`name`) VALUES ('Gasto administrativo');
+INSERT INTO `payment_types` (`name`) VALUES ('Multa');
+
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Marzo', 250, '2021-03-20', '2021-03-31', 1);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Abril', 250, '2021-04-20', '2021-04-30', 1);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Mayo', 250, '2021-05-20', '2021-05-31', 1);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Junio', 250, '2021-06-20', '2021-06-30', 1);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Julio', 250, '2021-07-20', '2021-07-31', 1);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Agosto', 250, '2021-08-20', '2021-08-31', 1);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Septiembre', 250, '2021-09-20', '2021-09-30', 1);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Octubre', 250, '2021-10-20', '2021-10-31', 1);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Noviembre', 250, '2021-11-20', '2021-11-30', 1);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Diciembre', 150, '2021-12-05', '2021-12-20', 1);
+INSERT INTO `payments` (`description`, `amount`, `payment_type_id`) VALUES ('Matrícula 2021', 200, 2);
 
 /*------------------------------------------------------------------------------------------------------*/
 DROP PROCEDURE IF EXISTS sp_generate_id;

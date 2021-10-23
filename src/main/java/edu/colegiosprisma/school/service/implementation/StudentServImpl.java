@@ -1,12 +1,9 @@
 package edu.colegiosprisma.school.service.implementation;
 
 import edu.colegiosprisma.school.entity.*;
-import edu.colegiosprisma.school.repository.IParentRepository;
-import edu.colegiosprisma.school.repository.IPaymentRepository;
-import edu.colegiosprisma.school.repository.IRoleRepository;
-import edu.colegiosprisma.school.repository.IStudentRepository;
+import edu.colegiosprisma.school.repository.*;
 import edu.colegiosprisma.school.service.IEnrollmentService;
-import edu.colegiosprisma.school.service.IPaymentService;
+
 import edu.colegiosprisma.school.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
-import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +26,13 @@ public class StudentServImpl implements IStudentService {
     private IRoleRepository roleRepository;
 
     @Autowired
-    private IPaymentService paymentService;
+    private IPaymentRepository paymentRepository;
+
+    @Autowired
+    private IPaymentTypeRepository paymentTypeRepository;
+
+    @Autowired
+    private IDebtRepository paymentEnrollmentRepository;
 
     @Autowired
     private IEnrollmentService enrollmentService;
@@ -52,12 +55,23 @@ public class StudentServImpl implements IStudentService {
         student.setUsername(id);
         student.setPassword(new BCryptPasswordEncoder(4).encode(student.getDocumentNumber()));
         student.setStudentEmail(id + "@colegiosprisma.edu.pe");
-        List<Role> listaRolesParent = new ArrayList<>();
+        List<Role> listaRolesStudent = new ArrayList<>();
         Role auxRole = roleRepository.findByName("ROLE_STUDENT");
-        listaRolesParent.add(auxRole);
-        student.setRoles(listaRolesParent);
-//        Payment payment =
-        enrollmentService.create(enrollment, studentRepository.save(student));
+        listaRolesStudent.add(auxRole);
+        student.setRoles(listaRolesStudent);
+
+        Debt paymentEnrollment = new Debt();
+
+        Payment payment = paymentRepository.findByPaymentTypeAndCurrentYearIsTrue(paymentTypeRepository.findByName("Matrícula"));
+        paymentEnrollment.setPayment(payment);
+
+        Enrollment e = enrollmentService.create(enrollment, studentRepository.save(student));
+
+        paymentEnrollment.setEnrollment(e);
+        paymentEnrollment.setPaymentStatus(false);
+        paymentEnrollment.setExpirationDate(LocalDate.now().plusDays(3));
+
+        paymentEnrollmentRepository.save(paymentEnrollment);
         return student;
     }
 }

@@ -1,44 +1,36 @@
 package edu.colegiosprisma.school.entity;
 
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Table(name = "payments")
 @Entity
 @Getter
-@Setter
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "payment_detail_id", nullable = false)
+    @Column(name = "payment_id", nullable = false)
     private Integer id;
 
-    @Column(name = "billing_id")
-    private Integer billingId;
+    @Column(name = "description", nullable = false, length = 50)
+    private String description;
 
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "pay_date")
-    private Date payDate;
+    @Column(name = "amount", nullable = false, precision = 10, scale = 2)
+    private BigDecimal amount;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "pay_id", nullable = false)
-    private Pay pay;
+    @Column(name = "start_date")
+    private LocalDate startDate;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "enrollment_id", nullable = false)
-    private Enrollment enrollment;
-
-    @Column(name = "payment_status")
-    private Boolean paymentStatus;
-
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "expiration_date")
-    private Date expirationDate;
+    private LocalDate expirationDate;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "payment_type_id", nullable = false)
+    private PaymentType paymentType;
+
+    @Column(name = "current_year")
+    private Boolean currentYear;
 }

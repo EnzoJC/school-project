@@ -52,11 +52,11 @@ public class User {
 
     // Permite mapear las fechas de la base de datos de forma simple,
     // en este caso solo se tomará la fecha (sin hora)
-    @Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
     // Indica como se debe formatear la fecha
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_date", nullable = false)
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "address", nullable = false, length = 50)
     private String address;
@@ -95,12 +95,12 @@ public class User {
     List<Role> roles;
 
     public int getAge() {
-        LocalDate localDate = Instant.ofEpochMilli(birthDate.getTime())
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        int year  = localDate.getYear();
-        int month = localDate.getMonthValue();
-        int day   = localDate.getDayOfMonth();
+//        LocalDate localDate = Instant.ofEpochMilli(birthDate.getTime())
+//                .atZone(ZoneId.systemDefault())
+//                .toLocalDate();
+        int year  = birthDate.getYear();
+        int month = birthDate.getMonthValue();
+        int day   = birthDate.getDayOfMonth();
         return Period.between(LocalDate.of(year, month, day), LocalDate.now()).getYears();
     }
 
