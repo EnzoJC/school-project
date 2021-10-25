@@ -45,19 +45,19 @@
             <div class='col-xl-6 col-md-12 my-2'>
                 <div class="form-group">
                     <label for="given-names">Nombres</label>
-                    <input type="text" class="form-control" id="given-names" th:field="*{givenNames}" required>
+                    <input type="text" class="form-control" id="given-names" th:field="*{givenNames}" maxlength="50" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12 my-2'>
                 <div class="form-group">
                     <label for="first-last-name">Primer Apellido</label>
-                    <input type="text" class="form-control" id="first-last-name" th:field="*{firstLastName}" required>
+                    <input type="text" class="form-control" id="first-last-name" th:field="*{firstLastName}" maxlength="50" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12 my-2'>
                 <div class="form-group">
                     <label for="second-last-name">Segundo Apellido</label>
-                    <input type="text" class="form-control" id="second-last-name" th:field="*{secondLastName}" required>
+                    <input type="text" class="form-control" id="second-last-name" th:field="*{secondLastName}" maxlength="50" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12 my-2'>
@@ -72,19 +72,19 @@
             <div class='col-xl-6 col-md-12 my-2'>
                 <div class="form-group">
                     <label for="document-number">Número de documento</label>
-                    <input type="text" class="form-control" id="document-number" th:field="*{documentNumber}" required>
+                    <input type="text" class="form-control" id="document-number" th:field="*{documentNumber}" maxlength="20" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12 my-2'>
                 <div class="form-group">
                     <label for="birth-date">Fecha de nacimiento</label>
-                    <input type="date" class="form-control" id="birth-date" th:field="*{birthDate}" required>
+                    <input type="date" class="form-control" id="birth-date" th:field="*{birthDate}" th:attr="max=${dateAgo}" max="1930-01-01" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12 my-2'>
                 <div class="form-group">
                     <label for="address">Dirección</label>
-                    <input type="text" class="form-control" id="address" th:field="*{address}" required>
+                    <input type="text" class="form-control" id="address" th:field="*{address}" maxlength="50" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12 my-2'>
@@ -109,13 +109,13 @@
             <div class='col-xl-6 col-md-12 my-2'>
                 <div class="form-group">
                     <label for="phone-number">Celular</label>
-                    <input type="text" class="form-control" id="phone-number" th:field="*{phone}" required>
+                    <input type="text" class="form-control" id="phone-number" th:field="*{phone}" maxlength="9" required>
                 </div>
             </div>
             <div class='col-xl-6 col-md-12 my-2'>
                 <div class="form-group">
                     <label for="email-address">Correo electrónico</label>
-                    <input type="text" class="form-control" id="email-address" th:field="*{email}" required>
+                    <input type="text" class="form-control" id="email-address" th:field="*{email}" maxlength="20" required>
                 </div>
             </div>
             <div class="col-12">

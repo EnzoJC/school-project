@@ -9,6 +9,7 @@ import edu.colegiosprisma.school.service.IGenderService;
 import edu.colegiosprisma.school.service.INationalityService;
 import edu.colegiosprisma.school.service.IParentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -42,6 +45,9 @@ public class ParentController {
     @Autowired
     private IGenderService genderService;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate dateAgo = LocalDate.now().minusYears(18);
+
     /**
      * Cuando se llame a .../registro se abrira una solicitud tipo GET que llamara al método agregar.
      * Este método cargara los combos (desde la base de datos) y preparara un objeto de tipo Parent,
@@ -53,6 +59,7 @@ public class ParentController {
         List<Gender> genderList = genderService.getAllGenders();
         List<Nationality> nationalityList = nationalityService.getAllNationalities();
 
+        model.addAttribute("dateAgo", dateAgo);
         model.addAttribute("parent", new Parent());
         model.addAttribute("documentTypeList", documentTypeList);
         model.addAttribute("genderList", genderList);

@@ -3,6 +3,7 @@ package edu.colegiosprisma.school.controller;
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +45,9 @@ public class StudentController {
     @Autowired
     private IGradeService gradeService;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate dateAgo = LocalDate.now().minusYears(18);
+
     @GetMapping("/parent/postulante")
     public String agregar(Model model){
         List<DocumentType> documentTypeList  = documentTypeService.getAllDocumentTypes();
@@ -55,6 +60,7 @@ public class StudentController {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Parent parent = parentService.selectByUsername(userDetails.getUsername());
 
+        model.addAttribute("dateAgo", dateAgo);
         model.addAttribute("nombresCompletos", parent.getGivenNames());
         model.addAttribute("student", new Student());
         model.addAttribute("enrollment", new Enrollment());
