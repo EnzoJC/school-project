@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -42,6 +43,8 @@ public class ParentController {
     @Autowired
     private IGenderService genderService;
 
+
+
     /**
      * Cuando se llame a .../registro se abrira una solicitud tipo GET que llamara al método agregar.
      * Este método cargara los combos (desde la base de datos) y preparara un objeto de tipo Parent,
@@ -61,8 +64,14 @@ public class ParentController {
     }
 
     @PostMapping("/registro")
-    public String registrar(Parent parent) {
-        parentService.create(parent); // Inserta en la base de datos
+    public String registrar(Parent parent, RedirectAttributes redirectAttributes) {
+        Parent p = parentService.create(parent); // Inserta en la base de datos
+        if (p == null){
+            System.out.println("AA:");
+            redirectAttributes.addFlashAttribute("alerta", "Usuario ya existe");
+            return "redirect:/registro";
+        }
+        System.out.println("AAAAAAAAAAA:" + parent.getDocumentNumber());
 //        EmailBody emailBody = new EmailBody();
 //        emailBody.setTo(parent.getEmail());
 //        emailBody.setSubject("Registro de Matrícula - Colegios Prisma");
@@ -72,6 +81,7 @@ public class ParentController {
 //        emailController.enviarEmail(emailBody);
         return "redirect:/index.html";
     }
+
 
     @GetMapping({"/parent", "/parent/admision"})
     public String admision(Model model) {

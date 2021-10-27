@@ -69,13 +69,13 @@
                                             <form role="form">
                                                 <div class="form-group mb-3">
                                                     <label><h6>Nombres completos</h6></label>
-                                                    <input type="text" placeholder="Nombres completos"
+                                                    <input type="text" id="given-names" placeholder="Nombres completos"
                                                            required class="form-control ">
                                                 </div>
                                                 <div class="form-group">
                                                     <label><h6>Número de tarjeta</h6></label>
                                                     <div class="input-group mb-3">
-                                                        <input type="text" placeholder="XXXX XXXX XXXX XXXX"
+                                                        <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX"
                                                                class="form-control" aria-label="XXXX XXXX XXXX XXXX"
                                                                aria-describedby="basic-tarjeta"
                                                                required>
@@ -90,9 +90,9 @@
                                                         <div class="form-group">
                                                             <label><span class="hidden-xs"><h6>Fecha de expiración</h6></span></label>
                                                             <div class="input-group">
-                                                                <input type="number" placeholder="MM" name=""
+                                                                <input type="number" id="month" placeholder="MM" name=""
                                                                        class="form-control" required>
-                                                                <input type="number" placeholder="YY" name=""
+                                                                <input type="number" id="year" placeholder="YY" name=""
                                                                        class="form-control" required>
                                                             </div>
                                                         </div>
@@ -103,14 +103,15 @@
                                                                    title="Los 3 dígitos que se encuentran en la parte trasera de su tarjeta">
                                                                 <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
                                                             </label>
-                                                            <input type="text" required class="form-control">
+                                                            <input type="text" id="cvv-number" required class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                                    <button type="button" class="btn btn-primary">
+                                                    <button type="submmit" onclick="validacionPay()" class="btn btn-primary">
                                                         Pagar S/ 100
                                                     </button>
+
                                                 </div>
                                             </form>
                                         </div>
@@ -143,5 +144,63 @@
         </div>
     </div>
 </div>
+<script>
+    function validacionPay() {
+
+        var givenNames = document.getElementById('given-names').value;
+        var cardNumber = document.getElementById('card-number').value;
+        var month = document.getElementById('month').value;
+        var year = document.getElementById('year').value;
+        var cvvNumber = document.getElementById('cvv-number').value;
+
+        if(givenNames.length > 0 && givenNames.length <= 50) {
+            const reGivenNames = /^[a-z \'-]+$/i;
+            if (!reGivenNames.test(givenNames)) {
+                alert("Error nombres completos incorrectos");
+            }
+        }else if(givenNames.length > 50){
+            alert("Error solo se permiten 50 letras")
+        }
+
+        if(cardNumber.length > 0 && cardNumber.length == 16) {
+            const reCardNumber = /^[0-9]+$/i;
+            if (!reCardNumber.test(cardNumber)) {
+                alert("Error número de tarjeta inválida");
+            }
+        }else if(cardNumber.length > 12){
+            alert("Error solo se permiten 12 digitos");
+        }
+
+        if(month.length > 0 && month.length <= 2) {
+            const reMonth = /^[1-12]+$/i;
+            if (!reMonth.test(month)) {
+                alert("Error mes inválido");
+            }
+        }else if(month.length > 2){
+            alert("Error solo se permite hasta dos digitos");
+        }
+
+        if(year.length > 0 && year.length ==4 && year == 2021) {
+            const reYear = /^[1-12]+$/i;
+            if (!reYear.test(year)) {
+                alert("Error año inválido");
+            }
+        }else if(year.length > 4){
+            alert("Error solo se permite hasta dos digitos");
+        }
+
+        if(cvvNumber.length > 0 && cvvNumber.length == 3) {
+            const reCvvNumber = /^[0-9]+$/i;
+            if (!reCvvNumber.test(cvvNumber)) {
+                alert("Error número de CVV inválida");
+            }
+        }else if(cvvNumber.length > 3){
+            alert("Error solo se permiten 3 digitos");
+        }
+
+    }
+
+</script>
+
 </body>
 </html>
