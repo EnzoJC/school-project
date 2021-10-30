@@ -1,3 +1,4 @@
+/*
 CREATE DATABASE school_db;
 USE school_db;
 
@@ -505,7 +506,7 @@ ALTER TABLE users
 
 -- End of file.
 
-/*------------------------------------------------------------------------------------------------------*/
+------------------------------------------------------------------------------------------------------
 -- Poblado de tablas
 
 INSERT INTO roles (`name`) VALUES ('ROLE_ADMIN'); -- ID = 1
@@ -603,7 +604,7 @@ INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`
 INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Diciembre', 150, '2021-12-05', '2021-12-20', 1);
 INSERT INTO `payments` (`description`, `amount`, `payment_type_id`) VALUES ('Matrícula 2021', 200, 2);
 
-/*------------------------------------------------------------------------------------------------------*/
+------------------------------------------------------------------------------------------------------
 DROP PROCEDURE IF EXISTS sp_generate_id;
 DELIMITER $$
 CREATE PROCEDURE sp_generate_id(IN sp_type varchar(50), OUT sp_id varchar(10))
@@ -629,6 +630,8 @@ BEGIN
     COMMIT;
 END $$
 DELIMITER ;
+
+*/
 
 -- CALL sp_generate_id("Parent", @var);
 -- select @var;
