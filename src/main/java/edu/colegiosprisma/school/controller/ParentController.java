@@ -43,8 +43,6 @@ public class ParentController {
     @Autowired
     private IGenderService genderService;
 
-
-
     /**
      * Cuando se llame a .../registro se abrira una solicitud tipo GET que llamara al método agregar.
      * Este método cargara los combos (desde la base de datos) y preparara un objeto de tipo Parent,
@@ -81,7 +79,6 @@ public class ParentController {
 //        emailController.enviarEmail(emailBody);
         return "redirect:/index.html";
     }
-
 
     @GetMapping({"/parent", "/parent/admision"})
     public String admision(Model model) {
