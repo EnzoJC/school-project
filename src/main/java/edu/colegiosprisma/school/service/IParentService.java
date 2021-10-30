@@ -6,4 +6,5 @@ public interface IParentService {
     Parent create(Parent parent);
 //    List<User> selectAll();
     Parent selectByUsername(String username);
+    Parent update(Parent parent);
 }

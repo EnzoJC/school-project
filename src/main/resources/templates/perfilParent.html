@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th=="https://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <title>Padres - Inicio</title>
+
+        <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
+        <link rel="preload" th:href="@{/css/styles.css}" as="style">
+        <link rel="stylesheet" th:href="@{/css/styles.css}">
+        <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
+        <script src="https://kit.fontawesome.com/d3e9f7af7c.js" crossorigin="anonymous"></script>
+
+    </head>
+    <body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand ps-3" href="index.html">Colegios Prismas</a>
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
+        <ul class="navbar-nav d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!">Ver perfil</a></li>
+                    <li>
+                        <form id="logoutForm" method="POST" th:action="@{/logout}">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>
+                        <a class="dropdown-item" onclick="document.forms['logoutForm'].submit()">Cerrar sesi&oacute;n</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Padres</div>
+                        <a class="nav-link" th:href="@{/parent/admision}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-project-diagram mr-2"></i></div>
+                            Admisi&oacute;n
+                        </a>
+                        <a class="nav-link" th:href="@{/parent/postulante}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-plus mr-2"></i></div>
+                            Postulante
+                        </a>
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Conectado como:</div>
+                    <span th:text="${nombresCompletos}"></span>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <div class="container-xl px-2 mt-4">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card mb-4">
+                            <div class="card-header">Detalles del perfil</div>
+                            <div class="card-body px-0">
+                                <form class="container-fluid" th:action="@{/parent/perfil}" th:object="${p}" method="post">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <div class="form-group">
+                                                <label for="given-names">Nombres</label>
+                                                <input type="text" class="form-control" id="given-names" th:field="*{givenNames}"  required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="first-last-name">Primer Apellido</label>
+                                                <input type="text" class="form-control" id="first-last-name" th:field="*{firstLastName}"  required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="second-last-name">Segundo Apellido</label>
+                                                <input type="text" class="form-control" id="second-last-name" th:field="*{secondLastName}"  required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="email-address">Correo electrónico</label>
+                                                <input type="text" class="form-control" id="email-address" th:field="*{email}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="phone-number">Celular</label>
+                                                <input type="text" class="form-control" id="phone-number" th:field="*{phone}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <div class="form-group">
+                                                <label for="address">Dirección</label>
+                                                <input type="text" class="form-control" id="address" th:field="*{address}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-lg">Guardar cambios</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/scripts.js}"></script>
+    <script type='text/javascript'>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    </body>
+    </html>

@@ -74,7 +74,7 @@ public class ParentController {
 //        emailBody.setTo(parent.getEmail());
 //        emailBody.setSubject("Registro de Matrícula - Colegios Prisma");
 //        emailBody.setContent("Hola, " + parent.getGivenNames() + ". " +
-//                            "Estes es tu usuario: " + parent.getUsername() + ". " +
+//                            "Este es tu usuario: " + parent.getUsername() + ". " +
 //                            "Este es tu contraseña: " + parent.getDocumentNumber());
 //        emailController.enviarEmail(emailBody);
         return "redirect:/index.html";
@@ -89,5 +89,22 @@ public class ParentController {
         model.addAttribute("listaEstudiantes", parent.getStudents());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
         return "admision";
+    }
+
+    @GetMapping("/parent/perfil")
+    public String editarPerfil(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Parent parent = parentService.selectByUsername(userDetails.getUsername());
+
+        model.addAttribute("p", parent);
+        return "perfilParent";
+    }
+
+    @PostMapping("/parent/perfil")
+    public String actualizarPerfil(@ModelAttribute("p") Parent parent) {
+        System.out.println(parent.getUsername() + "BBBBBBBBBBBBBBb");
+        parentService.update(parent);
+        return "redirect:/parent/perfil";
     }
 }

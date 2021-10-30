@@ -71,4 +71,10 @@ public class ParentServImpl implements IParentService{
     public Parent selectByUsername(String username) {
         return (Parent) parentRepository.findByUsername(username);
     }
+
+    @Override
+    public Parent update(Parent parent) {
+        System.out.println(parent.getId() + "AAAAAAAAAAAAAAAAAAA");
+        return parentRepository.save(parent);
+    }
 }
