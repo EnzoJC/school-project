@@ -92,13 +92,16 @@ public class ParentController {
 
         model.addAttribute("parent", parent);
         model.addAttribute("nombresCompletos", parent.getGivenNames());
+
         return "perfilParent";
     }
 
     @PostMapping("/parent/perfil")
     public String actualizarPerfil(@ModelAttribute("parent") Parent parent) {
-        System.out.println("Usuario: " + parent.getFirstLastName());
-//        parentService.update(parent);
-        return "redirect:/perfil";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String id = userDetails.getUsername();
+        parentService.update(parent, id);
+        return "redirect:/parent/perfil";
     }
 }

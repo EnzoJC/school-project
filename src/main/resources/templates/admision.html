@@ -60,6 +60,10 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
+                    <div class="container-sm text-center p-5" th:if="${#lists.isEmpty(listaEstudiantes)}">
+                        <img class="p-5" th:src="@{/img/parque-vacio.svg}"/>
+                        <p class="lead mt-4">Aún no tienes estudiantes registrados</p>
+                    </div>
                     <div class="container-fluid px-4">
                         <div class="card tarjeta" th:each="estudiante : ${listaEstudiantes}">
                             <div class="card-body">

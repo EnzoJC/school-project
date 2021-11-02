@@ -72,9 +72,20 @@ public class ParentServImpl implements IParentService{
         return (Parent) parentRepository.findByUsername(username);
     }
 
+    /**
+     * Se obtienen los valores del objeto Parent por medio de su Id
+     * y se combina con un objeto que obtiene los datos del formulario
+     */
     @Override
-    public Parent update(Parent parent) {
-//        System.out.println(parent.getId() + "AAAAAAAAAAAAAAAAAAA");
-        return parentRepository.save(parent);
+    public Parent update(Parent parent, String id) {
+        // p: Objeto con todos los datos del objeto Parent
+        Parent p = (Parent) parentRepository.findByUsername(id);
+        p.setGivenNames(parent.getGivenNames());
+        p.setFirstLastName(parent.getFirstLastName());
+        p.setSecondLastName(parent.getSecondLastName());
+        p.setPhone(parent.getPhone());
+        p.setEmail(parent.getEmail());
+        p.setAddress(parent.getAddress());
+        return parentRepository.save(p);
     }
 }
