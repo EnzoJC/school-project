@@ -74,7 +74,7 @@ public class ParentServImpl implements IParentService{
 
     @Override
     public Parent update(Parent parent) {
-        System.out.println(parent.getId() + "AAAAAAAAAAAAAAAAAAA");
+//        System.out.println(parent.getId() + "AAAAAAAAAAAAAAAAAAA");
         return parentRepository.save(parent);
     }
 }

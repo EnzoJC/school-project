@@ -8,7 +8,6 @@ import edu.colegiosprisma.school.service.IDocumentTypeService;
 import edu.colegiosprisma.school.service.IGenderService;
 import edu.colegiosprisma.school.service.INationalityService;
 import edu.colegiosprisma.school.service.IParentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,29 +21,24 @@ import java.util.List;
 @Controller
 public class ParentController {
 
-//    private final IParentService parentService;
-//    @Autowired
-//    public ParentController(IParentService iParentService){
-//        this.parentService = iParentService;
-//    }
+    private final IParentService parentService;
+    private final EmailController emailController;
+    private final IDocumentTypeService documentTypeService;
+    private final INationalityService nationalityService;
+    private final IGenderService genderService;
 
-    @Autowired
-    private IParentService parentService;
-
-    @Autowired
-    private EmailController emailController;
-
-    @Autowired
-    private IDocumentTypeService documentTypeService;
-
-    @Autowired
-    private INationalityService nationalityService;
-
-    @Autowired
-    private IGenderService genderService;
+    public ParentController(IParentService parentService, EmailController emailController,
+                            IDocumentTypeService documentTypeService, INationalityService nationalityService,
+                            IGenderService genderService) {
+        this.parentService = parentService;
+        this.emailController = emailController;
+        this.documentTypeService = documentTypeService;
+        this.nationalityService = nationalityService;
+        this.genderService = genderService;
+    }
 
     /**
-     * Cuando se llame a .../registro se abrira una solicitud tipo GET que llamara al método agregar.
+     * Cuando se llame a .../registro se abrirá una solicitud tipo GET que llamara al método agregar.
      * Este método cargara los combos (desde la base de datos) y preparara un objeto de tipo Parent,
      * por último devuelve la vista registro.html
      */
@@ -69,7 +63,6 @@ public class ParentController {
             redirectAttributes.addFlashAttribute("alerta", "Usuario ya existe");
             return "redirect:/registro";
         }
-        System.out.println("AAAAAAAAAAA:" + parent.getDocumentNumber());
 //        EmailBody emailBody = new EmailBody();
 //        emailBody.setTo(parent.getEmail());
 //        emailBody.setSubject("Registro de Matrícula - Colegios Prisma");
@@ -77,7 +70,7 @@ public class ParentController {
 //                            "Este es tu usuario: " + parent.getUsername() + ". " +
 //                            "Este es tu contraseña: " + parent.getDocumentNumber());
 //        emailController.enviarEmail(emailBody);
-        return "redirect:/index.html";
+        return "redirect:/login.html";
     }
 
     @GetMapping({"/parent", "/parent/admision"})
@@ -97,14 +90,15 @@ public class ParentController {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Parent parent = parentService.selectByUsername(userDetails.getUsername());
 
-        model.addAttribute("p", parent);
+        model.addAttribute("parent", parent);
+        model.addAttribute("nombresCompletos", parent.getGivenNames());
         return "perfilParent";
     }
 
     @PostMapping("/parent/perfil")
-    public String actualizarPerfil(@ModelAttribute("p") Parent parent) {
-        System.out.println(parent.getUsername() + "BBBBBBBBBBBBBBb");
-        parentService.update(parent);
-        return "redirect:/parent/perfil";
+    public String actualizarPerfil(@ModelAttribute("parent") Parent parent) {
+        System.out.println("Usuario: " + parent.getFirstLastName());
+//        parentService.update(parent);
+        return "redirect:/perfil";
     }
 }

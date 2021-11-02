@@ -2,7 +2,6 @@ package edu.colegiosprisma.school.controller;
 
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,32 +20,31 @@ import java.util.Optional;
 @Controller
 public class StudentController {
 
-    @Autowired
-    private IStudentService studentService;
+    private final IStudentService studentService;
+    private final IParentService parentService;
+    private final IDocumentTypeService documentTypeService;
+    private final INationalityService nationalityService;
+    private final IGenderService genderService;
+    private final ILevelService levelService;
+    private final IRelationshipService relationshipService;
+    private final IGradeService gradeService;
 
-    @Autowired
-    private IParentService parentService;
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private final LocalDate dateAgo = LocalDate.now().minusYears(18);
 
-    @Autowired
-    private IDocumentTypeService documentTypeService;
-
-    @Autowired
-    private INationalityService nationalityService;
-
-    @Autowired
-    private IGenderService genderService;
-
-    @Autowired
-    private ILevelService levelService;
-
-    @Autowired
-    private IRelationshipService relationshipService;
-
-    @Autowired
-    private IGradeService gradeService;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate dateAgo = LocalDate.now().minusYears(18);
+    public StudentController(IStudentService studentService, IParentService parentService,
+                             IDocumentTypeService documentTypeService, INationalityService nationalityService,
+                             IGenderService genderService, ILevelService levelService, IRelationshipService relationshipService,
+                             IGradeService gradeService) {
+        this.studentService = studentService;
+        this.parentService = parentService;
+        this.documentTypeService = documentTypeService;
+        this.nationalityService = nationalityService;
+        this.genderService = genderService;
+        this.levelService = levelService;
+        this.relationshipService = relationshipService;
+        this.gradeService = gradeService;
+    }
 
     @GetMapping("/parent/postulante")
     public String agregar(Model model){
@@ -84,10 +82,10 @@ public class StudentController {
     
     /**
      * Permite obtener todos los grados de un nivel.
-     * Este metodo ayuda en el llendado de los drop-down de la vista Postulante (Nivel y grado)
+     * Este método ayuda en el llenado de los drop-down de la vista Postulante (Nivel y grado)
      */
     @GetMapping(value = "/parent/postulante/grados")
-    public @ResponseBody List<Grade> getGradosPorNivel(@RequestParam(value = "levelId", required = true) Integer levelId) {
+    public @ResponseBody List<Grade> getGradosPorNivel(@RequestParam(value = "levelId") Integer levelId) {
         Optional<Level> level = levelService.getLevel(levelId);
         return gradeService.getAllGradesByLevel(level.get());
     }
