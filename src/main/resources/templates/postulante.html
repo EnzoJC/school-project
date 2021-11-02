@@ -34,9 +34,8 @@
                         <li><a class="dropdown-item" th:href="@{/parent/perfil}">Ver perfil</a></li>
                         <li>
                             <form id="logoutForm" method="POST" th:action="@{/logout}">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             </form>
-                            <a class="dropdown-item" onclick="document.forms['logoutForm'].submit()">Cerrar sesión</a>
+                            <a id="logout-link" class="dropdown-item" href="#" onclick="document.forms['logoutForm'].submit()">Cerrar sesión</a>
                         </li>
                     </ul>
                 </li>

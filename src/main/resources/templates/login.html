@@ -14,7 +14,7 @@
             <div class="square row">
                 <div class="col">
                     <form th:action="@{/login}" method="POST">
-                        <h2 class="text-center mb-5">&iexcl;Bienvenido a Colegios Prisma!</h2>
+                        <h2 class="text-center mb-3">&iexcl;Bienvenido a Colegios Prisma!</h2>
                         <div class="form-group mb-2 mt-2">
                             <label for="username" class="form-label">Código</label>
                             <input id="username" type="text" class="form-control" name="username"/>
@@ -26,12 +26,15 @@
                         <div class="form-group mb-4 mt-4">
                             <button type="submit" class="form-control btn btn-primary">Ingresar</button>
                         </div>
-                        <!-- <div th:if="${param.error}" class="alert alert-danger" role="alert">
-                            Invalid username and password.
+                        <div class="form-group mb-4 mt-4">
+                            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                                El código o contraseña son incorrectos.
+                            </div>
+                            <div th:if="${param.logout}" class="alert alert-primary" role="alert">
+                                Cerraste sesión recientemente.
+                            </div>
                         </div>
-                        <div th:if="${param.logout}" class="alert alert-success" role="alert">
-                            You have been logged out.
-                        </div> -->
+
                         <div class="clearfix">
                             <label class="float-start form-check-label"><input type="checkbox"> Recordar</label>
                             <a th:href="@{registro}" href="#" class="link float-end">Crear cuenta</a>
