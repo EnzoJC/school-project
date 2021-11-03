@@ -32,4 +32,12 @@ public class EnrollmentServImpl implements IEnrollmentService {
         enrollment.setCurrentYear(true);
         return enrollmentRepository.save(enrollment);
     }
+
+    @Override
+    public Enrollment updatePayment(Student student) {
+        Enrollment enrollment = enrollmentRepository.findByStudentAndCurrentYearIsTrue(student);
+        enrollment.setEnrollmentStatus(true);
+        enrollmentRepository.save(enrollment);
+        return enrollment;
+    }
 }

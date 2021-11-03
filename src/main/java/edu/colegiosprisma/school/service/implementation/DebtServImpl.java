@@ -42,12 +42,12 @@ public class DebtServImpl implements IDebtService {
     @Override
     public Debt update(String StudentId, String paymentId) {
         Optional<User> student = studentRepository.findById(StudentId);
-        Enrollment enrollment = enrollmentRepository.findByStudent((Student) student.get());
+        Enrollment enrollment = enrollmentRepository.findByStudentAndCurrentYearIsTrue((Student) student.get());
         Optional<Payment> payment = paymentRepository.findById(Integer.parseInt(paymentId));
 
         Debt debt = debtRepository.findByEnrollmentAndPayment(enrollment, payment.get());
 
-        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_generate_payment_id");
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_generate_billing_id");
         query.registerStoredProcedureParameter(1, String.class, ParameterMode.OUT);
         query.execute();
 
@@ -56,6 +56,7 @@ public class DebtServImpl implements IDebtService {
         debt.setBillingId(1000 + payment_id);
         debt.setPaymentDate(LocalDate.now());
         debt.setPaymentStatus(true);
+        debtRepository.save(debt);
 
         return debt;
     }

@@ -16,6 +16,7 @@ import javax.persistence.StoredProcedureQuery;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentServImpl implements IStudentService {
@@ -73,5 +74,10 @@ public class StudentServImpl implements IStudentService {
 
         paymentEnrollmentRepository.save(paymentEnrollment);
         return student;
+    }
+
+    @Override
+    public Optional<User> getStudentById(String studentId) {
+        return studentRepository.findById(studentId);
     }
 }

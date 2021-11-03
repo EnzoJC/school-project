@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface IEnrollmentRepository extends JpaRepository<Enrollment, Integer> {
 
-    Enrollment findByStudent(Student student);
+    Enrollment findByStudentAndCurrentYearIsTrue(Student student);
 }
