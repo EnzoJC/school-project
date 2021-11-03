@@ -6,7 +6,7 @@
     </head>
 
     <body>
-    <div th:fragment="modal(id)" class="modal fade" th:id="${id}" tabindex="-1" role="dialog" aria-labelledby="modalPay" aria-hidden="true">
+    <div th:fragment="modal(idStudent)" class="modal fade" id="pay" tabindex="-1" role="dialog" aria-labelledby="modalPay" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -68,7 +68,7 @@
                                         </div>
                                         <div class="tab-content">
                                             <div id="credit-card" class="tab-pane fade show active pt-3">
-                                                <form role="form">
+                                                <form role="form" th:action="@{/parent/admision/pay(idStudent=${idStudent})}" method="POST">
                                                     <div class="form-group mb-3">
                                                         <label for="full-names" class="h6">Nombres completos</label>
                                                         <input id="full-names" type="text" placeholder="Nombres completos"

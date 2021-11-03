@@ -84,11 +84,10 @@
                                         </div>
                                         <div class="col-lg-3 my-2">
                                             <div class="d-grid gap-2">
-                                                <a class="btn btn-primary" th:href="'/pay?idStudent=' + ${estudiante.id}" role="button" data-bs-toggle="modal"
-                                                   data-bs-target="#pay">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay">
                                                     Realizar pago
-                                                </a>
-                                                <th:block th:replace="modalPay :: modal('pay')">modal</th:block>
+                                                </button>
+                                                <th:block th:replace="modalPay :: modal(${estudiante.id})">modal</th:block>
                                             </div>
                                         </div>
                                     </div>
@@ -101,6 +100,5 @@
         </div>
         <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
         <script th:src="@{/js/scripts.js}"></script>
-
     </body>
 </html>
