@@ -4,6 +4,7 @@ import edu.colegiosprisma.school.entity.Enrollment;
 import edu.colegiosprisma.school.entity.Student;
 
 public interface IEnrollmentService {
-    Enrollment create(Enrollment enrollment, Student student);
-    Enrollment updatePayment(Student student);
+    Enrollment createEnrollment(Enrollment enrollment, Student student);
+    Enrollment updateStatusForNewStudent(Student student, int status);
+    Enrollment updateStatusForOldStudent(Student student, int status);
 }

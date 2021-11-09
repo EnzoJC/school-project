@@ -8,7 +8,7 @@
 
         <link rel="stylesheet" th:href="@{/css/styles.css}">
         <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
-        <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+        <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
         <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/5.15.4/css/all.css}"/>
 
         <style>
@@ -75,16 +75,19 @@
                                 <div class="col-lg-6 my-2">
                                     <label for="given-names" class="form-label">Nombres Completos</label>
                                     <input type="text" class="form-control" id="given-names" th:field="*{givenNames}" required>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('givenNames')}" th:errors="*{givenNames}"></small>
                                 </div>
                                 <div class="col-lg-6 my-2">
                                     <label for="first-last-name" class="form-label">Primer Apellido</label>
                                     <input type="text" class="form-control" id="first-last-name" th:field="*{firstLastName}" required>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('firstLastName')}" th:errors="*{firstLastName}"></small>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-6 my-2">
                                     <label for="second-last-name" class="form-label">Segundo Apellido</label>
                                     <input type="text" class="form-control" id="second-last-name" th:field="*{secondLastName}" required>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('secondLastName')}" th:errors="*{secondLastName}"></small>
                                 </div>
                                 <div class="col-lg-6 my-2">
                                     <label for="gender" class="form-label">Género</label>
@@ -105,6 +108,7 @@
                                 <div class="col-lg-6 my-2">
                                     <label for="document-number" class="form-label">Número De Documento</label>
                                     <input id="document-number" type="text" class="form-control" th:field="*{documentNumber}" required>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('documentNumber')}" th:errors="*{documentNumber}"></small>
                                 </div>
                             </div>
                             <div class="row">
@@ -126,6 +130,7 @@
                                 <div class="col-lg-6 my-2">
                                     <label for="address" class="form-label">Dirección</label>
                                     <input id="address" type="text" class="form-control" th:field="*{address}" required>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></small>
                                 </div>
                                 <div class="col-lg-6 my-2">
                                     <label for="relationship" class="form-label">Parentesco</label>
@@ -156,6 +161,9 @@
                             </div>
                             <div class="d-grid gap-2 d-md-block mt-3">
                                 <button type="submit" class="btn btn-primary">Registrar Estudiante</button>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <div class="alert alert-danger" role="alert" th:text="${alerta}" th:if="${alerta}"></div>
                             </div>
                         </div>
                     </form>

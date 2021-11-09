@@ -5,14 +5,15 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
 @Table(name = "relationships", indexes = {
-        @Index(name = "name_ak_1", columnList = "name", unique = true)
+        @Index(name = "family_relationships_ak_1", columnList = "name", unique = true)
 })
 @Entity
+@Getter
+@Setter
 public class Relationship {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "relationship_id", nullable = false)
     private Integer id;
 

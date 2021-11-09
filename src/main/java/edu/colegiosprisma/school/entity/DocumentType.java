@@ -5,12 +5,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
 @Table(name = "document_types", indexes = {
-        @Index(name = "name_ak_1", columnList = "name", unique = true)
+        @Index(name = "document_types_ak_1", columnList = "name", unique = true)
 })
 @Entity
+@Getter
+@Setter
 public class DocumentType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +19,7 @@ public class DocumentType {
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
+
+    @Column(name = "length", nullable = false)
+    private Integer length;
 }

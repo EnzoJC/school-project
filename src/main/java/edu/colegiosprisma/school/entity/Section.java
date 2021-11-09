@@ -1,21 +1,20 @@
 package edu.colegiosprisma.school.entity;
 
-import lombok.Data;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Data
+import javax.persistence.*;
+
 @Table(name = "sections")
-public class Section{
+@Entity
+@Getter
+@Setter
+public class Section {
     @Id
-    @Column(name="section_id")
-    private int id;
-    @Column(name="name")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "section_id", nullable = false)
+    private Integer id;
+
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
-/*
-    @OneToMany(mappedBy = "section")
-    List<Class> classes;*/
 }

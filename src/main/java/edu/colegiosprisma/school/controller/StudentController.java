@@ -2,6 +2,7 @@ package edu.colegiosprisma.school.controller;
 
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +20,6 @@ import java.util.Optional;
 
 @Controller
 public class StudentController {
-
     private final IStudentService studentService;
     private final IParentService parentService;
     private final IDocumentTypeService documentTypeService;
@@ -32,6 +32,7 @@ public class StudentController {
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private final LocalDate dateAgo = LocalDate.now().minusYears(18);
 
+    @Autowired
     public StudentController(IStudentService studentService, IParentService parentService,
                              IDocumentTypeService documentTypeService, INationalityService nationalityService,
                              IGenderService genderService, ILevelService levelService, IRelationshipService relationshipService,
@@ -76,7 +77,7 @@ public class StudentController {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Parent parent = parentService.selectByUsername(userDetails.getUsername());
         student.setParent(parent);
-        studentService.create(student, enrollment); // Inserta en la base de datos
+        studentService.createStudent(student, enrollment); // Inserta en la base de datos
         return "redirect:/parent";
     }
     

@@ -1,17 +1,15 @@
 package edu.colegiosprisma.school.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
 @Table(name = "roles", indexes = {
-        @Index(name = "name_ak_1", columnList = "name", unique = true)
+        @Index(name = "roles_ak_1", columnList = "name", unique = true)
 })
 @Entity
+@Getter
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

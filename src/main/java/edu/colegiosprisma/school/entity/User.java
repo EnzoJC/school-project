@@ -5,41 +5,42 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.Instant;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
-// Permite que se generen los Getter y Setter automáticamente
+@Table(name = "users", indexes = {
+        @Index(name = "document_number_ak_u", columnList = "document_number", unique = true),
+        @Index(name = "username_ak_u", columnList = "username", unique = true)
+})
+@Entity
 @Getter
 @Setter
-// Permite especificar los detalles de la tabla, en este caso su nombre y sus campos unicos
-@Table(name = "users", indexes = {
-        @Index(name = "email_ak_3", columnList = "email", unique = true),
-        @Index(name = "document_number_ak_1", columnList = "document_number", unique = true),
-        @Index(name = "username_ak_4", columnList = "username", unique = true),
-        @Index(name = "phone_ak_2", columnList = "phone", unique = true)
-})
-// Permite indicar que la clase está correlacionada con una tabla de la base datos
-@Entity
-// Define la estrategia de herencia que se utilizará para una jerarquía de clases de entidad
-// En este caso se usa JOINED para que tabla se asigne a una clase
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
-    // Permite especificar la PK de la entidad
+    private static final String REGEX_FOR_NAMES = "^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+$";
     @Id
-    // Permite definir aspectos de la columna
     @Column(name = "user_id", nullable = false, length = 10)
     private String id;
 
+    @Size(min = 2 , max = 50, message = "El nombre es muy corto")
+    @NotEmpty(message = "El nombre es obligatorio")
+    @Pattern(regexp = REGEX_FOR_NAMES, message = "El nombre solo puede contener letras")
     @Column(name = "given_names", nullable = false, length = 50)
     private String givenNames;
 
+    @Size(min = 2 , max = 50, message = "El primer apellido es muy corto")
+    @NotEmpty(message = "El primer apellido es obligatorio")
+    @Pattern(regexp = REGEX_FOR_NAMES, message = "El primer apellido solo puede contener letras")
     @Column(name = "first_last_name", nullable = false, length = 50)
     private String firstLastName;
 
+    @Size(min = 2 , max = 50, message = "El segundo apellido es muy corto")
+    @NotEmpty(message = "El segundo apellido es obligatorio")
+    @Pattern(regexp = REGEX_FOR_NAMES, message = "El segundo apellido solo puede contener letras")
     @Column(name = "second_last_name", nullable = false, length = 50)
     private String secondLastName;
 
@@ -47,13 +48,14 @@ public class User {
     @JoinColumn(name = "document_type_id", nullable = false)
     private DocumentType documentType;
 
+    @Size(min = 8 , max = 20)
+    @NotEmpty(message = "El número de documento es obligatorio")
+    @Pattern(regexp = "^[0-9]*$", message = "El número de documento debe contener solo números")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "document_number", nullable = false, length = 20)
     private String documentNumber;
 
-    // Permite mapear las fechas de la base de datos de forma simple,
-    // en este caso solo se tomará la fecha (sin hora)
-//    @Temporal(TemporalType.DATE)
-    // Indica como se debe formatear la fecha
+//    @NotEmpty(message = "La dirección es obligatorio")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
@@ -69,23 +71,17 @@ public class User {
     @JoinColumn(name = "nationality_id", nullable = false)
     private Nationality nationality;
 
-    @Column(name = "phone", length = 20)
-    private String phone;
-
-    @Column(name = "email", length = 50)
-    private String email;
-
-    @Column(name = "username", nullable = false, length = 10)
+    @Column(name = "username", length = 10)
     private String username;
 
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password", length = 100)
     private String password;
 
     @Column(name = "type", nullable = false, length = 50)
     private String type;
 
     @Column(name = "is_active", nullable = false, columnDefinition = "boolean DEFAULT true")
-    private Boolean isActive = true;
+    private Boolean isActive = false;
 
     @ManyToMany
     @JoinTable(
@@ -103,5 +99,4 @@ public class User {
         int day   = birthDate.getDayOfMonth();
         return Period.between(LocalDate.of(year, month, day), LocalDate.now()).getYears();
     }
-
 }

@@ -5,12 +5,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
 @Table(name = "levels", indexes = {
-        @Index(name = "name_ak_1", columnList = "name", unique = true)
+        @Index(name = "Level_ak_1", columnList = "name", unique = true)
 })
 @Entity
+@Getter
+@Setter
 public class Level {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

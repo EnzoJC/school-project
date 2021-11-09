@@ -1,5 +1,6 @@
 package edu.colegiosprisma.school.controller;
 
+import edu.colegiosprisma.school.dto.EmailBody;
 import edu.colegiosprisma.school.entity.DocumentType;
 import edu.colegiosprisma.school.entity.Gender;
 import edu.colegiosprisma.school.entity.Nationality;
@@ -8,25 +9,29 @@ import edu.colegiosprisma.school.service.IDocumentTypeService;
 import edu.colegiosprisma.school.service.IGenderService;
 import edu.colegiosprisma.school.service.INationalityService;
 import edu.colegiosprisma.school.service.IParentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Controller
 public class ParentController {
-
     private final IParentService parentService;
     private final EmailController emailController;
     private final IDocumentTypeService documentTypeService;
     private final INationalityService nationalityService;
     private final IGenderService genderService;
 
+    @Autowired
     public ParentController(IParentService parentService, EmailController emailController,
                             IDocumentTypeService documentTypeService, INationalityService nationalityService,
                             IGenderService genderService) {
@@ -56,13 +61,19 @@ public class ParentController {
     }
 
     @PostMapping("/registro")
-    public String registrar(Parent parent, RedirectAttributes redirectAttributes) {
+    public String registrar(@Valid Parent parent, BindingResult result, RedirectAttributes redirectAttributes) {
+        if(result.hasErrors()){
+            System.out.println("Error en el registro");
+            return "registro";
+        }
+
         Parent p = parentService.create(parent); // Inserta en la base de datos
         if (p == null){
-            System.out.println("AA:");
             redirectAttributes.addFlashAttribute("alerta", "Usuario ya existe");
-            return "redirect:/registro";
+        } else {
+            redirectAttributes.addFlashAttribute("mensaje", "Registro exitoso, sus credenciales están en el correo registrado");
         }
+        return "redirect:/registro";
 //        EmailBody emailBody = new EmailBody();
 //        emailBody.setTo(parent.getEmail());
 //        emailBody.setSubject("Registro de Matrícula - Colegios Prisma");
@@ -70,7 +81,6 @@ public class ParentController {
 //                            "Este es tu usuario: " + parent.getUsername() + ". " +
 //                            "Este es tu contraseña: " + parent.getDocumentNumber());
 //        emailController.enviarEmail(emailBody);
-        return "redirect:/login.html";
     }
 
     @GetMapping({"/parent", "/parent/admision"})

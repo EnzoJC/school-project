@@ -20,29 +20,23 @@ import java.util.Optional;
 
 @Service
 public class StudentServImpl implements IStudentService {
-    @Autowired
-    private IStudentRepository studentRepository;
-
-    @Autowired
-    private IRoleRepository roleRepository;
-
-    @Autowired
-    private IPaymentRepository paymentRepository;
-
-    @Autowired
-    private IPaymentTypeRepository paymentTypeRepository;
-
-    @Autowired
-    private IDebtRepository paymentEnrollmentRepository;
-
-    @Autowired
-    private IEnrollmentService enrollmentService;
+    private final IStudentRepository studentRepository;
+    private final IRoleRepository roleRepository;
+    private final IEnrollmentService enrollmentService;
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    public StudentServImpl(IStudentRepository studentRepository, IRoleRepository roleRepository,
+                           IEnrollmentService enrollmentService) {
+        this.studentRepository = studentRepository;
+        this.roleRepository = roleRepository;
+        this.enrollmentService = enrollmentService;
+    }
+
     @Override
-    public Student create(Student student, Enrollment enrollment) {
+    public Student createStudent(Student student, Enrollment enrollment) {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_generate_id");
         query.registerStoredProcedureParameter(1, String.class, ParameterMode.IN);
         query.registerStoredProcedureParameter(2, String.class, ParameterMode.OUT);
@@ -61,18 +55,8 @@ public class StudentServImpl implements IStudentService {
         listaRolesStudent.add(auxRole);
         student.setRoles(listaRolesStudent);
 
-        Debt paymentEnrollment = new Debt();
-
-        Payment payment = paymentRepository.findByPaymentTypeAndCurrentYearIsTrue(paymentTypeRepository.findByName("Matrícula"));
-        paymentEnrollment.setPayment(payment);
-
-        Enrollment e = enrollmentService.create(enrollment, studentRepository.save(student));
-
-        paymentEnrollment.setEnrollment(e);
-        paymentEnrollment.setPaymentStatus(false);
-        paymentEnrollment.setExpirationDate(LocalDate.now().plusDays(3));
-
-        paymentEnrollmentRepository.save(paymentEnrollment);
+        Student s = studentRepository.save(student);
+        enrollmentService.createEnrollment(enrollment, s);
         return student;
     }
 

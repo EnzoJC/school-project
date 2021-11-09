@@ -58,7 +58,9 @@ public class ParentServImpl implements IParentService{
         // Añadiendo la lista de roles al objeto parent
         parent.setRoles(listaRolesParent);
 
-        Parent p = parentRepository.findByDocumentNumber(parent.getDocumentNumber());
+        Parent p = parentRepository.findByDocumentNumberOrEmailOrPhone(
+                parent.getDocumentNumber(), parent.getEmail(), parent.getPhone()
+        );
 
         if (p != null){
             return null;

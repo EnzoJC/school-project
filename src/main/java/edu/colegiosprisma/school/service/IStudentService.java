@@ -7,6 +7,6 @@ import edu.colegiosprisma.school.entity.User;
 import java.util.Optional;
 
 public interface IStudentService {
-    Student create(Student student, Enrollment enrollment);
+    Student createStudent(Student student, Enrollment enrollment);
     Optional<User> getStudentById(String studentId);
 }

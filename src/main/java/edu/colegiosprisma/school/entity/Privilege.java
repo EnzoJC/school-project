@@ -5,13 +5,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-
-@Getter
-@Setter
 @Table(name = "privileges", indexes = {
-        @Index(name = "name_ak_1", columnList = "name", unique = true)
+        @Index(name = "privileges_ak_1", columnList = "name", unique = true)
 })
 @Entity
+@Getter
+@Setter
 public class Privilege {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

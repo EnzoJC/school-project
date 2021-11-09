@@ -1,32 +1,20 @@
 package edu.colegiosprisma.school.entity;
 
-import lombok.Data;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Entity
-@Data
 @Table(name = "classes")
-public class Class{
+@Entity
+public class Class {
     @Id
-    @Column(name="class_id")
-    private int id;
-    /*
-    @ManyToOne
-    @JoinColumn(name = "section_id")
-    Section section; ANDREA
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "class_id", nullable = false)
+    private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "grade_id")
-    Grade grade; IO
+    public Integer getId() {
+        return id;
+    }
 
-    @OneToOne(mappedBy = "teacher")
-    private Teacher teacher; FALTA
-
-    @ManyToOne
-    @JoinColumn(name = "classroom_id")
-    Classroom classroom;*/
-
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
