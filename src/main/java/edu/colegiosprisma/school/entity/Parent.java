@@ -31,7 +31,7 @@ public class Parent extends User{
 
     @Email(message = "El correo electrónico no es válido")
     @NotEmpty
-    @Column(name = "email", nullable = false, length = 20)
+    @Column(name = "email", nullable = false, length = 50)
     private String email;
 
     @OneToMany(mappedBy = "parent")

@@ -222,7 +222,7 @@ CREATE TABLE parents
     parent_id  varchar(10) NOT NULL,
     occupation varchar(50) NULL,
     phone      varchar(20) NOT NULL,
-    email      varchar(20) NOT NULL,
+    email      varchar(50) NOT NULL,
     UNIQUE INDEX phone_ak_p (phone),
     UNIQUE INDEX email_ak_p (email),
     CONSTRAINT parents_pk PRIMARY KEY (parent_id)
@@ -442,7 +442,7 @@ CREATE TABLE teachers
     teacher_id          varchar(10) NOT NULL,
     institutional_email varchar(50) NOT NULL,
     phone               varchar(20) NOT NULL,
-    email               varchar(20) NOT NULL,
+    email               varchar(50) NOT NULL,
     UNIQUE INDEX phone_ak_t (institutional_email, phone),
     UNIQUE INDEX email_ak_t (email),
     CONSTRAINT teachers_pk PRIMARY KEY (teacher_id)
