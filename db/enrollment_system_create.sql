@@ -891,7 +891,7 @@ insert into `states` (`name`) values ('En espera');
 insert into `states` (`name`) values ('Pre-inscrito');
 insert into `states` (`name`) values ('Pendiente de validación');
 insert into `states` (`name`) values ('Matriculado');
-insert into `states` (`name`) values ('Pendiente de pago'');
+insert into `states` (`name`) values ('Pendiente de pago');
 insert into `states` (`name`) values ('Atrasado');
 insert into `states` (`name`) values ('Cancelado');
 
