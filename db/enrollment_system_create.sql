@@ -876,22 +876,22 @@ INSERT INTO `payment_types` (`name`) VALUES ('Gasto administrativo');
 INSERT INTO `payment_types` (`name`) VALUES ('Multa');
 
 INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Marzo', 250, '2021-03-20', '2021-03-31', 1);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Abril', 250, '2021-04-20', '2021-04-30', 1);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Mayo', 250, '2021-05-20', '2021-05-31', 1);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Junio', 250, '2021-06-20', '2021-06-30', 1);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Julio', 250, '2021-07-20', '2021-07-31', 1);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Agosto', 250, '2021-08-20', '2021-08-31', 1);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Septiembre', 250, '2021-09-20', '2021-09-30', 1);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Octubre', 250, '2021-10-20', '2021-10-31', 1);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Noviembre', 250, '2021-11-20', '2021-11-30', 1);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Diciembre', 150, '2021-12-05', '2021-12-20', 1);
-INSERT INTO `payments` (`description`, `amount`, `payment_type_id`) VALUES ('Matrícula 2021', 200, 2);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Abril', 250, '2021-04-20', '2021-04-30', 2);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Mayo', 250, '2021-05-20', '2021-05-31', 3);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Junio', 250, '2021-06-20', '2021-06-30', 4);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Julio', 250, '2021-07-20', '2021-07-31', 5);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Agosto', 250, '2021-08-20', '2021-08-31', 6);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Septiembre', 250, '2021-09-20', '2021-09-30', 7);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Octubre', 250, '2021-10-20', '2021-10-31', 8);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Noviembre', 250, '2021-11-20', '2021-11-30', 9);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Diciembre', 150, '2021-12-05', '2021-12-20', 10);
+INSERT INTO `payments` (`description`, `amount`, `payment_type_id`) VALUES ('Matrícula 2021', 200, 11);
 
-insert into `states` (`name`) values ('Pendiente de pago');
-insert into `states` (`name`) values ('Pagado');
+insert into `states` (`name`) values ('En espera');
+insert into `states` (`name`) values ('Pre-inscrito');
 insert into `states` (`name`) values ('Pendiente de validación');
 insert into `states` (`name`) values ('Matriculado');
-insert into `states` (`name`) values ('En espera');
+insert into `states` (`name`) values ('Pendiente de pago'');
 insert into `states` (`name`) values ('Atrasado');
 insert into `states` (`name`) values ('Cancelado');
 

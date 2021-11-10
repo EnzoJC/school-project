@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface IGradeRepository extends JpaRepository<Grade, Integer> {
+    // findAllByLevel: busca todos los grados por nivel
     List<Grade> findAllByLevel(Level level);
 }

@@ -1,5 +1,9 @@
 package edu.colegiosprisma.school.controller;
 
+import edu.colegiosprisma.school.entity.Payment;
+import edu.colegiosprisma.school.entity.PaymentType;
+import edu.colegiosprisma.school.repository.IPaymentRepository;
+import edu.colegiosprisma.school.repository.IPaymentTypeRepository;
 import edu.colegiosprisma.school.service.IParentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class UserController {
-
     @Autowired
     private IParentService parentService;
 

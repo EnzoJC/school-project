@@ -20,10 +20,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.sql.SQLOutput;
 import java.util.List;
 
+// @Controller es una anotación que indica que la clase es un controlador
 @Controller
+// ParentController permite gestionar los datos de los padres
 public class ParentController {
     private final IParentService parentService;
     private final EmailController emailController;
@@ -61,26 +62,44 @@ public class ParentController {
     }
 
     @PostMapping("/registro")
-    public String registrar(@Valid Parent parent, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String registrar(@Valid Parent parent, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         if(result.hasErrors()){
-            System.out.println("Error en el registro");
+            cargarOptions(model);
+            for (int i = 0; i < parentService.verifyParentDuplicate(parent).size(); i++) {
+                if (parentService.verifyParentDuplicate(parent).get(i) == 1)
+                    model.addAttribute("alertaDocumentNumber", "El " + parent.getDocumentType().getName() + " ingresado ya existe");
+                if (parentService.verifyParentDuplicate(parent).get(i) == 2)
+                    model.addAttribute("alertaEmail", "El correo ingresado ya existe");
+                if (parentService.verifyParentDuplicate(parent).get(i) == 3)
+                    model.addAttribute("alertaPhone", "El teléfono ingresado ya existe");
+            }
             return "registro";
         }
 
-        Parent p = parentService.create(parent); // Inserta en la base de datos
-        if (p == null){
-            redirectAttributes.addFlashAttribute("alerta", "Usuario ya existe");
+        if (parentService.verifyParentDuplicate(parent).isEmpty()) {
+            System.out.println("Parent created");
+            parentService.createParent(parent);
+                EmailBody emailBody = new EmailBody();
+                emailBody.setTo(parent.getEmail());
+                emailBody.setSubject("Registro de Matrícula - Colegios Prisma");
+                emailBody.setContent("Hola, " + parent.getGivenNames() + ". " +
+                        "Este es tu usuario: " + parent.getUsername() + ". " +
+                        "Este es tu contraseña: " + parent.getDocumentNumber());
+                emailController.enviarEmail(emailBody);
+                redirectAttributes.addFlashAttribute("mensaje", "Registro exitoso, sus credenciales han sido enviadas al correo registrado");
+                return "redirect:/registro";
         } else {
-            redirectAttributes.addFlashAttribute("mensaje", "Registro exitoso, sus credenciales están en el correo registrado");
+            cargarOptions(model);
+            for (int i = 0; i < parentService.verifyParentDuplicate(parent).size(); i++) {
+                if (parentService.verifyParentDuplicate(parent).get(i) == 1)
+                    model.addAttribute("alertaDocumentNumber", "El " + parent.getDocumentType().getName() + " ingresado ya existe");
+                if (parentService.verifyParentDuplicate(parent).get(i) == 2)
+                    model.addAttribute("alertaEmail", "El correo ingresado ya existe");
+                if (parentService.verifyParentDuplicate(parent).get(i) == 3)
+                    model.addAttribute("alertaPhone", "El teléfono ingresado ya existe");
+            }
+            return "registro";
         }
-        return "redirect:/registro";
-//        EmailBody emailBody = new EmailBody();
-//        emailBody.setTo(parent.getEmail());
-//        emailBody.setSubject("Registro de Matrícula - Colegios Prisma");
-//        emailBody.setContent("Hola, " + parent.getGivenNames() + ". " +
-//                            "Este es tu usuario: " + parent.getUsername() + ". " +
-//                            "Este es tu contraseña: " + parent.getDocumentNumber());
-//        emailController.enviarEmail(emailBody);
     }
 
     @GetMapping({"/parent", "/parent/admision"})
@@ -113,5 +132,15 @@ public class ParentController {
         String id = userDetails.getUsername();
         parentService.update(parent, id);
         return "redirect:/parent/perfil";
+    }
+
+    private void cargarOptions(Model model) {
+        List<DocumentType> documentTypeList  = documentTypeService.getAllDocumentTypes();
+        List<Gender> genderList = genderService.getAllGenders();
+        List<Nationality> nationalityList = nationalityService.getAllNationalities();
+
+        model.addAttribute("documentTypeList", documentTypeList);
+        model.addAttribute("genderList", genderList);
+        model.addAttribute("nationalityList", nationalityList);
     }
 }

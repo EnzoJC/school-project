@@ -16,7 +16,7 @@ public class Enrollment {
     private Integer id;
 
     @Column(name = "current_year", nullable = false)
-    private Boolean currentYear = false;
+    private Boolean currentYear = true;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "state_id", nullable = false)

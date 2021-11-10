@@ -1,8 +1,10 @@
 package edu.colegiosprisma.school.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class EmailBody {
     private String to; // Para: correo
     private String content; // contenido

@@ -48,7 +48,7 @@ public class User {
     @JoinColumn(name = "document_type_id", nullable = false)
     private DocumentType documentType;
 
-    @Size(min = 8 , max = 20)
+    @Size(min = 8 , max = 20, message = "El número de de documento debe estar entre 8 y 20 dígitos")
     @NotEmpty(message = "El número de documento es obligatorio")
     @Pattern(regexp = "^[0-9]*$", message = "El número de documento debe contener solo números")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -91,9 +91,6 @@ public class User {
     List<Role> roles;
 
     public int getAge() {
-//        LocalDate localDate = Instant.ofEpochMilli(birthDate.getTime())
-//                .atZone(ZoneId.systemDefault())
-//                .toLocalDate();
         int year  = birthDate.getYear();
         int month = birthDate.getMonthValue();
         int day   = birthDate.getDayOfMonth();

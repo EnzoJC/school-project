@@ -2,6 +2,7 @@ package edu.colegiosprisma.school.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -34,5 +35,6 @@ public class Payment {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "payment_type_id", nullable = false)
+//    @Where(clause = "is_active = 1")
     private PaymentType paymentType;
 }

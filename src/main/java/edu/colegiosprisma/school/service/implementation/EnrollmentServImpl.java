@@ -3,14 +3,11 @@ package edu.colegiosprisma.school.service.implementation;
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.repository.*;
 import edu.colegiosprisma.school.service.IEnrollmentService;
-import edu.colegiosprisma.school.service.IPaymentService;
 import edu.colegiosprisma.school.service.ITransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,11 +43,10 @@ public class EnrollmentServImpl implements IEnrollmentService {
         enrollment.setSchoolYear(schoolYear);
         enrollment.setStudent(student);
         enrollment.setState(state.get());
+        enrollment.setCurrentYear(true);
 
         PaymentType paymentType = paymentTypeRepository.findById(11).get(); // 11: Matricula
-        System.out.println("paymentType: " + paymentType.getName());
         Payment payment = paymentRepository.findByPaymentTypeAndIsActiveIsTrue(paymentType);
-        System.out.println("Payment2: " + payment.getDescription());
         enrollmentRepository.save(enrollment);
         transactionService.createTransaction(enrollment, List.of(payment));
 

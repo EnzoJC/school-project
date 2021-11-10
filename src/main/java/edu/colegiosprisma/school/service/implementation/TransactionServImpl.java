@@ -55,7 +55,6 @@ public class TransactionServImpl implements ITransactionService {
         transactionRepository.save(transaction);
 
         for (int i = 0; i < payments.size(); i++) {
-            System.out.println("Payment " + i + ": " + payments.get(i).getDescription());
             debtService.createDebt(transaction, payments.get(i));
         }
 

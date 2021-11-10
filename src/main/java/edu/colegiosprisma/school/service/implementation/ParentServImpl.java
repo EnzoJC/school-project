@@ -29,7 +29,7 @@ public class ParentServImpl implements IParentService{
     private EntityManager entityManager;
 
     @Override
-    public Parent create(Parent parent) {
+    public Parent createParent(Parent parent) {
         // Llama a un procedimiento almacenad
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_generate_id");
         // Indicando los tipos de datos de los parametros del procedimiento almacenado
@@ -58,15 +58,30 @@ public class ParentServImpl implements IParentService{
         // Añadiendo la lista de roles al objeto parent
         parent.setRoles(listaRolesParent);
 
-        Parent p = parentRepository.findByDocumentNumberOrEmailOrPhone(
-                parent.getDocumentNumber(), parent.getEmail(), parent.getPhone()
-        );
-
-        if (p != null){
-            return null;
-        } else {
-            return parentRepository.save(parent);
+        if (verifyParentDuplicate(parent).isEmpty()) {
+            parentRepository.save(parent);
         }
+        return parent;
+    }
+
+    @Override
+    public List<Integer> verifyParentDuplicate(Parent parent) {
+        Parent parentWithDocumentNumber = parentRepository.findByDocumentNumber(parent.getDocumentNumber());
+        Parent parentWithEmail = parentRepository.findByEmail(parent.getEmail());
+        Parent parentWithPhone = parentRepository.findByPhone(parent.getPhone());
+
+        List<Integer> lista = new ArrayList<>();
+
+        if (parentWithDocumentNumber != null) {
+            lista.add(1);
+        }
+        if (parentWithEmail != null) {
+            lista.add(2);
+        }
+        if (parentWithPhone != null) {
+            lista.add(3);
+        }
+        return lista;
     }
 
     @Override
