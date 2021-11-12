@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Table(name = "debts")
 @Entity
@@ -22,4 +23,8 @@ public class Debt {
     @ManyToOne(optional = false)
     @JoinColumn(name = "transaction_id", nullable = false)
     private Transaction transaction;
+
+    public BigDecimal getAmount() {
+        return payment.getAmount();
+    }
 }

@@ -2,6 +2,7 @@ package edu.colegiosprisma.school.service.implementation;
 
 import edu.colegiosprisma.school.entity.Parent;
 import edu.colegiosprisma.school.entity.Role;
+import edu.colegiosprisma.school.entity.User;
 import edu.colegiosprisma.school.repository.IParentRepository;
 import edu.colegiosprisma.school.repository.IRoleRepository;
 import edu.colegiosprisma.school.service.IParentService;
@@ -19,14 +20,16 @@ import java.util.List;
 
 @Service
 public class ParentServImpl implements IParentService{
-    @Autowired
-    private IParentRepository parentRepository;
-
-    @Autowired
-    private IRoleRepository roleRepository;
+    private final IParentRepository parentRepository;
+    private final IRoleRepository roleRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    public ParentServImpl(IParentRepository parentRepository, IRoleRepository roleRepository) {
+        this.parentRepository = parentRepository;
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     public Parent createParent(Parent parent) {
@@ -58,15 +61,13 @@ public class ParentServImpl implements IParentService{
         // Añadiendo la lista de roles al objeto parent
         parent.setRoles(listaRolesParent);
 
-        if (verifyParentDuplicate(parent).isEmpty()) {
-            parentRepository.save(parent);
-        }
+        parentRepository.save(parent);
         return parent;
     }
 
     @Override
     public List<Integer> verifyParentDuplicate(Parent parent) {
-        Parent parentWithDocumentNumber = parentRepository.findByDocumentNumber(parent.getDocumentNumber());
+        User parentWithDocumentNumber = parentRepository.findByDocumentNumber(parent.getDocumentNumber());
         Parent parentWithEmail = parentRepository.findByEmail(parent.getEmail());
         Parent parentWithPhone = parentRepository.findByPhone(parent.getPhone());
 

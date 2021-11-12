@@ -85,10 +85,171 @@
                                         </div>
                                         <div class="col-lg-3 my-2">
                                             <div class="d-grid gap-2">
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay"
+                                                        th:if="${estudiante.enrollments.get(0).state.id == 1}">
                                                     Realizar pago
                                                 </button>
-                                                <th:block th:replace="modalPay :: modal(${estudiante.id})">modal</th:block>
+                                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal2"
+                                                        th:if="${estudiante.enrollments.get(0).state.id == 2}">
+                                                    Llenar ficha de Matrícula
+                                                </button>
+                                                <div th:if="${estudiante.enrollments.get(0).state.id == 1}"
+                                                     class="modal fade" id="pay" tabindex="-1" role="dialog" aria-labelledby="modalPay" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Realizar pago</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!-- Inicio del contenido -->
+                                                                <div class="container-fluid px-0">
+                                                                    <div class="row">
+                                                                        <div class="col-lg mx-0">
+                                                                            <div class="card ">
+                                                                                <div class="card-body">
+                                                                                    <div class="bg-white shadow-sm pt-4 ps-2 pe-2 pb-2">
+                                                                                        <ul role="tablist" class="nav bg-light nav-pills rounded nav-fill mb-3">
+                                                                                            <li class="nav-item"
+                                                                                                role="presentation">
+                                                                                                <button
+                                                                                                        class="nav-link active"
+                                                                                                        id="credit-card-tab"
+                                                                                                        data-bs-toggle="pill"
+                                                                                                        data-bs-target="#credit-card"
+                                                                                                        type="button"
+                                                                                                        role="tab"
+                                                                                                        aria-controls="credit-card"
+                                                                                                        aria-selected="true">
+                                                                                                    Tarjeta
+                                                                                                </button>
+                                                                                            </li>
+                                                                                            <li class="nav-item"
+                                                                                                role="presentation">
+                                                                                                <button
+                                                                                                        class="nav-link"
+                                                                                                        id="deposito-tab"
+                                                                                                        data-bs-toggle="pill"
+                                                                                                        data-bs-target="#deposito"
+                                                                                                        type="button"
+                                                                                                        role="tab"
+                                                                                                        aria-controls="deposito"
+                                                                                                        aria-selected="true">
+                                                                                                    Depósito
+                                                                                                </button>
+                                                                                            </li>
+                                                                                            <li class="nav-item"
+                                                                                                role="presentation">
+                                                                                                <button
+                                                                                                        class="nav-link"
+                                                                                                        id="yape-tab"
+                                                                                                        data-bs-toggle="pill"
+                                                                                                        data-bs-target="#yape"
+                                                                                                        type="button"
+                                                                                                        role="tab"
+                                                                                                        aria-controls="yape"
+                                                                                                        aria-selected="true">
+                                                                                                    Yape
+                                                                                                </button>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <div class="tab-content">
+                                                                                        <div id="credit-card" class="tab-pane fade show active pt-3">
+                                                                                            <form role="form" th:action="@{/parent/admision/pay(idStudent=${estudiante.id})}" method="POST">
+                                                                                                <div class="form-group mb-3">
+                                                                                                    <label for="full-names" class="h6">Nombres completos</label>
+                                                                                                    <input id="full-names" type="text" placeholder="Nombres completos"
+                                                                                                           required class="form-control ">
+                                                                                                </div>
+                                                                                                <div class="form-group">
+                                                                                                    <label for="card-number" class="h6">Número de tarjeta</label>
+                                                                                                    <div class="input-group mb-3">
+                                                                                                        <input id="card-number" type="text" placeholder="XXXX XXXX XXXX XXXX"
+                                                                                                               class="form-control" aria-label="XXXX XXXX XXXX XXXX"
+                                                                                                               aria-describedby="basic-tarjeta"
+                                                                                                               required>
+                                                                                                        <span class="input-group-text" id="basic-tarjeta">
+                                                                                                            <i class="fab fa-cc-visa mx-1"></i>
+                                                                                                            <i class="fab fa-cc-mastercard mx-1"></i>
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-sm-8 mb-3">
+                                                                                                        <div class="form-group">
+                                                                                                            <label for="expiration-date" class="h6">Fecha de expiración</label>
+                                                                                                            <div id="expiration-date" class="input-group">
+                                                                                                                <input type="number" id="month" placeholder="MM" name=""
+                                                                                                                       class="form-control" required>
+                                                                                                                <input type="number" id="year" placeholder="YY" name=""
+                                                                                                                       class="form-control" required>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="col-sm-4 mb-3">
+                                                                                                        <div class="form-group mb-4">
+                                                                                                            <label for="cvv" data-toggle="tooltip"
+                                                                                                                   title="Los 3 dígitos que se encuentran en la parte trasera de su tarjeta" class="h6">
+                                                                                                                CVV <i class="fa fa-question-circle d-inline"></i>
+                                                                                                            </label>
+                                                                                                            <input id="cvv" type="text" required class="form-control">
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                                                                                    <button type="submit" class="btn btn-primary"
+                                                                                                            th:text="'Pagar S/' + ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()}">
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                        <div id="deposito" class="tab-pane fade pt-3">
+                                                                                            <h6 class="pb-2">Número de cuenta bancaria BCP</h6>
+                                                                                            <p>191-01791604-0-00 (Mendoza Figueroa, Nadia Thais)</p>
+                                                                                            <h6 class="pb-2">Monto total a pagar</h6>
+                                                                                            <p>S/ 100</p>
+                                                                                            <p class="text-muted"> Nota: Después de realizar el depósito, el pago podrá ser visualizado después de 24 horas. </p>
+                                                                                        </div>
+                                                                                        <div id="yape" class="tab-pane fade pt-3">
+                                                                                            <div class="text-center">
+                                                                                                <img th:src="@{/img/yape.png}" class="rounded" width="250px" alt="">
+                                                                                            </div>
+                                                                                            <h6 class="mt-3">Número</h6>
+                                                                                            <p>+51 946 653 562 (Carrion Escobar, Enzo Joao)</p>
+                                                                                            <h6 class="mt-3">Monto total a pagar</h6>
+                                                                                            <p>S/ 100</p>
+                                                                                            <p class="text-muted mt-3"> Nota: Después de realizar el depósito, el pago podrá ser visualizado después de 24 horas. </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Fin del contenido -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div th:if="${estudiante.enrollments.get(0).state.id == 2}"
+                                                     class="modal fade" id="modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="label">Modal title</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ...
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -1,14 +1,7 @@
 package edu.colegiosprisma.school.controller;
 
-import edu.colegiosprisma.school.dto.EmailBody;
-import edu.colegiosprisma.school.entity.DocumentType;
-import edu.colegiosprisma.school.entity.Gender;
-import edu.colegiosprisma.school.entity.Nationality;
-import edu.colegiosprisma.school.entity.Parent;
-import edu.colegiosprisma.school.service.IDocumentTypeService;
-import edu.colegiosprisma.school.service.IGenderService;
-import edu.colegiosprisma.school.service.INationalityService;
-import edu.colegiosprisma.school.service.IParentService;
+import edu.colegiosprisma.school.entity.*;
+import edu.colegiosprisma.school.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,16 +24,18 @@ public class ParentController {
     private final IDocumentTypeService documentTypeService;
     private final INationalityService nationalityService;
     private final IGenderService genderService;
+    private final IEmailService emailService;
 
     @Autowired
     public ParentController(IParentService parentService, EmailController emailController,
                             IDocumentTypeService documentTypeService, INationalityService nationalityService,
-                            IGenderService genderService) {
+                            IGenderService genderService, IEmailService emailService) {
         this.parentService = parentService;
         this.emailController = emailController;
         this.documentTypeService = documentTypeService;
         this.nationalityService = nationalityService;
         this.genderService = genderService;
+        this.emailService = emailService;
     }
 
     /**
@@ -75,19 +70,12 @@ public class ParentController {
             }
             return "registro";
         }
-
+        System.out.println("Size: " + parentService.verifyParentDuplicate(parent).size());
         if (parentService.verifyParentDuplicate(parent).isEmpty()) {
-            System.out.println("Parent created");
             parentService.createParent(parent);
-                EmailBody emailBody = new EmailBody();
-                emailBody.setTo(parent.getEmail());
-                emailBody.setSubject("Registro de Matrícula - Colegios Prisma");
-                emailBody.setContent("Hola, " + parent.getGivenNames() + ". " +
-                        "Este es tu usuario: " + parent.getUsername() + ". " +
-                        "Este es tu contraseña: " + parent.getDocumentNumber());
-                emailController.enviarEmail(emailBody);
-                redirectAttributes.addFlashAttribute("mensaje", "Registro exitoso, sus credenciales han sido enviadas al correo registrado");
-                return "redirect:/registro";
+            emailService.sendEmail(parent, "mail/credentials");
+            redirectAttributes.addFlashAttribute("mensaje", "Registro exitoso, sus credenciales han sido enviadas al correo registrado");
+            return "redirect:/registro";
         } else {
             cargarOptions(model);
             for (int i = 0; i < parentService.verifyParentDuplicate(parent).size(); i++) {

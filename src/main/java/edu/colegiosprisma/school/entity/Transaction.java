@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -42,4 +43,12 @@ public class Transaction {
 
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     private List<Debt> debts;
+
+    public BigDecimal getTotalPaid(){
+        BigDecimal total = BigDecimal.ZERO;
+        for(Debt debt: debts){
+            total = total.add(debt.getAmount());
+        }
+        return total;
+    }
 }

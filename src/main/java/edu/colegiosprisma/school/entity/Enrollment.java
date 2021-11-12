@@ -2,8 +2,11 @@ package edu.colegiosprisma.school.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Table(name = "enrollments")
 @Entity
@@ -16,6 +19,7 @@ public class Enrollment {
     private Integer id;
 
     @Column(name = "current_year", nullable = false)
+    @Where(clause = "current_year = 1")
     private Boolean currentYear = true;
 
     @ManyToOne(optional = false)
@@ -41,4 +45,8 @@ public class Enrollment {
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
+
+    @OneToMany(mappedBy = "enrollment")
+    @Where(clause = "state_id = 5")
+    private List<Transaction> transactions;
 }

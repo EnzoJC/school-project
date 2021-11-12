@@ -1,8 +1,7 @@
 package edu.colegiosprisma.school.service.implementation;
 
-import edu.colegiosprisma.school.entity.Enrollment;
-import edu.colegiosprisma.school.entity.Payment;
-import edu.colegiosprisma.school.entity.Transaction;
+import edu.colegiosprisma.school.entity.*;
+import edu.colegiosprisma.school.repository.IEnrollmentRepository;
 import edu.colegiosprisma.school.repository.ISchoolRepository;
 import edu.colegiosprisma.school.repository.IStateRepository;
 import edu.colegiosprisma.school.repository.ITransactionRepository;
@@ -24,17 +23,19 @@ public class TransactionServImpl implements ITransactionService {
     private final ISchoolRepository schoolRepository;
     private final IStateRepository stateRepository;
     private final ITransactionRepository transactionRepository;
+    private final IEnrollmentRepository enrollmentRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
     public TransactionServImpl(IDebtService debtService, ISchoolRepository schoolRepository,
-                               IStateRepository stateRepository, ITransactionRepository transactionRepository) {
+                               IStateRepository stateRepository, ITransactionRepository transactionRepository,
+                               IEnrollmentRepository enrollmentRepository) {
         this.debtService = debtService;
         this.schoolRepository = schoolRepository;
         this.stateRepository = stateRepository;
         this.transactionRepository = transactionRepository;
+        this.enrollmentRepository = enrollmentRepository;
     }
 
     @Override
@@ -54,15 +55,23 @@ public class TransactionServImpl implements ITransactionService {
         transaction.setId(id);
         transactionRepository.save(transaction);
 
-        for (int i = 0; i < payments.size(); i++) {
+        for (int i = 0; i < payments.size(); i++)
             debtService.createDebt(transaction, payments.get(i));
-        }
-
         return transaction;
     }
 
     @Override
-    public Transaction updateStatus(Transaction transaction) {
-        return null;
+    public Boolean payTransaction(Student student, State state) {
+        Enrollment enrollment = enrollmentRepository.findByStudentAndCurrentYearIsTrue(student);
+        Transaction transaction = transactionRepository.findByEnrollmentAndState(enrollment, state);
+        if (transaction != null){
+            transaction.setState(stateRepository.findById(7).get()); // 7 = pagado
+            transaction.setPaymentDate(LocalDate.now());
+            enrollment.setState(stateRepository.findById(2).get()); // 2 = Pre-inscrito
+            transactionRepository.save(transaction);
+            enrollmentRepository.save(enrollment);
+            return true;
+        }
+        return false;
     }
 }

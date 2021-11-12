@@ -1,47 +1,46 @@
 package edu.colegiosprisma.school.service.implementation;
 
-import edu.colegiosprisma.school.api.IEmailPort;
-import edu.colegiosprisma.school.dto.EmailBody;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import edu.colegiosprisma.school.entity.Parent;
+import edu.colegiosprisma.school.entity.User;
+import edu.colegiosprisma.school.service.IEmailService;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
-public class EmailServiceImpl implements IEmailPort {
-    // LOGGER: esta variable es para el log de la clase
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
+public class EmailServiceImpl implements IEmailService {
+    private final TemplateEngine templateEngine; // Permite renderizar un template
+    private final JavaMailSender javaMailSender; // Permite enviar un email
 
-    @Autowired
-    private JavaMailSender sender; // esta variable es para el envío de correos
-
-    @Override
-    public boolean sendEmail(EmailBody emailBody)  { // esta función es para enviar correos
-//        LOGGER.info("EmailBody: {}", emailBody.toString());
-        return sendEmailTool(emailBody.getContent(), emailBody.getTo(), emailBody.getSubject());
+    public EmailServiceImpl(TemplateEngine templateEngine, JavaMailSender javaMailSender) {
+        this.templateEngine = templateEngine;
+        this.javaMailSender = javaMailSender;
     }
 
     // sendEmailTool: esta función es para enviar correos
-    private boolean sendEmailTool(String textMessage, String email, String subject) {
-        boolean isSend = false; // esta variable es para saber si el correo fue enviado
-        MimeMessage message = sender.createMimeMessage(); // esta variable es para crear el correo
-        MimeMessageHelper helper = new MimeMessageHelper(message);
+    @Override
+    public String sendEmail(Parent parent, String templateEngine) {
+        Context context = new Context(); // contexto para el template
+        context.setVariable("parent", parent); // variable para el template
+
+        String process = this.templateEngine.process(templateEngine, context); // proceso del template
+        // MimeMessage: es una clase que permite enviar un email
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage(); // mensaje de correo
+        // MimeMessageHelper: ayuda a crear el mensaje de correo y enviarlo
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage); // helper para el mensaje de correo
         try {
-            helper.setTo(email); // esta variable es para el destinatario del correo
-            helper.setText(textMessage, true); // esta variable es para el cuerpo del correo.
-                                                    // true: para que el cuerpo del correo sea html
-            helper.setSubject(subject); // esta variable es para el asunto del correo
-            sender.send(message); // esta función es para enviar el correo
-            isSend = true; // estableciendo que el correo fue enviado
-            LOGGER.info("Mail enviado!"); // correo enviado
+            helper.setSubject("Registro de Matrícula - Colegios Prisma"); // asunto del mensaje
+            helper.setText(process, true); // texto del mensaje. true: para que el mensaje sea html
+            helper.setTo(parent.getEmail()); // destinatario del mensaje
+            javaMailSender.send(mimeMessage); // enviar el mensaje
         } catch (MessagingException e) {
-            LOGGER.error("Hubo un error al enviar el mail: {}", e); // error al enviar el correo
+            e.printStackTrace(); // imprimir el error
         }
-        return isSend;
+        return "enviado";
     }
 }
