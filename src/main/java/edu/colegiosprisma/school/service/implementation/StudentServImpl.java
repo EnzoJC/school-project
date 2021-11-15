@@ -13,10 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class StudentServImpl implements IStudentService {
@@ -50,7 +47,7 @@ public class StudentServImpl implements IStudentService {
         student.setUsername(id);
         student.setPassword(new BCryptPasswordEncoder(4).encode(student.getDocumentNumber()));
         student.setStudentEmail(id + "@colegiosprisma.edu.pe");
-        List<Role> listaRolesStudent = new ArrayList<>();
+        Set<Role> listaRolesStudent = new HashSet<>();
         Role auxRole = roleRepository.findByName("ROLE_STUDENT");
         listaRolesStudent.add(auxRole);
         student.setRoles(listaRolesStudent);

@@ -7,6 +7,8 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "payments")
 @Entity
@@ -37,4 +39,21 @@ public class Payment {
     @JoinColumn(name = "payment_type_id", nullable = false)
     @Where(clause = "is_active = 1")
     private PaymentType paymentType;
+
+    @ManyToMany
+    @JoinTable(
+            name = "debts",
+            joinColumns = @JoinColumn(name = "payment_id"),
+            inverseJoinColumns = @JoinColumn(name = "transaction_id"))
+    private Set<Transaction> transactions = new HashSet<>();
+
+    public void addPayment(Transaction transaction) {
+        this.transactions.add(transaction);
+        transaction.getPayments().add(this);
+    }
+
+    public void removePayment(Transaction transaction) {
+        this.transactions.remove(transaction);
+        transaction.getPayments().remove(this);
+    }
 }

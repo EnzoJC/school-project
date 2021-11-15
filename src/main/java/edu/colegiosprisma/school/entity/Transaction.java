@@ -6,7 +6,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Table(name = "transactions")
 @Entity
@@ -41,14 +43,28 @@ public class Transaction {
     @JoinColumn(name = "state_id", nullable = false)
     private State state;
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
-    private List<Debt> debts;
+    @ManyToMany
+    @JoinTable(
+            name = "debts",
+            joinColumns = @JoinColumn(name = "transaction_id"),
+            inverseJoinColumns = @JoinColumn(name = "payment_id"))
+    private Set<Payment> payments = new HashSet<>();
 
     public BigDecimal getTotalPaid(){
         BigDecimal total = BigDecimal.ZERO;
-        for(Debt debt: debts){
-            total = total.add(debt.getAmount());
+        for (Payment payment : payments) {
+            total = total.add(payment.getAmount());
         }
         return total;
+    }
+
+    public void addPayment(Payment payment) {
+        this.payments.add(payment);
+        payment.getTransactions().add(this);
+    }
+
+    public void removePayment(Payment payment) {
+        this.payments.remove(payment);
+        payment.getTransactions().remove(this);
     }
 }

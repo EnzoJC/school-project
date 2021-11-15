@@ -3,7 +3,7 @@ package edu.colegiosprisma.school.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Table(name = "roles", indexes = {
         @Index(name = "roles_ak_1", columnList = "name", unique = true)
@@ -24,5 +24,5 @@ public class Role {
             name = "roles_privileges",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "privilege_id"))
-    List<Privilege> privileges;
+    private Set<Privilege> privileges;
 }

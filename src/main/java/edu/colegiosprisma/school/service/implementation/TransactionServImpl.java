@@ -5,9 +5,7 @@ import edu.colegiosprisma.school.repository.IEnrollmentRepository;
 import edu.colegiosprisma.school.repository.ISchoolRepository;
 import edu.colegiosprisma.school.repository.IStateRepository;
 import edu.colegiosprisma.school.repository.ITransactionRepository;
-import edu.colegiosprisma.school.service.IDebtService;
 import edu.colegiosprisma.school.service.ITransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -15,11 +13,10 @@ import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class TransactionServImpl implements ITransactionService {
-    private final IDebtService debtService;
     private final ISchoolRepository schoolRepository;
     private final IStateRepository stateRepository;
     private final ITransactionRepository transactionRepository;
@@ -28,10 +25,9 @@ public class TransactionServImpl implements ITransactionService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public TransactionServImpl(IDebtService debtService, ISchoolRepository schoolRepository,
+    public TransactionServImpl(ISchoolRepository schoolRepository,
                                IStateRepository stateRepository, ITransactionRepository transactionRepository,
                                IEnrollmentRepository enrollmentRepository) {
-        this.debtService = debtService;
         this.schoolRepository = schoolRepository;
         this.stateRepository = stateRepository;
         this.transactionRepository = transactionRepository;
@@ -39,7 +35,7 @@ public class TransactionServImpl implements ITransactionService {
     }
 
     @Override
-    public Transaction createTransaction(Enrollment enrollment, List<Payment> payments) {
+    public Transaction createTransaction(Enrollment enrollment, Set<Payment> payments) {
         Transaction transaction = new Transaction();
         transaction.setEnrollment(enrollment);
         transaction.setIssueDate(LocalDate.now());
@@ -53,10 +49,14 @@ public class TransactionServImpl implements ITransactionService {
 
         String id = (String) query.getSingleResult();
         transaction.setId(id);
+        // Recorriendo el Set de payments para crear cada uno de los pagos
+//        for (Payment payment : payments) {
+//            System.out.println("Payment 1");
+//            transaction.addPayment(payment);
+//            System.out.println("Payment 2");
+//        }
+        transaction.setPayments(payments);
         transactionRepository.save(transaction);
-
-        for (int i = 0; i < payments.size(); i++)
-            debtService.createDebt(transaction, payments.get(i));
         return transaction;
     }
 

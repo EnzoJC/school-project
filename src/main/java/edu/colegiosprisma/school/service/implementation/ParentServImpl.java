@@ -7,7 +7,6 @@ import edu.colegiosprisma.school.repository.IParentRepository;
 import edu.colegiosprisma.school.repository.IRoleRepository;
 import edu.colegiosprisma.school.service.IParentService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,9 @@ import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ParentServImpl implements IParentService{
@@ -53,7 +54,7 @@ public class ParentServImpl implements IParentService{
         // Asignando una contraseña al parent
         parent.setPassword(new BCryptPasswordEncoder().encode(parent.getDocumentNumber()));
         // Creando una lista de roles vacía
-        List<Role> listaRolesParent = new ArrayList<>();
+        Set<Role> listaRolesParent = new HashSet<>();
         // Obteniendo el único rol para parent
         Role auxRole = roleRepository.findByName("ROLE_PARENT");
         // Añadiendo el rol a la lista

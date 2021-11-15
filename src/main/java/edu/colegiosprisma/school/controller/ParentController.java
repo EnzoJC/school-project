@@ -25,17 +25,19 @@ public class ParentController {
     private final INationalityService nationalityService;
     private final IGenderService genderService;
     private final IEmailService emailService;
+    private final IStudentService studentService;
 
     @Autowired
     public ParentController(IParentService parentService, EmailController emailController,
                             IDocumentTypeService documentTypeService, INationalityService nationalityService,
-                            IGenderService genderService, IEmailService emailService) {
+                            IGenderService genderService, IEmailService emailService, IStudentService studentService) {
         this.parentService = parentService;
         this.emailController = emailController;
         this.documentTypeService = documentTypeService;
         this.nationalityService = nationalityService;
         this.genderService = genderService;
         this.emailService = emailService;
+        this.studentService = studentService;
     }
 
     /**
@@ -120,6 +122,19 @@ public class ParentController {
         String id = userDetails.getUsername();
         parentService.update(parent, id);
         return "redirect:/parent/perfil";
+    }
+
+    @GetMapping("/parent/ficha-matricula")
+    public String fichaMatricula(@RequestParam String studentId, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Parent parent = parentService.selectByUsername(userDetails.getUsername());
+        Student student = (Student) studentService.getStudentById(studentId).get();
+
+        model.addAttribute("parent", parent);
+        model.addAttribute("nombresCompletos", parent.getGivenNames());
+
+        return "fichaMatricula";
     }
 
     private void cargarOptions(Model model) {

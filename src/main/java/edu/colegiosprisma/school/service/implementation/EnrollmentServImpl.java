@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class EnrollmentServImpl implements IEnrollmentService {
@@ -48,7 +49,7 @@ public class EnrollmentServImpl implements IEnrollmentService {
         PaymentType paymentType = paymentTypeRepository.findById(11).get(); // 11: Matricula
         Payment payment = paymentRepository.findByPaymentTypeAndIsActiveIsTrue(paymentType);
         enrollmentRepository.save(enrollment);
-        transactionService.createTransaction(enrollment, List.of(payment));
+        transactionService.createTransaction(enrollment, Set.of(payment));
 
         return enrollment;
     }

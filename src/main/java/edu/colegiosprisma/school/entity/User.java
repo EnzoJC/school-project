@@ -10,7 +10,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "users", indexes = {
         @Index(name = "document_number_ak_u", columnList = "document_number", unique = true),
@@ -83,12 +84,17 @@ public class User {
     @Column(name = "is_active", nullable = false, columnDefinition = "boolean DEFAULT true")
     private Boolean isActive = false;
 
+    // @ManyToMany: significa que un usuario puede tener muchos roles
+    // @JoinTable: significa que la tabla intermedia es la que se crea para la relación
+    // name: significa el nombre de la tabla intermedia
+    // joinColumns: significa que el id del usuario se guarda en la columna user_id.
+    // inverseJoinColumns: significa que el id del rol se guarda en la columna role_id
     @ManyToMany
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    List<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public int getAge() {
         int year  = birthDate.getYear();
