@@ -9,11 +9,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -72,13 +75,31 @@ public class StudentController {
     }
 
     @PostMapping("/parent/postulante")
-    public String registrar(Student student, Enrollment enrollment) {
+    public String registrar(@Valid Student student, BindingResult result, Enrollment enrollment, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Parent parent = parentService.selectByUsername(userDetails.getUsername());
         student.setParent(parent);
-        studentService.createStudent(student, enrollment); // Inserta en la base de datos
-        return "redirect:/parent";
+
+        if(result.hasErrors()){
+            cargarOptions(model);
+            for (int i = 0; i < studentService.verifyStudentDuplicate(student).size(); i++) {
+                if (studentService.verifyStudentDuplicate(student).get(i) == 1)
+                    model.addAttribute("alertaDocumentNumber", "El " + student.getDocumentType().getName() + " ingresado ya existe");
+            }
+            return "postulante";
+        }
+        if (studentService.verifyStudentDuplicate(student).isEmpty()) {
+            studentService.createStudent(student, enrollment); // Inserta en la base de datos
+            return "redirect:/parent/admision";
+        } else {
+            cargarOptions(model);
+            for (int i = 0; i < studentService.verifyStudentDuplicate(student).size(); i++) {
+                if (studentService.verifyStudentDuplicate(student).get(i) == 1)
+                    model.addAttribute("alertaDocumentNumber", "El " + student.getDocumentType().getName() + " ingresado ya existe");
+            }
+            return "/postulante";
+        }
     }
     
     /**
@@ -89,5 +110,19 @@ public class StudentController {
     public @ResponseBody List<Grade> getGradosPorNivel(@RequestParam(value = "levelId") Integer levelId) {
         Optional<Level> level = levelService.getLevel(levelId);
         return gradeService.getAllGradesByLevel(level.get());
+    }
+
+    private void cargarOptions(Model model) {
+        List<DocumentType> documentTypeList  = documentTypeService.getAllDocumentTypes();
+        List<Gender> genderList = genderService.getAllGenders();
+        List<Nationality> nationalityList = nationalityService.getAllNationalities();
+        List<Relationship> relationshipList = relationshipService.getAllRelationships();
+        List<Level> levelList = levelService.getAllLevels();
+
+        model.addAttribute("documentTypeList", documentTypeList);
+        model.addAttribute("genderList", genderList);
+        model.addAttribute("nationalityList", nationalityList);
+        model.addAttribute("relationshipList", relationshipList);
+        model.addAttribute("levelList", levelList);
     }
 }

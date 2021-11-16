@@ -72,7 +72,6 @@ public class ParentController {
             }
             return "registro";
         }
-        System.out.println("Size: " + parentService.verifyParentDuplicate(parent).size());
         if (parentService.verifyParentDuplicate(parent).isEmpty()) {
             parentService.createParent(parent);
             emailService.sendEmail(parent, "mail/credentials");
@@ -125,11 +124,11 @@ public class ParentController {
     }
 
     @GetMapping("/parent/ficha-matricula")
-    public String fichaMatricula(@RequestParam String studentId, Model model) {
+    public String fichaMatricula(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Parent parent = parentService.selectByUsername(userDetails.getUsername());
-        Student student = (Student) studentService.getStudentById(studentId).get();
+//        Student student = (Student) studentService.getStudentById(studentId).get();
 
         model.addAttribute("parent", parent);
         model.addAttribute("nombresCompletos", parent.getGivenNames());
