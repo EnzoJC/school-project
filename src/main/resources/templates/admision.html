@@ -91,7 +91,7 @@
                                                     Pagar matrícula
                                                 </button>
                                                 <a th:if="${estudiante.enrollments.get(0).state.id == 2}" class="btn btn-success"
-                                                   th:href="@{/parent/ficha-matricula}" role="button">Llenar ficha de Matrícula</a>
+                                                   th:href="@{'/parent/ficha-matricula' + '?id=' + ${estudiante.id}}" role="button">Llenar ficha de Matrícula</a>
 
                                                 <div th:if="${estudiante.enrollments.get(0).state.id == 1}"
                                                      class="modal fade" id="pay" tabindex="-1" role="dialog" aria-labelledby="modalPay" aria-hidden="true">

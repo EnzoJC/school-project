@@ -19,4 +19,5 @@ public class GradeServImpl implements IGradeService {
     public List<Grade> getAllGradesByLevel(Level level) {
         return gradeRepository.findAllByLevel(level);
     }
+
 }

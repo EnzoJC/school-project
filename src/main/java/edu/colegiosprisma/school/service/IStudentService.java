@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface IStudentService {
     Student createStudent(Student student, Enrollment enrollment);
+    // getStudentById permite obtener un estudiante por su id
     Optional<User> getStudentById(String studentId);
     List<Integer> verifyStudentDuplicate(Student student);
 }
