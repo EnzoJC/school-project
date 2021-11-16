@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,20 +37,23 @@ public class UserServImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    // @Transactional es para que no se ejecute dos veces la transacción
+    // Una transacción es una secuencia de acciones que se ejecutan en una base de datos.
+    @Transactional(readOnly = true) // @Transactional(readOnly = true) es para que no se guarde en la base de datos.
+    // loadUserByUsername(): es un método que se ejecuta cuando se llama al método de autenticación.
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Buscamos el usuario por el username y lo guardamos en una variable
         User user = userRepository.findByUsername(username);
-
+        // Si el usuario no existe, se lanza una excepción
         if (user == null) {
             throw new UsernameNotFoundException("No se pudo encontrar el usuario: " + username);
         }
-        // UserBuilder builder =  null;
-
+        // Se crea una lista de roles tipo GrantedAuthority como Set
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Role role : user.getRoles()){
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-
+        // Se crea una instancia de UserDetails y se le asigna el usuario y la lista de roles
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }

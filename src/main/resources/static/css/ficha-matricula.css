@@ -17,23 +17,19 @@
 }
 
 #progressbar #datosEstudiante:before {
-    font-family: FontAwesome;
-    content: "\f023"
+    content: "1";
 }
 
 #progressbar #desarrolloEstudiante:before {
-    font-family: FontAwesome;
-    content: "\f007"
+    content: "2"
 }
 
 #progressbar #datosPadre:before {
-    font-family: FontAwesome;
-    content: "\f09d"
+    content: "3"
 }
 
 #progressbar #datosMadre:before {
-    font-family: FontAwesome;
-    content: "\f00c"
+    content: "4"
 }
 
 #progressbar li:before {

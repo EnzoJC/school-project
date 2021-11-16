@@ -20,7 +20,6 @@ import java.util.List;
 // ParentController permite gestionar los datos de los padres
 public class ParentController {
     private final IParentService parentService;
-    private final EmailController emailController;
     private final IDocumentTypeService documentTypeService;
     private final INationalityService nationalityService;
     private final IGenderService genderService;
@@ -28,11 +27,10 @@ public class ParentController {
     private final IStudentService studentService;
 
     @Autowired
-    public ParentController(IParentService parentService, EmailController emailController,
-                            IDocumentTypeService documentTypeService, INationalityService nationalityService,
-                            IGenderService genderService, IEmailService emailService, IStudentService studentService) {
+    public ParentController(IParentService parentService, IDocumentTypeService documentTypeService,
+                            INationalityService nationalityService, IGenderService genderService,
+                            IEmailService emailService, IStudentService studentService) {
         this.parentService = parentService;
-        this.emailController = emailController;
         this.documentTypeService = documentTypeService;
         this.nationalityService = nationalityService;
         this.genderService = genderService;
@@ -123,14 +121,28 @@ public class ParentController {
         return "redirect:/parent/perfil";
     }
 
+    // @GetMapping: es para indicar que es una petición GET
+    // Una petición GET es una petición que se hace para obtener datos
     @GetMapping("/parent/ficha-matricula")
-    public String fichaMatricula(Model model) {
+    public String fichaMatricula(@RequestParam(name = "id") String studentId, Model model) {
+        // SecurityContextHolder.getContext() permite obtener el contexto de seguridad
+        // getAuthentication() obtiene la autenticación del usuario
+        // Una autenticación del usuario es un objeto que contiene información sobre el usuario que ha iniciado sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        // auth.getPrincipal() permitirá obtener el usuario autenticado como un objeto UserDetails
+        // UserDetails es una clase que contiene información sobre el usuario que ha iniciado sesión
+        // Por ejemplo: getUsername() obtiene el nombre de usuario del usuario autenticado,
+        // getAuthorities() obtiene una lista de objetos GrantedAuthority
+        // (La clase GrantedAuthority es una clase que contiene información sobre los roles del usuario),
+        // que contiene información sobre los roles del usuario,
+        // y getPassword() obtiene la contraseña del usuario, etc.
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Parent parent = parentService.selectByUsername(userDetails.getUsername());
 //        Student student = (Student) studentService.getStudentById(studentId).get();
 
         model.addAttribute("parent", parent);
+        model.addAttribute("student", studentService.getStudentById(studentId));
+        model.addAttribute("enrollmentForm", new EnrollmentForm());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
 
         return "fichaMatricula";
