@@ -67,9 +67,7 @@ public class TransactionServImpl implements ITransactionService {
         if (transaction != null){
             transaction.setState(stateRepository.findById(7).get()); // 7 = pagado
             transaction.setPaymentDate(LocalDate.now());
-            enrollment.setState(stateRepository.findById(2).get()); // 2 = Pre-inscrito
             transactionRepository.save(transaction);
-            enrollmentRepository.save(enrollment);
             return true;
         }
         return false;
