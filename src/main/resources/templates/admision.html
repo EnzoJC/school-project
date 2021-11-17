@@ -243,68 +243,6 @@
                 </main>
             </div>
         </div>
-       <!-- <script>
-            const submit = document.getElementById("pagar");
-            submit.addEventListener("submit", validate);
-
-            function validate(e) {
-                e.preventDefault();
-
-                const fullNames = document.getElementById("full-names").value;
-                const cardNumber = document.getElementById("card-number").value;
-                const month = document.getElementById("month").value;
-                const year = document.getElementById("year").value;
-                const cvv = document.getElementById("cvv").value;
-
-                if (fullNames.length > 0){
-                    const regexFullNames = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/i;
-                    if (!regexFullNames.test(fullNames)){
-                        alert("Nombre inválido");
-                        return false;
-                    }
-                    else{
-                        return true;
-                    }
-                }
-                if (cardNumber.length > 0 && cardNumber.length == 12){
-                    const regexCardNumber = /^[0-9]{12}$/;
-                    if (!regexCardNumber.test(cardNumber)){
-                        alert("Número de tarjeta inválido");
-                        return false;
-                    }else{
-                        return true;
-                    }
-                }
-                if (month.length > 0){
-                    const regexMonth = /^[0-9]{2}$/;
-                    if (!regexMonth.test(month)){
-                        alert("Mes inválido");
-                        return false;
-                    }else{
-                        return true;
-                    }
-                }
-                if (year.length > 0){
-                    const regexYear = /^[0-9]{2}$/;
-                    if (!regexYear.test(year)){
-                        alert("Año inválido");
-                        return false;
-                    }else{
-                        return true;
-                    }
-                }
-                if (cvv.length > 0){
-                    const regexCvv = /^[0-9]{3}$/;
-                    if (!regexCvv.test(cvv)){
-                        alert("CVV inválido");
-                        return false;
-                    }else{
-                        return true;
-                    }
-                }
-                return true;
-            }
-        </script>-->
         <script>
                 document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("form-pay").addEventListener('submit', validarFormulario);

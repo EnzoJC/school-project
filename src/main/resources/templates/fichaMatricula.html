@@ -15,6 +15,14 @@
         <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/5.15.4/css/fontawesome.css}"/>
         <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
         <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}"/>
+        <style>
+            /*.tab {*/
+            /*    display: none;*/
+            /*}*/
+            .seleccionado {
+                display: none;
+            }
+        </style>
     </head>
 
     <body class="sb-nav-fixed">
@@ -68,466 +76,424 @@
                         <h2 class="text-center"><strong>Registro de ficha de Matrícula</strong></h2>
                         <!-- progressbar -->
                         <ul id="progressbar" class="px-0 text-center">
-                            <li class="active" id="datosEstudiante"><strong>Datos del estudiante</strong></li>
-                            <li id="desarrolloEstudiante"><strong>Desarrollo del estudiante</strong></li>
-                            <li id="datosPadre"><strong>Datos del padre</strong></li>
-                            <li id="datosMadre"><strong>Datos de la madre</strong></li>
+                            <li class="active item" id="datosEstudiante"><strong>Datos del estudiante</strong></li>
+                            <li class="item" id="desarrolloEstudiante"><strong>Desarrollo del estudiante</strong></li>
+                            <li class="item" id="datosPadre"><strong>Datos del padre</strong></li>
+                            <li class="item" id="datosMadre"><strong>Datos de la madre</strong></li>
                         </ul>
-                        <form id="msform" th:action="@{/parent/ficha-matricula}" th:object="${enrollmentForm}" method="POST">
-                            <div class="row setup-content" id="step-1">
-                                <div class="col">
-                                    <h5 class="fs-title">Datos personales del estudiante</h5>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="given-names" class="form-label">Nombres</label>
-                                                <input id="given-names" type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="first-last-name" class="form-label">Primer
-                                                    Apellido</label>
-                                                <input id="first-last-name" type="text" class="form-control">
-                                            </div>
+                        <form id="miForm" th:action="@{/parent/ficha-matricula}" th:object="${enrollmentForm}" method="POST">
+                            <div class="tab" id="step-1">
+                                <h5 class="fs-title">Datos personales del estudiante</h5>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="given-names" class="form-label">Nombres</label>
+                                            <input id="given-names" type="text" class="form-control"
+                                                   th:value="${student.givenNames}" disabled>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="second-last-name" class="form-label">Segundo
-                                                    Apellido</label>
-                                                <input id="second-last-name" type="text" class="form-control">
-                                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-last-name" class="form-label">Primer Apellido</label>
+                                            <input id="first-last-name" type="text" class="form-control"
+                                                   th:value="${student.firstLastName}" disabled>
                                         </div>
-                                        <div class="col-md-6">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="second-last-name" class="form-label">Segundo Apellido</label>
+                                            <input id="second-last-name" type="text" class="form-control"
+                                                   th:value="${student.secondLastName}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="gender-type" class="form-label">Tipo de genero</label>
+                                            <select id="gender-type" class="form-control" disabled>
+                                                <option th:text="${student.gender.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="birth-date" class="form-label">Fecha de nacimiento</label>
+                                            <input id="birth-date" type="date" class="form-control"
+                                                   th:value="${student.birthDate}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="department" class="form-label">Departamento</label>
+                                            <select id="department" class="form-control">
+                                                <option class="seleccionado" value="" selected> Seleccione el Departamento</option>
+                                                <option th:each="department : ${departments}" th:value="${department.id}" th:text="${department.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="province" class="form-label">Provincia</label>
+                                            <select id="province" class="form-control">
+                                                <option class="seleccionado" value="" selected>Seleccione la provincia</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="district" class="form-label">Distrito</label>
+                                            <select id="district" class="form-control" th:field="*{district}">
+                                                <option class="seleccionado" value="" selected>Seleccione el Distrito</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="mother-tongue" class="form-label">Lengua materna</label>
+                                            <select id="mother-tongue" class="form-control" th:field="*{motherTongue}">
+                                                <option class="seleccionado" value="" selected>Seleccione su primera lengua</option>
+                                                <option th:each="language : ${languages}" th:value="${language.id}" th:text="${language.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="second-language" class="form-label">Segunda lengua</label>
+                                            <select id="second-language" class="form-control" th:field="*{secondLanguage}">
+                                                <option class="seleccionado" value="" selected>Seleccione su segunda lengua</option>
+                                                <option th:each="language : ${languages}" th:value="${language.id}" th:text="${language.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="religion-student" class="form-label">Religion</label>
+                                            <select id="religion-student" class="form-control" th:field="*{religion}">
+                                                <option class="seleccionado" value="" selected>Seleccione su Religion</option>
+                                                <option th:each="religion : ${religions}" th:value="${religion.id}" th:text="${religion.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="number-siblings" class="form-label">Numero de hermanos</label>
+                                            <input id="number-siblings" type="number" min="0" max="20" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="position-siblings" class="form-label">Lugar que ocupa</label>
+                                            <input id="position-siblings" type="number" min="1" max="20" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <div class="form-group">
-                                                <label for="gender-type" class="form-label">Tipo de
-                                                    genero</label>
-                                                <select id="gender-type" class="form-control">
-                                                    <option class="seleccionado" value="" selected>
-                                                        Seleccione el genero</option>
-                                                    <option>M</option>
-                                                    <option>F</option>
+                                                <label for="disability" class="form-label">Discapacidad</label>
+                                                <select id="disability" class="form-control">
+                                                    <option class="seleccionado" value="" selected>Seleccione su Discapacidad</option>
+                                                    <option th:each="disability : ${typeDisabilities}" th:value="${disability.id}" th:text="${disability.name}"></option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="birth-date" class="form-label">Fecha de
-                                                    nacimiento</label>
-                                                <input id="birth-date" type="date" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="departament" class="form-label">Departamento</label>
-                                                <select id="departament" class="form-control">
-                                                    <option class="seleccionado" value="" selected>
-                                                        Seleccione el Departamento</option>
-                                                    <option>Lima</option>
-                                                    <option>Piura</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="province" class="form-label">Provincia</label>
-                                                <select id="province" class="form-control">
-                                                    <option class="seleccionado" value="" selected>
-                                                        Seleccione la provincia</option>
-                                                    <option>Lima</option>
-                                                    <option>Huaral</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="district" class="form-label">Distrito</label>
-                                                <select id="district" class="form-control">
-                                                    <option class="seleccionado" value="" selected>
-                                                        Seleccione el Distrito</option>
-                                                    <option>Surco</option>
-                                                    <option>Molina</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="mother-tongue" class="form-label">Lengua
-                                                    materna</label>
-                                                <select id="mother-tongue" class="form-control">
-                                                    <option class="seleccionado" value="" selected>
-                                                        Seleccione su primera lengua</option>
-                                                    <option>Español</option>
-                                                    <option>ingles</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="second-language" class="form-label">Segunda
-                                                    lengua</label>
-                                                <select id="second-language" class="form-control">
-                                                    <option class="seleccionado" value="" selected>
-                                                        Seleccione su segunda lengua</option>
-                                                    <option>Español</option>
-                                                    <option>ingles</option>
-                                                    <option>chino</option>
-                                                    <option>japones</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="religion-student" class="form-label">Religion</label>
-                                                <select id="religion-student" class="form-control">
-                                                    <option class="seleccionado" value="" selected>Seleccione su Religion</option>
-                                                    <option>Judio</option>
-                                                    <option>Ateo</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="number-siblings" class="form-label">Numero de hermanos</label>
-                                                <input id="number-siblings" type="number" value="0" min="0" max="20" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="position-siblings" class="form-label">Lugar que ocupa</label>
-                                                <input id="position-siblings" type="number" value="1" min="1" max="20" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <div class="form-group">
-                                                    <label for="disability" class="form-label">Discapacidad</label>
-                                                    <select id="disability" class="form-control">
-                                                        <option class="seleccionado" value="" selected>Seleccione su Discapacidad</option>
-                                                        <option>Sordo</option>
-                                                        <option>Manco</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn btn-primary nextBtn pull-right" value="siguiente"></button>
                                 </div>
                             </div>
-                            <div class="row setup-content" id="step-2">
-                                <div class="col">
-                                    <h5 class="fs-title">Desarrollo del estudiante</h5>
-                                    <div class="row mb-3">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="allergy" class="form-label">Alergias</label>
-                                                <input id="allergy" type="text" class="form-control">
-                                            </div>
+                            <div class="tab" id="step-2">
+                                <h5 class="fs-title">Desarrollo del estudiante</h5>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="allergy" class="form-label">Alergias</label>
+                                            <input id="allergy" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="blood-type" class="form-label">Tipo de sangre</label>
-                                                <select id="blood-type" class="form-control">
-                                                    <option class="seleccionado" value="" selected>Seleccione el tipo de sangre</option>
-                                                    <option>A+</option>
-                                                    <option>A-</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="tipe-of-birth" class="form-label">Tipo de nacimiento</label>
-                                                <select id="tipe-of-birth" class="form-control">
-                                                    <option class="seleccionado" value="" selected>Tipo de nacimiento</option>
-                                                    <option>Cesarea</option>
-                                                    <option>Natural</option>
-                                                </select>
-                                            </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="blood-type" class="form-label">Tipo de sangre</label>
+                                            <select id="blood-type" class="form-control" th:field="*{bloodType}">
+                                                <option class="seleccionado" value="" selected>Seleccione el tipo de sangre</option>
+                                                <option th:each="bloodType : ${bloodTypes}" th:value="${bloodType.id}" th:text="${bloodType.name}"></option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="raised_head" class="form-label">¿A qué edad
-                                                    el estudiante levantó la cabeza por primera vez?</label>
-                                                <input id="raised_head" type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="sit_down" class="form-label">¿A qué edad
-                                                    el estudiante se sentó por primera vez?</label>
-                                                <input id="sit_down" type="text" class="form-control">
-                                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="tipe-of-birth" class="form-label">Tipo de nacimiento</label>
+                                            <select id="tipe-of-birth" class="form-control" th:field="*{tipeOfBirth}">
+                                                <option class="seleccionado" value="" selected>Tipo de nacimiento</option>
+                                                <option th:each="birth : ${typeOfBirths}" th:value="${birth.id}" th:text="${birth.name}"></option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="crawl" class="form-label">¿A qué edad
-                                                    el estudiante gateó por primera vez?</label>
-                                                <input id="crawl" type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="stoop_up" class="form-label">¿A qué edad
-                                                    el estudiante se paró por primera vez?</label>
-                                                <input id="stoop_up" type="text" class="form-control">
-                                            </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="raised_head" class="form-label">¿A qué edad
+                                                el estudiante levantó la cabeza por primera vez?</label>
+                                            <input id="raised_head" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="walk" class="form-label">¿A qué edad
-                                                    el estudiante caminó por primera vez?</label>
-                                                <input id="walk" type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="sphinter" class="form-label">¿A qué edad
-                                                    el estudiante controló su esfínter por primera vez?</label>
-                                                <input id="sphinter" type="text" class="form-control">
-                                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="sit_down" class="form-label">¿A qué edad
+                                                el estudiante se sentó por primera vez?</label>
+                                            <input id="sit_down" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="first_words" class="form-label">¿A qué edad el estudiante dijo sus primeras palabras?</label>
-                                                <input id="first_words" type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="speak_fluently" class="form-label">¿A que edad el estudiante hablo con fluidez?</label>
-                                                <input id="speak_fluently" type="text" class="form-control">
-                                            </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="crawl" class="form-label">¿A qué edad
+                                                el estudiante gateó por primera vez?</label>
+                                            <input id="crawl" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-primary prevBtn pull-left" value="Atrás"></button>
-                                    <button type="button" class="btn btn-primary nextBtn pull-right" value="siguiente"></button>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="stoop_up" class="form-label">¿A qué edad
+                                                el estudiante se paró por primera vez?</label>
+                                            <input id="stoop_up" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="walk" class="form-label">¿A qué edad
+                                                el estudiante caminó por primera vez?</label>
+                                            <input id="walk" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="sphinter" class="form-label">¿A qué edad
+                                                el estudiante controló su esfínter por primera vez?</label>
+                                            <input id="sphinter" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="first_words" class="form-label">¿A qué edad el estudiante dijo sus primeras palabras?</label>
+                                            <input id="first_words" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="speak_fluently" class="form-label">¿A que edad el estudiante hablo con fluidez?</label>
+                                            <input id="speak_fluently" type="text" class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row setup-content" id="step-3">
-                                <div class="col">
-                                    <h5 class="fs-title">Datos del padre</h5>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="given-names-father" class="form-label">Nombres</label>
-                                                <input id="given-names-father" type="text" class="form-control">
-                                            </div>
+                            <div class="tab" id="step-3">
+                                <h5 class="fs-title">Datos del padre</h5>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="given-names-father" class="form-label">Nombres</label>
+                                            <input id="given-names-father" type="text" class="form-control">
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="first-last-name-father" class="form-label">Primer Apellido</label>
-                                                <input id="first-last-name-father" type="text" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-last-name-father" class="form-label">Primer Apellido</label>
+                                            <input id="first-last-name-father" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="second-last-name-father" class="form-label">Segundo apellido</label>
+                                            <input id="second-last-name-father" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="birth-date-father" class="form-label">Fecha de nacimiento</label>
+                                            <input id="birth-date-father" type="date" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">¿Está vivo?</label>
+                                            <br>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-1">
+                                                <label class="form-check-label" for="radio-1"> Default radio </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-2">
+                                                <label class="form-check-label" for="radio-2">Default checked radio</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="second-last-name-father" class="form-label">Segundo apellido</label>
-                                                <input id="second-last-name-father" type="text" class="form-control">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">¿Vive con el estudiante?</label>
+                                            <br>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-3">
+                                                <label class="form-check-label" for="radio-3"> Default radio </label>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="birth-date-father" class="form-label">Fecha de nacimiento</label>
-                                                <input id="birth-date-father" type="date" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">¿Está vivo?</label>
-                                                <br>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-1">
-                                                    <label class="form-check-label" for="radio-1"> Default radio </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-2">
-                                                    <label class="form-check-label" for="radio-2">Default checked radio</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">¿Vive con el estudiante?</label>
-                                                <br>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-3">
-                                                    <label class="form-check-label" for="radio-3"> Default radio </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-4">
-                                                    <label class="form-check-label" for="radio-4">Default checked radio</label>
-                                                </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-4">
+                                                <label class="form-check-label" for="radio-4">Default checked radio</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="education-degree-father" class="form-label">Grado de instrucción</label>
-                                                <select id="education-degree-father" class="form-control">
-                                                    <option class="seleccionado" value="" selected> Seleccione tipo de instrucción</option>
-                                                    <option>Primaria completa</option>
-                                                    <option>Primaria incompleta</option>
-                                                    <option>Secundaria completa</option>
-                                                    <option>Secundaria incompleta</option>
-                                                    <option>Universidad completa</option>
-                                                    <option>Universidad incompleta</option>
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="occupation-father" class="form-label">Ocupación</label>
-                                                <input id="occupation-father" type="text" class="form-control">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="religion-father" class="form-label">Tipo de Religion</label>
-                                                <select id="religion-father" class="form-control">
-                                                    <option class="seleccionado" value="" selected> Seleccione Religion</option>
-                                                    <option>Ateo</option>
-                                                    <option>Judio</option>
-                                                </select>
-                                            </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="education-degree-father" class="form-label">Grado de instrucción</label>
+                                            <select id="education-degree-father" class="form-control">
+                                                <option class="seleccionado" value="" selected> Seleccione tipo de instrucción</option>
+                                                <option th:each="educationDegree : ${educationDegrees}" th:value="${educationDegree.id}" th:text="${educationDegree.name}"></option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-primary prevBtn pull-left" value="Atrás"></button>
-                                    <button type="button" class="btn btn-primary nextBtn pull-right" value="siguiente"></button>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="occupation-father" class="form-label">Ocupación</label>
+                                            <select id="occupation-father" class="form-control">
+                                                <option class="seleccionado" value="" selected> Seleccione Ocupación</option>
+                                                <option th:each="occupation : ${occupations}" th:value="${occupation.id}" th:text="${occupation.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="religion-father" class="form-label">Tipo de Religion</label>
+                                            <select id="religion-father" class="form-control" th:field="*{religion}">
+                                                <option class="seleccionado" value="" selected> Seleccione Religion</option>
+                                                <option th:each="religion : ${religions}" th:value="${religion.id}" th:text="${religion.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row setup-content" id="step-4">
-                                <div class="col">
-                                    <h5 class="fs-title">Datos de la madre</h5>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="given-names-mother" class="form-label">Nombres</label>
-                                                <input id="given-names-mother" type="text" class="form-control">
-                                            </div>
+                            <div class="tab" id="step-4">
+                                <h5 class="fs-title">Datos de la madre</h5>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="given-names-mother" class="form-label">Nombres</label>
+                                            <input id="given-names-mother" type="text" class="form-control">
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="first-last-name-mother" class="form-label">Primer
-                                                    Apellido</label>
-                                                <input id="first-last-name-mother" type="text" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-last-name-mother" class="form-label">Primer
+                                                Apellido</label>
+                                            <input id="first-last-name-mother" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="second-last-name-mother" class="form-label">Segundo apellido</label>
+                                            <input id="second-last-name-mother" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="birth-date-mother" class="form-label">Fecha de nacimiento</label>
+                                            <input id="birth-date-mother" type="date" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">¿Está vivo?</label>
+                                            <br>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-5">
+                                                <label class="form-check-label" for="radio-5"> Default radio </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-6">
+                                                <label class="form-check-label" for="radio-6">Default checked radio</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="second-last-name-mother" class="form-label">Segundo apellido</label>
-                                                <input id="second-last-name-mother" type="text" class="form-control">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-last-name" class="form-label">¿Vive con el estudiante?</label>
+                                            <br>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                                <label class="form-check-label" for="flexRadioDefault1"> Default radio </label>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="birth-date-mother" class="form-label">Fecha de nacimiento</label>
-                                                <input id="birth-date-mother" type="date" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">¿Está vivo?</label>
-                                                <br>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-5">
-                                                    <label class="form-check-label" for="radio-5"> Default radio </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio-6">
-                                                    <label class="form-check-label" for="radio-6">Default checked radio</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="first-last-name" class="form-label">¿Vive con el estudiante?</label>
-                                                <br>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                                    <label class="form-check-label" for="flexRadioDefault1"> Default radio </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                                                    <label class="form-check-label" for="flexRadioDefault2">Default checked radio</label>
-                                                </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                                <label class="form-check-label" for="flexRadioDefault2">Default checked radio</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="education-degree-mother" class="form-label">Grado de instrucción</label>
-                                                <select id="education-degree-mother" class="form-control">
-                                                    <option class="seleccionado" value="" selected>Seleccione tipo de instrucción</option>
-                                                    <option>Primaria completa</option>
-                                                    <option>Primaria incompleta</option>
-                                                    <option>Secundaria completa</option>
-                                                    <option>Secundaria incompleta</option>
-                                                    <option>Universidad completa</option>
-                                                    <option>Universidad incompleta</option>
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="occupation-mother" class="form-label">Ocupacion</label>
-                                                <input id="occupation-mother" type="text" class="form-control">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="religion-mother" class="form-label">Tipo de Religion</label>
-                                                <select id="religion-mother" class="form-control">
-                                                    <option class="seleccionado" value="" selected>Seleccione Religion</option>
-                                                    <option>Ateo</option>
-                                                    <option>Judio</option>
-                                                </select>
-                                            </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="education-degree-mother" class="form-label">Grado de instrucción</label>
+                                            <select id="education-degree-mother" class="form-control">
+                                                <option class="seleccionado" value="" selected>Seleccione tipo de instrucción</option>
+                                                <option th:each="educationDegree : ${educationDegrees}" th:value="${educationDegree.id}" th:text="${educationDegree.name}"></option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-primary prevBtn pull-left" value="Atrás"></button>
-                                    <input type="button" class="btn btn-primary pull-right" value="Siguiente">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="occupation-mother" class="form-label">Ocupación</label>
+                                            <select id="occupation-mother" class="form-control">
+                                                <option class="seleccionado" value="" selected> Seleccione Ocupación</option>
+                                                <option th:each="occupation : ${occupations}" th:value="${occupation.id}" th:text="${occupation.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="religion-mother" class="form-label">Tipo de Religion</label>
+                                            <select id="religion-mother" class="form-control" th:field="*{religion}">
+                                                <option class="seleccionado" value="" selected>Seleccione Religion</option>
+                                                <option th:each="religion : ${religions}" th:value="${religion.id}" th:text="${religion.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+<!--                            <div style="overflow:auto;">-->
+<!--                                <div style="float:right;">-->
+<!--                                    <button type="button" id="prevBtn" class="btn btn-secondary" onclick="nextPrev(-1)">Atrás</button>-->
+                                    <button type="button" id="nextBtn" class="btn btn-primary">Enviar</button>
+<!--                                </div>-->
+<!--                            </div>-->
                         </form>
                     </div>
                 </main>
@@ -537,129 +503,36 @@
         <script th:src="@{/js/scripts.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
         <script type='text/javascript'>
-            $(document).ready(function () {
-
-                var current_fs, next_fs, previous_fs; //fieldsets
-                var opacity;
-
-                $(".next").click(function () {
-
-                    current_fs = $(this).parent();
-                    next_fs = $(this).parent().next();
-
-                    //Add Class Active
-                    $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-
-                    //show the next fieldset
-                    next_fs.show();
-                    //hide the current fieldset with style
-                    current_fs.animate({
-                        opacity: 0
-                    }, {
-                        step: function (now) {
-                            // for making fielset appear animation
-                            opacity = 1 - now;
-
-                            current_fs.css({
-                                'display': 'none',
-                                'position': 'relative'
-                            });
-                            next_fs.css({
-                                'opacity': opacity
-                            });
-                        },
-                        duration: 600
-                    });
-                });
-
-                $(".previous").click(function () {
-
-                    current_fs = $(this).parent();
-                    previous_fs = $(this).parent().prev();
-
-                    //Remove class active
-                    $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-
-                    //show the previous fieldset
-                    previous_fs.show();
-
-                    //hide the current fieldset with style
-                    current_fs.animate({
-                        opacity: 0
-                    }, {
-                        step: function (now) {
-                            // for making fielset appear animation
-                            opacity = 1 - now;
-
-                            current_fs.css({
-                                'display': 'none',
-                                'position': 'relative'
-                            });
-                            previous_fs.css({
-                                'opacity': opacity
-                            });
-                        },
-                        duration: 600
-                    });
-                });
-
-                $(".submit").click(function () {
-                    return false;
-                })
-
-
-                $(document).ready(function () {
-                    var navListItems = $('div.setup-panel div a'),
-                        allWells = $('.setup-content'),
-                        allNextBtn = $('.nextBtn'),
-                        allPrevBtn = $('.prevBtn');
-
-                    allWells.hide();
-
-                    navListItems.click(function (e) {
-                        e.preventDefault();
-                        var $target = $($(this).attr('href')),
-                            $item = $(this);
-
-                        if (!$item.hasClass('disabled')) {
-                            navListItems.removeClass('btn-primary').addClass('btn-default');
-                            $item.addClass('btn-primary');
-                            allWells.hide();
-                            $target.show();
-                            $target.find('input:eq(0)').focus();
+            $('#department').change(
+                function () {
+                    $.getJSON("http://localhost:8080/parent/ficha-matricula/provincias", {
+                        id: $(this).val(),
+                        ajax: 'true'
+                    }, function (data) {
+                        let html = '';
+                        let len = data.length;
+                        for (let i = 0; i < len; i++) {
+                            html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
+                        html += '</option>';
+                        $('#province').html(html);
                     });
-
-                    allPrevBtn.click(function(){
-                        var curStep = $(this).closest(".setup-content"),
-                            curStepBtn = curStep.attr("id"),
-                            prevStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a");
-
-                        prevStepWizard.removeAttr('disabled').trigger('click');
-                    });
-
-                    allNextBtn.click(function(){
-                        var curStep = $(this).closest(".setup-content"),
-                            curStepBtn = curStep.attr("id"),
-                            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-                            curInputs = curStep.find("input[type='text'],input[type='url']"),
-                            isValid = true;
-
-                        $(".form-group").removeClass("has-error");
-                        for(var i=0; i<curInputs.length; i++){
-                            if (!curInputs[i].validity.valid){
-                                isValid = false;
-                                $(curInputs[i]).closest(".form-group").addClass("has-error");
-                            }
-                        }
-
-                        if (isValid)
-                            nextStepWizard.removeAttr('disabled').trigger('click');
-                    });
-
-                    $('div.setup-panel div a.btn-primary').trigger('click');
                 });
-            });
+            $('#province').change(
+                function () {
+                    $.getJSON("http://localhost:8080/parent/ficha-matricula/distritos", {
+                        id: $(this).val(),
+                        ajax: 'true'
+                    }, function (data) {
+                        let html = '';
+                        let len = data.length;
+                        for (let i = 0; i < len; i++) {
+                            html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        html += '</option>';
+                        $('#district').html(html);
+                    });
+                });
         </script>
     </body>
 </html>

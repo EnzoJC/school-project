@@ -24,7 +24,8 @@ public class ParentServImpl implements IParentService{
     private final IParentRepository parentRepository;
     private final IRoleRepository roleRepository;
 
-    @PersistenceContext
+    @PersistenceContext // Esto es para que funcione el EntityManager
+    // EntityManager es el encargado de gestionar las transacciones
     private EntityManager entityManager;
 
     public ParentServImpl(IParentRepository parentRepository, IRoleRepository roleRepository) {

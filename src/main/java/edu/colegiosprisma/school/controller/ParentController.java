@@ -25,17 +25,41 @@ public class ParentController {
     private final IGenderService genderService;
     private final IEmailService emailService;
     private final IStudentService studentService;
+    private final IDepartmentService departmentService;
+    private final IProvinceService provinceService;
+    private final IDistrictService districtService;
+    private final ILanguageService languageService;
+    private final IReligionService religionService;
+    private final ITypeDisabilityService typeDisabilityService;
+    private final IBloodTypeService bloodTypeService;
+    private final ITypeOfBirthService typeOfBirthService;
+    private final IEducationDegreeService educationDegreeService;
+    private final IOccupationService occupationService;
 
     @Autowired
     public ParentController(IParentService parentService, IDocumentTypeService documentTypeService,
                             INationalityService nationalityService, IGenderService genderService,
-                            IEmailService emailService, IStudentService studentService) {
+                            IEmailService emailService, IStudentService studentService, IDepartmentService departmentService,
+                            IProvinceService provinceService, IDistrictService districtService, ILanguageService languageService,
+                            IReligionService religionService, ITypeDisabilityService typeDisabilityService,
+                            IBloodTypeService bloodTypeService, ITypeOfBirthService typeOfBirthService,
+                            IEducationDegreeService educationDegreeService, IOccupationService occupationService) {
         this.parentService = parentService;
         this.documentTypeService = documentTypeService;
         this.nationalityService = nationalityService;
         this.genderService = genderService;
         this.emailService = emailService;
         this.studentService = studentService;
+        this.departmentService = departmentService;
+        this.provinceService = provinceService;
+        this.districtService = districtService;
+        this.languageService = languageService;
+        this.religionService = religionService;
+        this.typeDisabilityService = typeDisabilityService;
+        this.bloodTypeService = bloodTypeService;
+        this.typeOfBirthService = typeOfBirthService;
+        this.educationDegreeService = educationDegreeService;
+        this.occupationService = occupationService;
     }
 
     /**
@@ -139,13 +163,44 @@ public class ParentController {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Parent parent = parentService.selectByUsername(userDetails.getUsername());
 //        Student student = (Student) studentService.getStudentById(studentId).get();
+        List<BloodType> bloodTypes = bloodTypeService.getAllBloodTypes();
+        List<Department> departments = departmentService.getAllDepartments();
+        List<EducationDegree> educationDegrees = educationDegreeService.getAllEducationDegrees();
+        List<Language> languages = languageService.getAllLanguages();
+        List<Occupation> occupations = occupationService.getAllOccupations();
+        List<Religion> religions = religionService.getAllReligions();
+        List<TypeDisability> typeDisabilities = typeDisabilityService.getAllTypeOfDisabilities();
+        List<TypeOfBirth> typeOfBirths = typeOfBirthService.getAllTypeOfBirths();
+        List<DocumentType> documentTypes = documentTypeService.getAllDocumentTypes();
+
 
         model.addAttribute("parent", parent);
-        model.addAttribute("student", studentService.getStudentById(studentId));
+        model.addAttribute("student", (Student) studentService.getStudentById(studentId).get());
         model.addAttribute("enrollmentForm", new EnrollmentForm());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
+        model.addAttribute("bloodTypes", bloodTypes);
+        model.addAttribute("departments", departments);
+        model.addAttribute("educationDegrees", educationDegrees);
+        model.addAttribute("languages", languages);
+        model.addAttribute("occupations", occupations);
+        model.addAttribute("religions", religions);
+        model.addAttribute("typeDisabilities", typeDisabilities);
+        model.addAttribute("typeOfBirths", typeOfBirths);
+        model.addAttribute("documentTypes", documentTypes);
 
         return "fichaMatricula";
+    }
+
+    @GetMapping(value = "/parent/ficha-matricula/provincias")
+    public @ResponseBody List<Province> getProvinciasPorDepartamento(@RequestParam(value = "id") String id) {
+        Department department = departmentService.getDepartment(id);
+        return provinceService.getAllProvincesByDepartament(department);
+    }
+
+    @GetMapping(value = "/parent/ficha-matricula/distritos")
+    public @ResponseBody List<District> getDistritosPorProvincia(@RequestParam(value = "id") String id) {
+        Province province = provinceService.getProvince(id);
+        return districtService.getAllDistrictsByProvince(province);
     }
 
     private void cargarOptions(Model model) {

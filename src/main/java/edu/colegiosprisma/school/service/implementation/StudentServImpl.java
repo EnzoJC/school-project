@@ -24,6 +24,8 @@ public class StudentServImpl implements IStudentService {
     @PersistenceContext
     private EntityManager entityManager;
 
+    // @Autowired es para inyectar la dependencia
+    // La inyección se hace en el constructor
     @Autowired
     public StudentServImpl(IStudentRepository studentRepository, IRoleRepository roleRepository,
                            IEnrollmentService enrollmentService) {

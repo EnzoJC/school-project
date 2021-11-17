@@ -31,11 +31,11 @@ public class TransactionController {
     public String pagarMatriculaNuevoEstudiante(@RequestParam("idStudent") String idStudent) {
         // El método getStudentById() permite obtener el estudiante a partir del id
         // que se le pasa como parámetro.
-        // getStudentById() retorna un tipo de dato Optional<Student>
+        // getStudentById() retorna un tipo de dato Optional<User>
         // Si el estudiante existe, se obtiene el objeto Student.
-        // Si el estudiante no existe, se obtiene un objeto Optional<Student> vacío.
-        // El método get() del objeto Optional<Student> permite obtener el objeto
-        // Student del Optional<Student>
+        // Si el estudiante no existe, se obtiene un objeto Optional<User> vacío.
+        // El método get() del objeto Optional<User> permite obtener el objeto
+        // User del Optional<User>
         // Este método permite verificar que el pago a realizar corresponde a un estudiante
         Student student = (Student) studentService.getStudentById(idStudent).get();
         State state = stateService.buscarEstadoPorId(5); // 5: Pendiente de pago

@@ -25,7 +25,7 @@ public class EnrollmentForm {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "tipe_of_birth_id", nullable = false)
-    private TypesOfBirth tipeOfBirth;
+    private TypeOfBirth tipeOfBirth;
 
     @Column(name = "is_complication_birth", nullable = false)
     private Boolean isComplicationBirth = false;
@@ -93,4 +93,8 @@ public class EnrollmentForm {
             joinColumns = @JoinColumn(name = "enrollment_form_id"),
             inverseJoinColumns = @JoinColumn(name = "parent_information_id"))
     List<TypeDisability> listDisability;
+
+    public void addDisability(TypeDisability disability) {
+        listDisability.add(disability);
+    }
 }
