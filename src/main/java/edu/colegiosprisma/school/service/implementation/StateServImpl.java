@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IStateServImpl implements IStateService {
+public class StateServImpl implements IStateService {
     private final IStateRepository stateRepository;
 
-    public IStateServImpl(IStateRepository stateRepository) {
+    public StateServImpl(IStateRepository stateRepository) {
         this.stateRepository = stateRepository;
     }
 
     @Override
     public State buscarEstadoPorId(Integer id) {
-        return stateRepository.findById(id).get();
+        return stateRepository.findById(id).isPresent() ? stateRepository.findById(id).get() : new State();
     }
 }

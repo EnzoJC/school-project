@@ -14,243 +14,194 @@
     </head>
 
     <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand ps-3" href="login.html">Colegios Prismas</a>
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
-                <i class="fas fa-bars"></i>
-            </button>
-            <ul class="navbar-nav d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user fa-fw"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" th:href="@{/parent/perfil}">Ver perfil</a></li>
-                        <li>
-                            <form name="logoutForm" method="POST" th:action="@{/logout}" th:hidden="true">
-                            </form>
-                            <a id="logout-link" class="dropdown-item" href="#" onclick="document.forms['logoutForm'].submit()">Cerrar sesión</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
+        <div th:replace="parts :: topnav"></div>
         <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Padres</div>
-                            <a class="nav-link" th:href="@{/parent/admision}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-project-diagram mr-2"></i></div>
-                                Admisión
-                            </a>
-                            <a class="nav-link" th:href="@{/parent/postulante}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-plus mr-2"></i></div>
-                                Postulante
-                            </a>
-                        </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Conectado como:</div>
-                        <span th:text="${nombresCompletos}"></span>
-                    </div>
-                </nav>
-            </div>
+            <div th:replace="parts :: sideNav(${nombresCompletos})"></div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-lg text-center p-5" th:if="${#lists.isEmpty(listaEstudiantes)}">
                         <img class="p-5" th:src="@{/img/parque-vacio.svg}" width="550px"/>
                         <p class="fs-4 mt-4">Aún no tienes estudiantes registrados :(</p>
                     </div>
-<!--                    Inicio del contenido -->
-<!--                    <div class="container-fluid px-4">-->
-                        <div class="card tarjeta px-4" th:each="estudiante : ${listaEstudiantes}">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <span th:text="${estudiante.givenNames} + ' ' + ${estudiante.firstLastName} + ' ' + ${estudiante.secondLastName}"></span>
-                                </h5>
-<!--                                <div class="container-fluid">-->
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-1 my-2">
-                                            <div class="text-center"><img th:src="${estudiante.gender.name == 'Masculino' ? '/img/boy.png' : '/img/girl.png'}" alt="" width="64px" height="auto" src=""></div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <p class="mb-0"><span class="fw-bold" th:text="${estudiante.documentType.name} + ': '"></span><span th:text="${estudiante.documentNumber}" class="idNumber"></span></p>
-                                            <p class="mb-0"><span class="fw-bold">Grado: </span><span th:each="enrollment : ${estudiante.enrollments}" th:text="${enrollment.grade.name}"></span></p>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <p class="mb-0"><span class="fw-bold">Edad: </span> <span th:text="${estudiante.getAge()}"></span></p>
-                                            <p class="mb-0"><span class="fw-bold">Parentesco: </span> <span th:text="${estudiante.relationship.name}"></span></p>
-                                        </div>
-                                        <div class="col-lg-3 my-2">
-                                            <div class="d-grid gap-2">
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay"
-                                                        th:if="${estudiante.enrollments.get(0).state.id == 1}">
-                                                    Pagar matrícula
-                                                </button>
-                                                <a th:if="${estudiante.enrollments.get(0).state.id == 2}" class="btn btn-success"
-                                                   th:href="@{'/parent/ficha-matricula' + '?id=' + ${estudiante.id}}" role="button">Llenar ficha de Matrícula</a>
+                    <div class="card tarjeta px-4" th:each="estudiante : ${listaEstudiantes}">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <span th:text="${estudiante.givenNames} + ' ' + ${estudiante.firstLastName} + ' ' + ${estudiante.secondLastName}"></span>
+                            </h5>
+                            <div class="row align-items-center">
+                                <div class="col-lg-1 my-2">
+                                    <div class="text-center"><img th:src="${estudiante.gender.name == 'Masculino' ? '/img/boy.png' : '/img/girl.png'}" alt="" width="64px" height="auto" src=""></div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <p class="mb-0"><span class="fw-bold" th:text="${estudiante.documentType.name} + ': '"></span><span th:text="${estudiante.documentNumber}" class="idNumber"></span></p>
+                                    <p class="mb-0"><span class="fw-bold">Grado: </span><span th:each="enrollment : ${estudiante.enrollments}" th:text="${enrollment.grade.name}"></span></p>
+                                </div>
+                                <div class="col-lg-4">
+                                    <p class="mb-0"><span class="fw-bold">Edad: </span> <span th:text="${estudiante.getAge()}"></span></p>
+                                    <p class="mb-0"><span class="fw-bold">Parentesco: </span> <span th:text="${estudiante.relationship.name}"></span></p>
+                                </div>
+                                <div class="col-lg-3 my-2">
+                                    <div class="d-grid gap-2">
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay"
+                                                th:if="${estudiante.enrollments.get(0).state.id == 1}">
+                                            Pagar matrícula
+                                        </button>
+                                        <a th:if="${estudiante.enrollments.get(0).state.id == 2}" class="btn btn-success"
+                                           th:href="@{'/parent/ficha-matricula' + '?id=' + ${estudiante.id}}" role="button">Llenar ficha de Matrícula</a>
 
-                                                <div th:if="${estudiante.enrollments.get(0).state.id == 1}"
-                                                     class="modal fade" id="pay" tabindex="-1" role="dialog" aria-labelledby="modalPay" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Realizar pago</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <!-- Inicio del contenido -->
-<!--                                                                <div class="container-fluid px-0">-->
-<!--                                                                    <div class="row">-->
-<!--                                                                        <div class="col-lg mx-0">-->
-                                                                            <div class="card">
-                                                                                <div class="card-body">
-                                                                                    <div class="bg-white shadow-sm pt-4 ps-2 pe-2 pb-2">
-                                                                                        <ul role="tablist" class="nav bg-light nav-pills rounded nav-fill mb-3">
-                                                                                            <li class="nav-item"
-                                                                                                role="presentation">
-                                                                                                <button
-                                                                                                        class="nav-link active"
-                                                                                                        id="credit-card-tab"
-                                                                                                        data-bs-toggle="pill"
-                                                                                                        data-bs-target="#credit-card"
-                                                                                                        type="button"
-                                                                                                        role="tab"
-                                                                                                        aria-controls="credit-card"
-                                                                                                        aria-selected="true">
-                                                                                                    Tarjeta
-                                                                                                </button>
-                                                                                            </li>
-                                                                                            <li class="nav-item"
-                                                                                                role="presentation">
-                                                                                                <button
-                                                                                                        class="nav-link"
-                                                                                                        id="deposito-tab"
-                                                                                                        data-bs-toggle="pill"
-                                                                                                        data-bs-target="#deposito"
-                                                                                                        type="button"
-                                                                                                        role="tab"
-                                                                                                        aria-controls="deposito"
-                                                                                                        aria-selected="true">
-                                                                                                    Depósito
-                                                                                                </button>
-                                                                                            </li>
-                                                                                            <li class="nav-item"
-                                                                                                role="presentation">
-                                                                                                <button
-                                                                                                        class="nav-link"
-                                                                                                        id="yape-tab"
-                                                                                                        data-bs-toggle="pill"
-                                                                                                        data-bs-target="#yape"
-                                                                                                        type="button"
-                                                                                                        role="tab"
-                                                                                                        aria-controls="yape"
-                                                                                                        aria-selected="true">
-                                                                                                    Yape
-                                                                                                </button>
-                                                                                            </li>
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                    <div class="tab-content">
-                                                                                        <div id="credit-card" class="tab-pane fade show active pt-3">
-                                                                                            <form id="form-pay" role="form" th:action="@{/parent/admision/pay(idStudent=${estudiante.id})}" method="POST">
-                                                                                                <div class="form-group mb-3">
-                                                                                                    <label for="full-names" class="h6">Nombres completos</label>
-                                                                                                    <input id="full-names" name="full-names" type="text" placeholder="Nombres completos"
-                                                                                                           required class="form-control ">
-                                                                                                </div>
-                                                                                                <div class="form-group">
-                                                                                                    <label for="card-number" class="h6">Número de tarjeta</label>
-                                                                                                    <div class="input-group mb-3">
-                                                                                                        <input id="card-number" name="card-number" type="text" placeholder="XXXX XXXX XXXX XXXX"
-                                                                                                               onkeyup="this.value = tarjeta(this.value)" maxlength="19"
-                                                                                                               class="form-control" aria-label="XXXX XXXX XXXX XXXX"
-                                                                                                               aria-describedby="basic-tarjeta"
-                                                                                                               required>
-                                                                                                        <span class="input-group-text" id="basic-tarjeta">
-                                                                                                            <i class="fab fa-cc-visa mx-1"></i>
-                                                                                                            <i class="fab fa-cc-mastercard mx-1"></i>
-                                                                                                        </span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="row">
-                                                                                                    <div class="col-sm-8 mb-3">
-                                                                                                        <div class="form-group">
-                                                                                                            <label for="expiration-date" class="h6">Fecha de expiración</label>
-                                                                                                            <div id="expiration-date" class="input-group">
-                                                                                                                <input type="number" id="month" name="month" placeholder="MM"
-                                                                                                                       class="form-control" required>
-                                                                                                                <input type="number" id="year" name="year" placeholder="YY"
-                                                                                                                       class="form-control" required>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-sm-4 mb-3">
-                                                                                                        <div class="form-group mb-4">
-                                                                                                            <label for="cvv" data-toggle="tooltip"
-                                                                                                                   title="Los 3 dígitos que se encuentran en la parte trasera de su tarjeta" class="h6">
-                                                                                                                CVV <i class="fa fa-question-circle d-inline"></i>
-                                                                                                            </label>
-                                                                                                            <input id="cvv" name="cvv" type="text" required class="form-control">
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                                                                                    <button type="submit" id="pagar"  class="btn btn-primary"
-                                                                                                            th:text="'Pagar S/' + ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()}">
-                                                                                                    </button>
-                                                                                                </div>
-                                                                                            </form>
-                                                                                        </div>
-                                                                                        <div id="deposito" class="tab-pane fade pt-3">
-                                                                                            <h6 class="pb-2">Número de cuenta bancaria BCP</h6>
-                                                                                            <p>191-01791604-0-00 (Mendoza Figueroa, Nadia Thais)</p>
-                                                                                            <h6 class="pb-2">Monto total a pagar</h6>
-                                                                                            <p>S/ 100</p>
-                                                                                            <p class="text-muted"> Nota: Después de realizar el depósito, el pago podrá ser visualizado después de 24 horas. </p>
-                                                                                        </div>
-                                                                                        <div id="yape" class="tab-pane fade pt-3">
-                                                                                            <div class="text-center">
-                                                                                                <img th:src="@{/img/yape.png}" class="rounded" width="250px" alt="">
-                                                                                            </div>
-                                                                                            <h6 class="mt-3">Número</h6>
-                                                                                            <p>+51 946 653 562 (Carrion Escobar, Enzo Joao)</p>
-                                                                                            <h6 class="mt-3">Monto total a pagar</h6>
-                                                                                            <p>S/ 100</p>
-                                                                                            <p class="text-muted mt-3"> Nota: Después de realizar el depósito, el pago podrá ser visualizado después de 24 horas. </p>
+                                        <div th:if="${estudiante.enrollments.get(0).state.id == 1}"
+                                             class="modal fade" id="pay" tabindex="-1" role="dialog" aria-labelledby="modalPay" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Realizar pago</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Inicio del contenido -->
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="bg-white shadow-sm pt-4 ps-2 pe-2 pb-2">
+                                                                    <ul role="tablist" class="nav bg-light nav-pills rounded nav-fill mb-3">
+                                                                        <li class="nav-item"
+                                                                            role="presentation">
+                                                                            <button
+                                                                                    class="nav-link active"
+                                                                                    id="credit-card-tab"
+                                                                                    data-bs-toggle="pill"
+                                                                                    data-bs-target="#credit-card"
+                                                                                    type="button"
+                                                                                    role="tab"
+                                                                                    aria-controls="credit-card"
+                                                                                    aria-selected="true">
+                                                                                Tarjeta
+                                                                            </button>
+                                                                        </li>
+                                                                        <li class="nav-item"
+                                                                            role="presentation">
+                                                                            <button
+                                                                                    class="nav-link"
+                                                                                    id="deposito-tab"
+                                                                                    data-bs-toggle="pill"
+                                                                                    data-bs-target="#deposito"
+                                                                                    type="button"
+                                                                                    role="tab"
+                                                                                    aria-controls="deposito"
+                                                                                    aria-selected="true">
+                                                                                Depósito
+                                                                            </button>
+                                                                        </li>
+                                                                        <li class="nav-item"
+                                                                            role="presentation">
+                                                                            <button
+                                                                                    class="nav-link"
+                                                                                    id="yape-tab"
+                                                                                    data-bs-toggle="pill"
+                                                                                    data-bs-target="#yape"
+                                                                                    type="button"
+                                                                                    role="tab"
+                                                                                    aria-controls="yape"
+                                                                                    aria-selected="true">
+                                                                                Yape
+                                                                            </button>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="tab-content">
+                                                                    <div id="credit-card" class="tab-pane fade show active pt-3">
+                                                                        <form id="form-pay" role="form" th:action="@{/parent/admision/pay(idStudent=${estudiante.id})}" method="POST">
+                                                                            <div class="form-group mb-3">
+                                                                                <label for="full-names" class="h6">Nombres completos</label>
+                                                                                <input id="full-names" name="full-names" type="text" placeholder="Nombres completos"
+                                                                                       required class="form-control ">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="card-number" class="h6">Número de tarjeta</label>
+                                                                                <div class="input-group mb-3">
+                                                                                    <input id="card-number" name="card-number" type="text" placeholder="XXXX XXXX XXXX XXXX"
+                                                                                           onkeyup="this.value = tarjeta(this.value)" maxlength="19"
+                                                                                           class="form-control" aria-label="XXXX XXXX XXXX XXXX"
+                                                                                           aria-describedby="basic-tarjeta"
+                                                                                           required>
+                                                                                    <span class="input-group-text" id="basic-tarjeta">
+                                                                                        <i class="fab fa-cc-visa mx-1"></i>
+                                                                                        <i class="fab fa-cc-mastercard mx-1"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-sm-8 mb-3">
+                                                                                    <div class="form-group">
+                                                                                        <label for="expiration-date" class="h6">Fecha de expiración</label>
+                                                                                        <div id="expiration-date" class="input-group">
+                                                                                            <input type="text" id="month" name="month" placeholder="MM"
+                                                                                                   class="form-control" pattern="\d*" maxlength="2" required>
+                                                                                            <input type="text" id="year" name="year" placeholder="YY"
+                                                                                                   class="form-control" pattern="\d*" maxlength="2" required>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                <div class="col-sm-4 mb-3">
+                                                                                    <div class="form-group mb-4">
+                                                                                        <label for="cvv" data-toggle="tooltip"
+                                                                                               title="Los 3 dígitos que se encuentran en la parte trasera de su tarjeta" class="h6">
+                                                                                            CVV <i class="fa fa-question-circle d-inline"></i>
+                                                                                        </label>
+                                                                                        <input id="cvv" name="cvv" type="text" required class="form-control" pattern="\d*" maxlength="3"requiered>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
-<!--                                                                        </div>-->
-<!--                                                                    </div>-->
-<!--                                                                </div>-->
-                                                                <!-- Fin del contenido -->
+                                                                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                                                                <button type="submit" id="pagar"  class="btn btn-primary"
+                                                                                        th:text="'Pagar S/' + ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()}">
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div id="deposito" class="tab-pane fade pt-3">
+                                                                        <h6 class="pb-2">Número de cuenta bancaria BCP</h6>
+                                                                        <p>191-01791604-0-00 (Mendoza Figueroa, Nadia Thais)</p>
+                                                                        <h6 class="pb-2">Monto total a pagar</h6>
+                                                                        <p th:text="'S/' + ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()}"></p>
+                                                                        <p class="text-muted"> Nota: Después de realizar el depósito, el pago podrá ser visualizado después de 24 horas. </p>
+                                                                    </div>
+                                                                    <div id="yape" class="tab-pane fade pt-3">
+                                                                        <div class="text-center">
+                                                                            <img th:src="@{/img/yape.png}" class="rounded" width="250px" alt="">
+                                                                        </div>
+                                                                        <h6 class="mt-3">Número</h6>
+                                                                        <p>+51 946 653 562 (Carrion Escobar, Enzo Joao)</p>
+                                                                        <h6 class="mt-3">Monto total a pagar</h6>
+                                                                        <p th:text="'S/' + ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()}"></p>
+                                                                        <p class="text-muted mt-3"> Nota: Después de realizar el depósito, el pago podrá ser visualizado después de 24 horas. </p>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <!-- Fin del contenido -->
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-<!--                                </div>-->
+                                </div>
                             </div>
                         </div>
-<!--                    </div>-->
+                    </div>
                 </main>
             </div>
         </div>
+
+        <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+        <script th:src="@{/js/scripts.js}"></script>
         <script>
-                document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("form-pay").addEventListener('submit', validarFormulario);
             });
 
             function validarFormulario(evento) {
                 evento.preventDefault();
-                var fullNames = document.getElementById('full-names').value;
+                const fullNames = document.getElementById('full-names').value;
                 if (fullNames.length > 0){
                     const regexFullNames = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/i;
                     if (!regexFullNames.test(fullNames)){
@@ -258,7 +209,7 @@
                         return false;
                     }
                 }
-                var cardNumber = document.getElementById('card-number').value;
+                const cardNumber = document.getElementById('card-number').value;
                 if (cardNumber.length > 0){
                     const regexCardNumber = /^([0-9]{4})+(-)+([0-9]{4})+(-)+([0-9]{4})+(-)+([0-9]{4})$/;
                     if (!regexCardNumber.test(cardNumber)){
@@ -266,7 +217,7 @@
                         return false;
                     }
                 }
-                var month = document.getElementById("month").value;
+                const month = document.getElementById("month").value;
                 if (month.length > 0){
                     const regexMonth = /^[0-9]{2}$/;
                     if (!regexMonth.test(month)){
@@ -274,7 +225,7 @@
                         return false;
                     }
                 }
-                var year = document.getElementById("year").value;
+                const year = document.getElementById("year").value;
                 if (year.length > 0){
                     const regexYear = /^[0-9]{2}$/;
                     if (!regexYear.test(year)){
@@ -282,7 +233,7 @@
                         return false;
                     }
                 }
-                var cvv = document.getElementById("cvv").value;
+                const cvv = document.getElementById("cvv").value;
                 if (cvv.length > 0){
                     const regexCvv = /^[0-9]{3}$/;
                     if (!regexCvv.test(cvv)){
@@ -305,9 +256,5 @@
                 return cadena;
             }
         </script>
-
-        <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
-        <script th:src="@{/js/scripts.js}"></script>
-
     </body>
 </html>

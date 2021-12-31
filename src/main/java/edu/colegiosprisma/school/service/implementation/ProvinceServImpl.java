@@ -20,6 +20,6 @@ public class ProvinceServImpl implements IProvinceService {
 
     @Override
     public Province getProvince(String id) {
-        return provinceRepository.findById(id).get();
+        return provinceRepository.findById(id).isPresent() ? provinceRepository.findById(id).get() : new Province();
     }
 }

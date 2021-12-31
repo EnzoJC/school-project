@@ -37,10 +37,12 @@ public class TransactionController {
         // El método get() del objeto Optional<User> permite obtener el objeto
         // User del Optional<User>
         // Este método permite verificar que el pago a realizar corresponde a un estudiante
-        Student student = (Student) studentService.getStudentById(idStudent).get();
-        State state = stateService.buscarEstadoPorId(5); // 5: Pendiente de pago
-        if (transactionService.payTransaction(student, state))
-            enrollmentService.updateStatusForNewStudent(student, 2); // 2: Pre-inscrito
+        if (studentService.getStudentById(idStudent).isPresent()) {
+            Student student = (Student) studentService.getStudentById(idStudent).get();
+            State state = stateService.buscarEstadoPorId(5); // 5: Pendiente de pago
+            if (transactionService.payTransaction(student, state))
+                enrollmentService.updateStatusForNewStudent(student, 2); // 2: Pre-inscrito
+        }
         return "redirect:/parent/admision";
     }
 }

@@ -22,7 +22,7 @@ import java.util.Set;
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
-    private static final String REGEX_FOR_NAMES = "^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+$";
+    private static final String REGEX_FOR_NAMES = "^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]{2,25}(\\s{1}[a-zA-ZÀ-ÿ\\u00f1\\u00d1]{2,25})?$";
     @Id
     @Column(name = "user_id", nullable = false, length = 10)
     private String id;
@@ -49,10 +49,9 @@ public class User {
     @JoinColumn(name = "document_type_id", nullable = false)
     private DocumentType documentType;
 
-    @Size(min = 8 , max = 20, message = "El número de de documento debe estar entre 8 y 20 dígitos")
+//    @Size(min = 8 , max = 20, message = "El número de de documento debe estar entre 8 y 20 dígitos")
     @NotEmpty(message = "El número de documento es obligatorio")
-    @Pattern(regexp = "^[0-9]*$", message = "El número de documento debe contener solo números")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Pattern(regexp = "^[0-9]{8,12}$", message = "El número de documento debe contener solo números")
     @Column(name = "document_number", nullable = false, length = 20)
     private String documentNumber;
 

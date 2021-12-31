@@ -43,10 +43,10 @@ public class EnrollmentServImpl implements IEnrollmentService {
 
         enrollment.setSchoolYear(schoolYear);
         enrollment.setStudent(student);
-        enrollment.setState(state.get());
+        enrollment.setState(state.isPresent()? state.get() : new State());
         enrollment.setCurrentYear(true);
 
-        PaymentType paymentType = paymentTypeRepository.findById(11).get(); // 11: Matricula
+        PaymentType paymentType = paymentTypeRepository.findById(11).isPresent() ? paymentTypeRepository.findById(11).get() : new PaymentType(); // 11: Matricula
         Payment payment = paymentRepository.findByPaymentTypeAndIsActiveIsTrue(paymentType);
         enrollmentRepository.save(enrollment);
         transactionService.createTransaction(enrollment, Set.of(payment));
@@ -59,7 +59,7 @@ public class EnrollmentServImpl implements IEnrollmentService {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCurrentYearIsTrue(student);
         Optional<State> state = stateRepository.findById(status); // 2: Pagado
 
-        enrollment.setState(state.get());
+        enrollment.setState(state.isPresent()? state.get() : new State());
         enrollmentRepository.save(enrollment);
         return enrollment;
     }
@@ -69,7 +69,7 @@ public class EnrollmentServImpl implements IEnrollmentService {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCurrentYearIsTrue(student);
         Optional<State> state = stateRepository.findById(status); // 2: Pagado
 
-        enrollment.setState(state.get());
+        enrollment.setState(state.isPresent()? state.get() : new State());
         enrollmentRepository.save(enrollment);
         return enrollment;
     }

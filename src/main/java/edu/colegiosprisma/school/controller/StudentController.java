@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,9 +32,6 @@ public class StudentController {
     private final ILevelService levelService;
     private final IRelationshipService relationshipService;
     private final IGradeService gradeService;
-
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private final LocalDate dateAgo = LocalDate.now().minusYears(18);
 
     @Autowired
     public StudentController(IStudentService studentService, IParentService parentService,
@@ -52,51 +50,51 @@ public class StudentController {
 
     @GetMapping("/parent/postulante")
     public String agregar(Model model){
-        List<DocumentType> documentTypeList  = documentTypeService.getAllDocumentTypes();
-        List<Gender> genderList = genderService.getAllGenders();
-        List<Nationality> nationalityList = nationalityService.getAllNationalities();
-        List<Relationship> relationshipList = relationshipService.getAllRelationships();
-        List<Level> levelList = levelService.getAllLevels();
+        Parent parent = getCurrentParent();
+        cargarOptions(model);
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        Parent parent = parentService.selectByUsername(userDetails.getUsername());
-
-        model.addAttribute("dateAgo", dateAgo);
         model.addAttribute("nombresCompletos", parent.getGivenNames());
         model.addAttribute("student", new Student());
         model.addAttribute("enrollment", new Enrollment());
-        model.addAttribute("documentTypeList", documentTypeList);
-        model.addAttribute("genderList", genderList);
-        model.addAttribute("nationalityList", nationalityList);
-        model.addAttribute("relationshipList", relationshipList);
-        model.addAttribute("levelList", levelList);
+
         return "postulante";
     }
 
     @PostMapping("/parent/postulante")
     public String registrar(@Valid Student student, BindingResult result, Enrollment enrollment, Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        Parent parent = parentService.selectByUsername(userDetails.getUsername());
+        Parent parent = getCurrentParent();
         student.setParent(parent);
 
         if(result.hasErrors()){
             cargarOptions(model);
-            for (int i = 0; i < studentService.verifyStudentDuplicate(student).size(); i++) {
-                if (studentService.verifyStudentDuplicate(student).get(i) == 1)
-                    model.addAttribute("alertaDocumentNumber", "El " + student.getDocumentType().getName() + " ingresado ya existe");
+            lanzarMensajesAdvertencia(student, model);
+            if (student.getAge() > 18) {
+                model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
+            }
+            if (student.getDocumentNumber().length() != student.getDocumentType().getLength()) {
+                model.addAttribute("alertaDocumento", "Revise bien su número de documento");
             }
             return "postulante";
         }
         if (studentService.verifyStudentDuplicate(student).isEmpty()) {
+            if (student.getAge() > 18) {
+                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
+                return "registro";
+            }
             studentService.createStudent(student, enrollment); // Inserta en la base de datos
             return "redirect:/parent/admision";
         } else {
-            cargarOptions(model);
-            for (int i = 0; i < studentService.verifyStudentDuplicate(student).size(); i++) {
-                if (studentService.verifyStudentDuplicate(student).get(i) == 1)
-                    model.addAttribute("alertaDocumentNumber", "El " + student.getDocumentType().getName() + " ingresado ya existe");
+//            cargarOptions(model);
+//            lanzarMensajesAdvertencia(parent, model);
+            if (parent.getAge() < 18 && !studentService.verifyStudentDuplicate(student).isEmpty()) {
+                cargarOptions(model);
+                lanzarMensajesAdvertencia(student, model);
+                model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
+            } else if(!studentService.verifyStudentDuplicate(student).isEmpty()){
+                cargarOptions(model);
+                lanzarMensajesAdvertencia(student, model);
+            } else{
+                model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
             }
             return "/postulante";
         }
@@ -109,7 +107,7 @@ public class StudentController {
     @GetMapping(value = "/parent/postulante/grados")
     public @ResponseBody List<Grade> getGradosPorNivel(@RequestParam(value = "levelId") Integer levelId) {
         Optional<Level> level = levelService.getLevel(levelId);
-        return gradeService.getAllGradesByLevel(level.get());
+        return level.isPresent()? gradeService.getAllGradesByLevel(level.get()) : new ArrayList<>();
     }
 
     private void cargarOptions(Model model) {
@@ -124,5 +122,18 @@ public class StudentController {
         model.addAttribute("nationalityList", nationalityList);
         model.addAttribute("relationshipList", relationshipList);
         model.addAttribute("levelList", levelList);
+    }
+
+    private void lanzarMensajesAdvertencia(@Valid Student student, Model model) {
+        for (int i = 0; i < studentService.verifyStudentDuplicate(student).size(); i++) {
+            if (studentService.verifyStudentDuplicate(student).get(i) == 1)
+                model.addAttribute("alertaDocumentNumber", "El " + student.getDocumentType().getName() + " ingresado ya existe");
+        }
+    }
+
+    private Parent getCurrentParent() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        return parentService.selectByUsername(userDetails.getUsername());
     }
 }

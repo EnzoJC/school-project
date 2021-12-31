@@ -50,13 +50,14 @@
                     <div class="form-group">
                         <label for="document-number">Número de documento</label>
                         <input id="document-number" type="text" class="form-control" th:field="*{documentNumber}" required>
-                        <small class="form-text text-danger" th:if="${#fields.hasErrors('documentNumber')}" th:errors="*{documentNumber}"></small>
+                        <small class="form-text text-danger" th:text="${alertaDocumento}"></small>
                     </div>
                 </div>
                 <div class='col-xl-6 col-md-12 my-2'>
                     <div class="form-group">
                         <label for="birth-date">Fecha de nacimiento</label>
                         <input id="birth-date" type="date" class="form-control" th:field="*{birthDate}" required>
+                        <small class="form-text text-danger" th:text="${alertaEdad}"></small>
                     </div>
                 </div>
                 <div class='col-xl-6 col-md-12 my-2'>

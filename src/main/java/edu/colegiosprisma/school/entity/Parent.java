@@ -25,7 +25,7 @@ public class Parent extends User{
 
     @Size(min = 9, max = 9, message = "El número de celular solo debe tener 9 dígitos ")
     @NotEmpty
-    @Pattern(regexp = "^[0-9]+$", message = "El numero de teléfono solo debe ser números")
+    @Pattern(regexp = "^[0-9]{9}$", message = "El numero de teléfono solo debe ser números")
     @Column(name = "phone", nullable = false, length = 20)
     private String phone;
 

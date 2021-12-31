@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -63,7 +64,7 @@ public class ParentController {
     }
 
     /**
-     * Cuando se llame a .../registro se abrirá una solicitud tipo GET que llamara al método agregar.
+     * Cuando se llame a /registro se abrirá una solicitud tipo GET que llamara al método agregar.
      * Este método cargara los combos (desde la base de datos) y preparara un objeto de tipo Parent,
      * por último devuelve la vista registro.html
      */
@@ -84,30 +85,45 @@ public class ParentController {
     public String registrar(@Valid Parent parent, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         if(result.hasErrors()){
             cargarOptions(model);
-            for (int i = 0; i < parentService.verifyParentDuplicate(parent).size(); i++) {
-                if (parentService.verifyParentDuplicate(parent).get(i) == 1)
-                    model.addAttribute("alertaDocumentNumber", "El " + parent.getDocumentType().getName() + " ingresado ya existe");
-                if (parentService.verifyParentDuplicate(parent).get(i) == 2)
-                    model.addAttribute("alertaEmail", "El correo ingresado ya existe");
-                if (parentService.verifyParentDuplicate(parent).get(i) == 3)
-                    model.addAttribute("alertaPhone", "El teléfono ingresado ya existe");
+            lanzarMensajesAdvertencia(parent, model);
+            if (parent.getAge() < 18) {
+                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
+            }
+            if (parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) {
+                model.addAttribute("alertaDocumento", "Revise bien su número de documento");
             }
             return "registro";
         }
         if (parentService.verifyParentDuplicate(parent).isEmpty()) {
+            if ((parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) && (parent.getAge() < 18)) {
+                cargarOptions(model);
+                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
+                model.addAttribute("alertaDocumento", "Revise bien su número de documento");
+                return "registro";
+            } else if (parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) {
+                cargarOptions(model);
+                model.addAttribute("alertaDocumento", "Revise bien su número de documento");
+                return "registro";
+            } else if (parent.getAge() < 18) {
+                cargarOptions(model);
+                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
+                return "registro";
+            }
             parentService.createParent(parent);
             emailService.sendEmail(parent, "mail/credentials");
             redirectAttributes.addFlashAttribute("mensaje", "Registro exitoso, sus credenciales han sido enviadas al correo registrado");
             return "redirect:/registro";
         } else {
-            cargarOptions(model);
-            for (int i = 0; i < parentService.verifyParentDuplicate(parent).size(); i++) {
-                if (parentService.verifyParentDuplicate(parent).get(i) == 1)
-                    model.addAttribute("alertaDocumentNumber", "El " + parent.getDocumentType().getName() + " ingresado ya existe");
-                if (parentService.verifyParentDuplicate(parent).get(i) == 2)
-                    model.addAttribute("alertaEmail", "El correo ingresado ya existe");
-                if (parentService.verifyParentDuplicate(parent).get(i) == 3)
-                    model.addAttribute("alertaPhone", "El teléfono ingresado ya existe");
+            if (parent.getAge() < 18 && !parentService.verifyParentDuplicate(parent).isEmpty()) {
+                cargarOptions(model);
+                lanzarMensajesAdvertencia(parent, model);
+                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
+            } else if(!parentService.verifyParentDuplicate(parent).isEmpty()){
+                cargarOptions(model);
+                lanzarMensajesAdvertencia(parent, model);
+            } else{
+                cargarOptions(model);
+                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
             }
             return "registro";
         }
@@ -115,10 +131,7 @@ public class ParentController {
 
     @GetMapping({"/parent", "/parent/admision"})
     public String admision(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        Parent parent = parentService.selectByUsername(userDetails.getUsername());
-
+        Parent parent = getCurrentParent();
         model.addAttribute("listaEstudiantes", parent.getStudents());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
         return "admision";
@@ -126,13 +139,9 @@ public class ParentController {
 
     @GetMapping("/parent/perfil")
     public String editarPerfil(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        Parent parent = parentService.selectByUsername(userDetails.getUsername());
-
+        Parent parent = getCurrentParent();
         model.addAttribute("parent", parent);
         model.addAttribute("nombresCompletos", parent.getGivenNames());
-
         return "perfilParent";
     }
 
@@ -148,7 +157,7 @@ public class ParentController {
     // @GetMapping: es para indicar que es una petición GET
     // Una petición GET es una petición que se hace para obtener datos
     @GetMapping("/parent/ficha-matricula")
-    public String fichaMatricula(@RequestParam(name = "id") String studentId, Model model) {
+    public String cargarFichaMatricula(@RequestParam(name = "id") String studentId, Model model) {
         // SecurityContextHolder.getContext() permite obtener el contexto de seguridad
         // getAuthentication() obtiene la autenticación del usuario
         // Una autenticación del usuario es un objeto que contiene información sobre el usuario que ha iniciado sesión
@@ -175,7 +184,9 @@ public class ParentController {
 
 
         model.addAttribute("parent", parent);
-        model.addAttribute("student", (Student) studentService.getStudentById(studentId).get());
+        if (studentService.getStudentById(studentId).isPresent()) {
+            model.addAttribute("student", (Student) studentService.getStudentById(studentId).get());
+        }
         model.addAttribute("enrollmentForm", new EnrollmentForm());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
         model.addAttribute("bloodTypes", bloodTypes);
@@ -189,6 +200,11 @@ public class ParentController {
         model.addAttribute("documentTypes", documentTypes);
 
         return "fichaMatricula";
+    }
+
+    @PostMapping("/parent/ficha-matricula")
+    public String guardarFichaMatricula(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm, Model model) {
+        return "";
     }
 
     @GetMapping(value = "/parent/ficha-matricula/provincias")
@@ -211,5 +227,22 @@ public class ParentController {
         model.addAttribute("documentTypeList", documentTypeList);
         model.addAttribute("genderList", genderList);
         model.addAttribute("nationalityList", nationalityList);
+    }
+
+    private void lanzarMensajesAdvertencia(@Valid Parent parent, Model model) {
+        for (int i = 0; i < parentService.verifyParentDuplicate(parent).size(); i++) {
+            if (parentService.verifyParentDuplicate(parent).get(i) == 1)
+                model.addAttribute("alertaDocumentNumber", "El " + parent.getDocumentType().getName() + " ingresado ya existe");
+            if (parentService.verifyParentDuplicate(parent).get(i) == 2)
+                model.addAttribute("alertaEmail", "El correo ingresado ya existe");
+            if (parentService.verifyParentDuplicate(parent).get(i) == 3)
+                model.addAttribute("alertaPhone", "El teléfono ingresado ya existe");
+        }
+    }
+
+    private Parent getCurrentParent() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        return parentService.selectByUsername(userDetails.getUsername());
     }
 }

@@ -19,6 +19,9 @@ public class DepartmentServImpl implements IDepartmentService {
 
     @Override
     public Department getDepartment(String id) {
-        return departmentRepository.findById(id).get();
+        if (departmentRepository.findById(id).isPresent()) {
+            return departmentRepository.findById(id).get();
+        }
+        return new Department();
     }
 }
