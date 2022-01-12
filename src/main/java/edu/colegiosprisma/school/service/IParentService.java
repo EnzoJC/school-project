@@ -5,10 +5,11 @@ import edu.colegiosprisma.school.entity.Parent;
 import java.util.List;
 
 public interface IParentService {
-    Parent createParent(Parent parent);
-    List<Integer> verifyParentDuplicate(Parent parent);
+    Parent create(Parent parent);
 
-//    List<User> selectAll();
-    Parent selectByUsername(String username);
+    List<Integer> verifyDuplicate(Parent parent);
+
+    Parent findByUsername(String username);
+
     Parent update(Parent parent, String id);
 }

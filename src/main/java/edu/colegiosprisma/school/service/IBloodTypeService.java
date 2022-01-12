@@ -5,5 +5,5 @@ import edu.colegiosprisma.school.entity.BloodType;
 import java.util.List;
 
 public interface IBloodTypeService {
-    List<BloodType> getAllBloodTypes();
+    List<BloodType> getAll();
 }

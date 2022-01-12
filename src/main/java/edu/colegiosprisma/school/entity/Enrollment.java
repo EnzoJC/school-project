@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Table(name = "enrollments")

@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Table(name = "transactions")
@@ -50,7 +49,7 @@ public class Transaction {
             inverseJoinColumns = @JoinColumn(name = "payment_id"))
     private Set<Payment> payments = new HashSet<>();
 
-    public BigDecimal getTotalPaid(){
+    public BigDecimal getTotalPaid() {
         BigDecimal total = BigDecimal.ZERO;
         for (Payment payment : payments) {
             total = total.add(payment.getAmount());

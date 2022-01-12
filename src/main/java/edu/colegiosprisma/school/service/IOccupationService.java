@@ -5,5 +5,5 @@ import edu.colegiosprisma.school.entity.Occupation;
 import java.util.List;
 
 public interface IOccupationService {
-    List<Occupation> getAllOccupations();
+    List<Occupation> getAll();
 }

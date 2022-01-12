@@ -1,9 +1,12 @@
 package edu.colegiosprisma.school.service.implementation;
 
-import edu.colegiosprisma.school.entity.*;
-import edu.colegiosprisma.school.repository.*;
+import edu.colegiosprisma.school.entity.Enrollment;
+import edu.colegiosprisma.school.entity.Role;
+import edu.colegiosprisma.school.entity.Student;
+import edu.colegiosprisma.school.entity.User;
+import edu.colegiosprisma.school.repository.IRoleRepository;
+import edu.colegiosprisma.school.repository.IStudentRepository;
 import edu.colegiosprisma.school.service.IEnrollmentService;
-
 import edu.colegiosprisma.school.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,8 +27,6 @@ public class StudentServImpl implements IStudentService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    // @Autowired es para inyectar la dependencia
-    // La inyección se hace en el constructor
     @Autowired
     public StudentServImpl(IStudentRepository studentRepository, IRoleRepository roleRepository,
                            IEnrollmentService enrollmentService) {
@@ -35,7 +36,7 @@ public class StudentServImpl implements IStudentService {
     }
 
     @Override
-    public Student createStudent(Student student, Enrollment enrollment) {
+    public Student create(Student student, Enrollment enrollment) {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_generate_id");
         query.registerStoredProcedureParameter(1, String.class, ParameterMode.IN);
         query.registerStoredProcedureParameter(2, String.class, ParameterMode.OUT);
@@ -55,17 +56,17 @@ public class StudentServImpl implements IStudentService {
         student.setRoles(listaRolesStudent);
 
         Student s = studentRepository.save(student);
-        enrollmentService.createEnrollment(enrollment, s);
+        enrollmentService.create(enrollment, s);
         return student;
     }
 
     @Override
-    public Optional<User> getStudentById(String studentId) {
+    public Optional<User> findById(String studentId) {
         return studentRepository.findById(studentId);
     }
 
     @Override
-    public List<Integer> verifyStudentDuplicate(Student student) {
+    public List<Integer> verifyDuplicate(Student student) {
         User studentWithDocumentNumber = studentRepository.findByDocumentNumber(student.getDocumentNumber());
         List<Integer> lista = new ArrayList<>();
 

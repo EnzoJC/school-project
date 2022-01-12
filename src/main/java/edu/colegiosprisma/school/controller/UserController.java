@@ -1,14 +1,7 @@
 package edu.colegiosprisma.school.controller;
 
-import edu.colegiosprisma.school.entity.Parent;
-import edu.colegiosprisma.school.entity.Payment;
-import edu.colegiosprisma.school.entity.PaymentType;
 import edu.colegiosprisma.school.entity.User;
-import edu.colegiosprisma.school.repository.IPaymentRepository;
-import edu.colegiosprisma.school.repository.IPaymentTypeRepository;
-import edu.colegiosprisma.school.service.IParentService;
 import edu.colegiosprisma.school.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

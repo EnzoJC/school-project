@@ -6,9 +6,7 @@ import edu.colegiosprisma.school.service.IEnrollmentService;
 import edu.colegiosprisma.school.service.IStateService;
 import edu.colegiosprisma.school.service.IStudentService;
 import edu.colegiosprisma.school.service.ITransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -29,18 +27,10 @@ public class TransactionController {
 
     @PostMapping("parent/admision/pay")
     public String pagarMatriculaNuevoEstudiante(@RequestParam("idStudent") String idStudent) {
-        // El método getStudentById() permite obtener el estudiante a partir del id
-        // que se le pasa como parámetro.
-        // getStudentById() retorna un tipo de dato Optional<User>
-        // Si el estudiante existe, se obtiene el objeto Student.
-        // Si el estudiante no existe, se obtiene un objeto Optional<User> vacío.
-        // El método get() del objeto Optional<User> permite obtener el objeto
-        // User del Optional<User>
-        // Este método permite verificar que el pago a realizar corresponde a un estudiante
-        if (studentService.getStudentById(idStudent).isPresent()) {
-            Student student = (Student) studentService.getStudentById(idStudent).get();
-            State state = stateService.buscarEstadoPorId(5); // 5: Pendiente de pago
-            if (transactionService.payTransaction(student, state))
+        if (studentService.findById(idStudent).isPresent()) {
+            Student student = (Student) studentService.findById(idStudent).get();
+            State state = stateService.findById(5); // 5: Pendiente de pago
+            if (transactionService.pay(student, state))
                 enrollmentService.updateStatusForNewStudent(student, 2); // 2: Pre-inscrito
         }
         return "redirect:/parent/admision";

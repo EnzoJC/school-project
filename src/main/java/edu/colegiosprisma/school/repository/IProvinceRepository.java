@@ -3,7 +3,6 @@ package edu.colegiosprisma.school.repository;
 import edu.colegiosprisma.school.entity.Department;
 import edu.colegiosprisma.school.entity.Province;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

@@ -6,6 +6,7 @@ import edu.colegiosprisma.school.entity.Province;
 import java.util.List;
 
 public interface IProvinceService {
-    List<Province> getAllProvincesByDepartament(Department departamentId);
-    Province getProvince(String id);
+    List<Province> getAllProvincesByDepartment(Department departamentId);
+
+    Province findById(String id);
 }

@@ -19,7 +19,10 @@ import java.util.List;
 @Setter
 // @PrimaryKeyJoinColumn permite que el id del padre sea el id del parent
 @PrimaryKeyJoinColumn(name = "parent_id")
-public class Parent extends User{
+public class Parent extends User {
+    @OneToMany(mappedBy = "parent")
+    List<Student> students;
+
     @Column(name = "occupation", length = 50)
     private String occupation;
 
@@ -33,7 +36,4 @@ public class Parent extends User{
     @NotEmpty
     @Column(name = "email", nullable = false, length = 50)
     private String email;
-
-    @OneToMany(mappedBy = "parent")
-    List<Student> students;
 }

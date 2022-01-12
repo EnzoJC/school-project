@@ -5,5 +5,5 @@ import edu.colegiosprisma.school.entity.Religion;
 import java.util.List;
 
 public interface IReligionService {
-    List<Religion> getAllReligions();
+    List<Religion> getAll();
 }

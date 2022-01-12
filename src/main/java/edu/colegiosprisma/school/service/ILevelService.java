@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ILevelService {
-    // getAllLevels permite obtener todos los niveles
-    List<Level> getAllLevels();
-    // getLevel permite obtener un nivel por su id
-    Optional<Level> getLevel(Integer id);
+    List<Level> getAll();
+
+    Optional<Level> findLevelById(Integer id);
 }

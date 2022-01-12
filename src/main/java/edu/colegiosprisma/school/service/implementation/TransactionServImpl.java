@@ -35,12 +35,12 @@ public class TransactionServImpl implements ITransactionService {
     }
 
     @Override
-    public Transaction createTransaction(Enrollment enrollment, Set<Payment> payments) {
+    public Transaction create(Enrollment enrollment, Set<Payment> payments) {
         Transaction transaction = new Transaction();
         transaction.setEnrollment(enrollment);
         transaction.setIssueDate(LocalDate.now());
         transaction.setExpirationDate(LocalDate.now().plusDays(3));
-        transaction.setSchool(schoolRepository.findById("20600093470").isPresent()? schoolRepository.findById("20600093470").get() : new School());
+        transaction.setSchool(schoolRepository.findById("20600093470").isPresent() ? schoolRepository.findById("20600093470").get() : new School());
         transaction.setState(stateRepository.findById(5).isPresent() ? stateRepository.findById(5).get() : new State());
 
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_generate_trans_id");
@@ -61,10 +61,10 @@ public class TransactionServImpl implements ITransactionService {
     }
 
     @Override
-    public Boolean payTransaction(Student student, State state) {
+    public Boolean pay(Student student, State state) {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCurrentYearIsTrue(student);
         Transaction transaction = transactionRepository.findByEnrollmentAndState(enrollment, state);
-        if (transaction != null){
+        if (transaction != null) {
             transaction.setState(stateRepository.findById(7).isPresent() ? stateRepository.findById(7).get() : new State()); // 7 = pagado
             transaction.setPaymentDate(LocalDate.now());
             transactionRepository.save(transaction);

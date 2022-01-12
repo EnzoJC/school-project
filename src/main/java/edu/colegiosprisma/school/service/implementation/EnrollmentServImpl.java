@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -34,7 +33,7 @@ public class EnrollmentServImpl implements IEnrollmentService {
     }
 
     @Override
-    public Enrollment createEnrollment(Enrollment enrollment, Student student) {
+    public Enrollment create(Enrollment enrollment, Student student) {
         LocalDate date = LocalDate.now();
         int currentYear = date.getYear();
         SchoolYear schoolYear = schoolYearRepository.findByYear(currentYear);
@@ -43,13 +42,13 @@ public class EnrollmentServImpl implements IEnrollmentService {
 
         enrollment.setSchoolYear(schoolYear);
         enrollment.setStudent(student);
-        enrollment.setState(state.isPresent()? state.get() : new State());
+        enrollment.setState(state.isPresent() ? state.get() : new State());
         enrollment.setCurrentYear(true);
 
         PaymentType paymentType = paymentTypeRepository.findById(11).isPresent() ? paymentTypeRepository.findById(11).get() : new PaymentType(); // 11: Matricula
         Payment payment = paymentRepository.findByPaymentTypeAndIsActiveIsTrue(paymentType);
         enrollmentRepository.save(enrollment);
-        transactionService.createTransaction(enrollment, Set.of(payment));
+        transactionService.create(enrollment, Set.of(payment));
 
         return enrollment;
     }
@@ -59,7 +58,7 @@ public class EnrollmentServImpl implements IEnrollmentService {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCurrentYearIsTrue(student);
         Optional<State> state = stateRepository.findById(status); // 2: Pagado
 
-        enrollment.setState(state.isPresent()? state.get() : new State());
+        enrollment.setState(state.isPresent() ? state.get() : new State());
         enrollmentRepository.save(enrollment);
         return enrollment;
     }
@@ -69,7 +68,7 @@ public class EnrollmentServImpl implements IEnrollmentService {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCurrentYearIsTrue(student);
         Optional<State> state = stateRepository.findById(status); // 2: Pagado
 
-        enrollment.setState(state.isPresent()? state.get() : new State());
+        enrollment.setState(state.isPresent() ? state.get() : new State());
         enrollmentRepository.save(enrollment);
         return enrollment;
     }

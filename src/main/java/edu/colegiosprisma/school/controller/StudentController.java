@@ -3,7 +3,6 @@ package edu.colegiosprisma.school.controller;
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,10 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +46,7 @@ public class StudentController {
     }
 
     @GetMapping("/parent/postulante")
-    public String agregar(Model model){
+    public String agregar(Model model) {
         Parent parent = getCurrentParent();
         cargarOptions(model);
 
@@ -65,7 +62,7 @@ public class StudentController {
         Parent parent = getCurrentParent();
         student.setParent(parent);
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             cargarOptions(model);
             lanzarMensajesAdvertencia(student, model);
             if (student.getAge() > 18) {
@@ -76,46 +73,43 @@ public class StudentController {
             }
             return "postulante";
         }
-        if (studentService.verifyStudentDuplicate(student).isEmpty()) {
+        if (studentService.verifyDuplicate(student).isEmpty()) {
             if (student.getAge() > 18) {
                 model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
                 return "registro";
             }
-            studentService.createStudent(student, enrollment); // Inserta en la base de datos
+            studentService.create(student, enrollment); // Inserta en la base de datos
             return "redirect:/parent/admision";
         } else {
 //            cargarOptions(model);
 //            lanzarMensajesAdvertencia(parent, model);
-            if (parent.getAge() < 18 && !studentService.verifyStudentDuplicate(student).isEmpty()) {
+            if (parent.getAge() < 18 && !studentService.verifyDuplicate(student).isEmpty()) {
                 cargarOptions(model);
                 lanzarMensajesAdvertencia(student, model);
                 model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
-            } else if(!studentService.verifyStudentDuplicate(student).isEmpty()){
+            } else if (!studentService.verifyDuplicate(student).isEmpty()) {
                 cargarOptions(model);
                 lanzarMensajesAdvertencia(student, model);
-            } else{
+            } else {
                 model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
             }
             return "/postulante";
         }
     }
-    
-    /**
-     * Permite obtener todos los grados de un nivel.
-     * Este método ayuda en el llenado de los drop-down de la vista Postulante (Nivel y grado)
-     */
+
     @GetMapping(value = "/parent/postulante/grados")
-    public @ResponseBody List<Grade> getGradosPorNivel(@RequestParam(value = "levelId") Integer levelId) {
-        Optional<Level> level = levelService.getLevel(levelId);
-        return level.isPresent()? gradeService.getAllGradesByLevel(level.get()) : new ArrayList<>();
+    public @ResponseBody
+    List<Grade> getGradosPorNivel(@RequestParam(value = "levelId") Integer levelId) {
+        Optional<Level> level = levelService.findLevelById(levelId);
+        return level.isPresent() ? gradeService.getAllGradesByLevel(level.get()) : new ArrayList<>();
     }
 
     private void cargarOptions(Model model) {
-        List<DocumentType> documentTypeList  = documentTypeService.getAllDocumentTypes();
-        List<Gender> genderList = genderService.getAllGenders();
-        List<Nationality> nationalityList = nationalityService.getAllNationalities();
-        List<Relationship> relationshipList = relationshipService.getAllRelationships();
-        List<Level> levelList = levelService.getAllLevels();
+        List<DocumentType> documentTypeList = documentTypeService.getAll();
+        List<Gender> genderList = genderService.getAll();
+        List<Nationality> nationalityList = nationalityService.getAll();
+        List<Relationship> relationshipList = relationshipService.getAll();
+        List<Level> levelList = levelService.getAll();
 
         model.addAttribute("documentTypeList", documentTypeList);
         model.addAttribute("genderList", genderList);
@@ -125,8 +119,8 @@ public class StudentController {
     }
 
     private void lanzarMensajesAdvertencia(@Valid Student student, Model model) {
-        for (int i = 0; i < studentService.verifyStudentDuplicate(student).size(); i++) {
-            if (studentService.verifyStudentDuplicate(student).get(i) == 1)
+        for (int i = 0; i < studentService.verifyDuplicate(student).size(); i++) {
+            if (studentService.verifyDuplicate(student).get(i) == 1)
                 model.addAttribute("alertaDocumentNumber", "El " + student.getDocumentType().getName() + " ingresado ya existe");
         }
     }
@@ -134,6 +128,6 @@ public class StudentController {
     private Parent getCurrentParent() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        return parentService.selectByUsername(userDetails.getUsername());
+        return parentService.findByUsername(userDetails.getUsername());
     }
 }

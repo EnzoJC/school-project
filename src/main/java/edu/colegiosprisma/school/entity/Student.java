@@ -13,9 +13,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-// @PrimaryKeyJoinColumn permite que el id del padre sea el id del student
+// @PrimaryKeyJoinColumn permite que el id de la clase padre sea el id del student
 @PrimaryKeyJoinColumn(name = "student_id")
-public class Student extends User{
+public class Student extends User {
     @Column(name = "student_email", nullable = false, length = 50)
     private String studentEmail;
 

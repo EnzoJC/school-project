@@ -13,17 +13,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final LoggingAccessDeniedHandler accessDeniedHandler;
 
-    @Autowired
-    private LoggingAccessDeniedHandler accessDeniedHandler;
+    private final SimpleAuthenticationSuccessHandler successHandler;
 
-    @Autowired
-    private SimpleAuthenticationSuccessHandler successHandler;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(LoggingAccessDeniedHandler accessDeniedHandler, SimpleAuthenticationSuccessHandler successHandler, UserDetailsService userDetailsService) {
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.successHandler = successHandler;
         this.userDetailsService = userDetailsService;
     }
 
@@ -41,25 +39,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                        .antMatchers(
-                                "/", "/registro", "/js/**", "/css/**", "/img/**", "/error/**", "/webjars/**", "/mail/**").permitAll()
-                        .antMatchers("/admin/**").hasRole("ADMIN")
-                        .antMatchers("/teacher/**").hasAnyRole("TEACHER", "ADMIN")
-                        .antMatchers("/parent/**").hasAnyRole("PARENT", "ADMIN")
-                        .antMatchers("/student/**").hasAnyRole("STUDENT", "ADMIN")
-                        .anyRequest().authenticated()
-                    .and()
+                .antMatchers(
+                        "/", "/registro", "/js/**", "/css/**", "/img/**", "/error/**", "/webjars/**", "/mail/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/teacher/**").hasAnyRole("TEACHER", "ADMIN")
+                .antMatchers("/parent/**").hasAnyRole("PARENT", "ADMIN")
+                .antMatchers("/student/**").hasAnyRole("STUDENT", "ADMIN")
+                .anyRequest().authenticated()
+                .and()
                 .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .successHandler(successHandler)
-                    .failureUrl("/login?error=true")
-                    .and()
+                .loginPage("/login")
+                .permitAll()
+                .successHandler(successHandler)
+                .failureUrl("/login?error=true")
+                .and()
                 .logout()
-                    .logoutSuccessUrl("/login?logout=true")
-                    .permitAll()
-                    .and()
-                    .exceptionHandling()
-                    .accessDeniedHandler(accessDeniedHandler);
+                .logoutSuccessUrl("/login?logout=true")
+                .permitAll()
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler);
     }
 }

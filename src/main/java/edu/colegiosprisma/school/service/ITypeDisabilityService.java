@@ -5,5 +5,5 @@ import edu.colegiosprisma.school.entity.TypeDisability;
 import java.util.List;
 
 public interface ITypeDisabilityService {
-    List<TypeDisability> getAllTypeOfDisabilities();
+    List<TypeDisability> getAll();
 }
