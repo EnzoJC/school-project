@@ -36,4 +36,8 @@ public class UserController {
     public String accessDenied() {
         return "/error/403";
     }
+
+    public void foo() {
+        // this method is intentionally left blank
+    }
 }
