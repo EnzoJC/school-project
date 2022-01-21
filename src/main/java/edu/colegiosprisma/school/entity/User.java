@@ -22,7 +22,7 @@ import java.util.Set;
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
-    private static final String REGEX_FOR_NAMES = "^[\\u00F1A-Za-z _]*[\\u00F1A-Za-z][\\u00F1A-Za-z _]*$";
+    private static final String REGEX_FOR_NAMES = "^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]{2,25}(\\s{1}[a-zA-ZÀ-ÿ\\u00f1\\u00d1]{2,25})?$";
     @Id
     @Column(name = "user_id", nullable = false, length = 10)
     private String id;
