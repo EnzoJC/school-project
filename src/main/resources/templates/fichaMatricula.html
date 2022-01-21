@@ -41,7 +41,7 @@
                             <li class="item" id="datosMadre"><strong>Datos de la madre</strong></li>
                         </ul>
                         <form id="miForm" th:action="@{/parent/ficha-matricula}" th:object="${enrollmentForm}" method="POST">
-                            <div class="tab" id="step-1">
+                            <div class="tab step-form step-form-active" id="step-1">
                                 <h5 class="fs-title">Datos personales del estudiante</h5>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
@@ -169,7 +169,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab" id="step-2">
+                            <div class="tab step-form " id="step-2">
                                 <h5 class="fs-title">Desarrollo del estudiante</h5>
                                 <div class="row mb-3">
                                     <div class="col-md-12">
@@ -262,7 +262,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab" id="step-3">
+                            <div class="tab step-form " id="step-3">
                                 <h5 class="fs-title">Datos del padre</h5>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
@@ -354,7 +354,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab" id="step-4">
+                            <div class="tab step-form " id="step-4">
                                 <h5 class="fs-title">Datos de la madre</h5>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
