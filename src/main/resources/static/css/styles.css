@@ -463,3 +463,9 @@ html, body {
     }
 }
 
+@media (max-width: 480px) {
+    .image-park {
+        width: 300px;
+        height: auto;
+    }
+}
