@@ -71,3 +71,10 @@
 .step-form-active{
     display: block;
 }
+#nextBtn{
+    float: right;
+}
+
+#Enviar{
+    float: right;
+}
