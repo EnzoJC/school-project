@@ -66,14 +66,13 @@ public class StudentServImpl implements IStudentService {
     }
 
     @Override
-    public List<Integer> verifyDuplicate(Student student) {
+    public Boolean verifyDuplicate(Student student) {
         User studentWithDocumentNumber = studentRepository.findByDocumentNumber(student.getDocumentNumber());
-        List<Integer> lista = new ArrayList<>();
 
         if (studentWithDocumentNumber != null) {
             System.out.println("Student with document number: " + studentWithDocumentNumber.getDocumentNumber() + " already exists");
-            lista.add(1);
+            return true;
         }
-        return lista;
+        return false;
     }
 }

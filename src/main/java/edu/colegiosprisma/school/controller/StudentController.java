@@ -73,7 +73,7 @@ public class StudentController {
             }
             return "postulante";
         }
-        if (studentService.verifyDuplicate(student).isEmpty()) {
+        if (studentService.verifyDuplicate(student)) {
             if (student.getAge() > 18) {
                 model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
                 return "registro";
@@ -83,11 +83,11 @@ public class StudentController {
         } else {
 //            cargarOptions(model);
 //            lanzarMensajesAdvertencia(parent, model);
-            if (parent.getAge() < 18 && !studentService.verifyDuplicate(student).isEmpty()) {
+            if (parent.getAge() < 18 && !studentService.verifyDuplicate(student)) {
                 cargarOptions(model);
                 lanzarMensajesAdvertencia(student, model);
                 model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
-            } else if (!studentService.verifyDuplicate(student).isEmpty()) {
+            } else if (!studentService.verifyDuplicate(student)) {
                 cargarOptions(model);
                 lanzarMensajesAdvertencia(student, model);
             } else {
@@ -119,10 +119,10 @@ public class StudentController {
     }
 
     private void lanzarMensajesAdvertencia(@Valid Student student, Model model) {
-        for (int i = 0; i < studentService.verifyDuplicate(student).size(); i++) {
-            if (studentService.verifyDuplicate(student).get(i) == 1)
+
+            if (studentService.verifyDuplicate(student))
                 model.addAttribute("alertaDocumentNumber", "El " + student.getDocumentType().getName() + " ingresado ya existe");
-        }
+
     }
 
     private Parent getCurrentParent() {

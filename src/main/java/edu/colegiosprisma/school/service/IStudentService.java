@@ -12,5 +12,5 @@ public interface IStudentService {
 
     Optional<User> findById(String studentId);
 
-    List<Integer> verifyDuplicate(Student student);
+    Boolean verifyDuplicate(Student student);
 }
