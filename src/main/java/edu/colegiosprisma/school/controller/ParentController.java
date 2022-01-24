@@ -180,7 +180,7 @@ public class ParentController {
         model.addAttribute("occupations", occupations);
         model.addAttribute("religions", religions);
         model.addAttribute("typeDisabilities", typeDisabilities);
-        model.addAttribute("typeOfBirths", typeBirths);
+        model.addAttribute("typeBirths", typeBirths);
         model.addAttribute("documentTypes", documentTypes);
 
         return "parent/fichaMatricula";

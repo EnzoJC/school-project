@@ -26,7 +26,7 @@ public class EnrollmentForm {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "tipe_of_birth_id", nullable = false)
-    private TypeBirth tipeOfBirth;
+    private TypeBirth tipeBirth;
 
     @Column(name = "is_complication_birth", nullable = false)
     private Boolean isComplicationBirth = false;

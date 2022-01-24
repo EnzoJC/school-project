@@ -198,7 +198,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="tipe-of-birth" class="form-label">Tipo de nacimiento</label>
-                                            <select id="tipe-of-birth" class="form-control" th:field="*{tipeOfBirth}">
+                                            <select id="tipe-of-birth" class="form-control" th:field="*{tipeBirth}">
                                                 <option class="seleccionado" value="" selected>Tipo de nacimiento</option>
                                                 <option th:each="birth : ${typeBirths}" th:value="${birth.id}" th:text="${birth.name}"></option>
                                             </select>
