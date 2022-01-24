@@ -37,7 +37,7 @@ public class EmailServiceImpl implements IEmailService {
             helper.setTo(parent.getEmail());
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
-                LOGGER.info("Email", e.toString());
+            LOGGER.info("Email", e.toString());
         }
         return "enviado";
     }

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ParentController {
@@ -31,7 +32,7 @@ public class ParentController {
     private final IReligionService religionService;
     private final ITypeDisabilityService typeDisabilityService;
     private final IBloodTypeService bloodTypeService;
-    private final ITypeOfBirthService typeOfBirthService;
+    private final ITypeBirthService typeBirthService;
     private final IEducationDegreeService educationDegreeService;
     private final IOccupationService occupationService;
 
@@ -42,7 +43,7 @@ public class ParentController {
                             IEmailService emailService, IStudentService studentService, IDepartmentService departmentService,
                             IProvinceService provinceService, IDistrictService districtService, ILanguageService languageService,
                             IReligionService religionService, ITypeDisabilityService typeDisabilityService,
-                            IBloodTypeService bloodTypeService, ITypeOfBirthService typeOfBirthService,
+                            IBloodTypeService bloodTypeService, ITypeBirthService typeBirthService,
                             IEducationDegreeService educationDegreeService, IOccupationService occupationService) {
         this.enrollmentService = enrollmentService;
         this.parentService = parentService;
@@ -58,7 +59,7 @@ public class ParentController {
         this.religionService = religionService;
         this.typeDisabilityService = typeDisabilityService;
         this.bloodTypeService = bloodTypeService;
-        this.typeOfBirthService = typeOfBirthService;
+        this.typeBirthService = typeBirthService;
         this.educationDegreeService = educationDegreeService;
         this.occupationService = occupationService;
     }
@@ -73,7 +74,7 @@ public class ParentController {
         model.addAttribute("documentTypeList", documentTypeList);
         model.addAttribute("genderList", genderList);
         model.addAttribute("nationalityList", nationalityList);
-        return "registro";
+        return "parent/registro";
     }
 
     @PostMapping("/registro")
@@ -87,22 +88,22 @@ public class ParentController {
             if (parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) {
                 model.addAttribute("alertaDocumento", "Revise bien su número de documento");
             }
-            return "registro";
+            return "parent/registro";
         }
         if (parentService.verifyDuplicate(parent).isEmpty()) {
             if ((parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) && (parent.getAge() < 18)) {
                 cargarOptions(model);
                 model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
                 model.addAttribute("alertaDocumento", "Revise bien su número de documento");
-                return "registro";
+                return "parent/registro";
             } else if (parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) {
                 cargarOptions(model);
                 model.addAttribute("alertaDocumento", "Revise bien su número de documento");
-                return "registro";
+                return "parent/registro";
             } else if (parent.getAge() < 18) {
                 cargarOptions(model);
                 model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
-                return "registro";
+                return "parent/registro";
             }
             parentService.create(parent);
             emailService.send(parent, "mail/credentials");
@@ -120,7 +121,7 @@ public class ParentController {
                 cargarOptions(model);
                 model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
             }
-            return "registro";
+            return "parent/registro";
         }
     }
 
@@ -129,7 +130,7 @@ public class ParentController {
         Parent parent = getCurrentParent();
         model.addAttribute("listaEstudiantes", parent.getStudents());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
-        return "admision";
+        return "parent/admision";
     }
 
     @GetMapping("/parent/perfil")
@@ -137,7 +138,7 @@ public class ParentController {
         Parent parent = getCurrentParent();
         model.addAttribute("parent", parent);
         model.addAttribute("nombresCompletos", parent.getGivenNames());
-        return "perfilParent";
+        return "parent/perfilParent";
     }
 
     @PostMapping("/parent/perfil")
@@ -161,8 +162,8 @@ public class ParentController {
         List<Language> languages = languageService.getAll();
         List<Occupation> occupations = occupationService.getAll();
         List<Religion> religions = religionService.getAll();
-        List<TypeDisability> typeDisabilities = typeDisabilityService.getAll();
-        List<TypeOfBirth> typeOfBirths = typeOfBirthService.getAll();
+        Set<TypeDisability> typeDisabilities = typeDisabilityService.getAll();
+        Set<TypeBirth> typeBirths = typeBirthService.getAll();
         List<DocumentType> documentTypes = documentTypeService.getAll();
 
 
@@ -170,7 +171,7 @@ public class ParentController {
         if (studentService.findById(studentId).isPresent()) {
             model.addAttribute("student", (Student) studentService.findById(studentId).get());
         }
-        model.addAttribute("enrollmentForm", new EnrollmentsForm());
+        model.addAttribute("enrollmentForm", new EnrollmentForm());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
         model.addAttribute("bloodTypes", bloodTypes);
         model.addAttribute("departments", departments);
@@ -179,20 +180,20 @@ public class ParentController {
         model.addAttribute("occupations", occupations);
         model.addAttribute("religions", religions);
         model.addAttribute("typeDisabilities", typeDisabilities);
-        model.addAttribute("typeOfBirths", typeOfBirths);
+        model.addAttribute("typeOfBirths", typeBirths);
         model.addAttribute("documentTypes", documentTypes);
 
-        return "fichaMatricula";
+        return "parent/fichaMatricula";
     }
 
     @PostMapping("/parent/ficha-matricula")
-    public String guardarFichaMatricula(@ModelAttribute("enrollmentForm") EnrollmentsForm enrollmentForm, Model model) {
+    public String guardarFichaMatricula(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm, Model model) {
 
-       // enrollmentFormService.create(enrollmentForm); // pesistir parentinformations y luego persistir enrollmentForm bye bye
+        // enrollmentFormService.create(enrollmentForm); // pesistir parentinformations y luego persistir enrollmentForm bye bye
 
         //Finalizamos cambiando el estado de enrollment
         Student student = (Student) studentService.findById(enrollmentForm.getId()).get();
-        enrollmentService.updateStatusForNewStudent(student,3);
+        enrollmentService.updateStatusForNewStudent(student, 3);
 
         return "redirect:/parent/admision";
     }

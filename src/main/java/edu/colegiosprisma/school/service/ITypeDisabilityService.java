@@ -2,8 +2,8 @@ package edu.colegiosprisma.school.service;
 
 import edu.colegiosprisma.school.entity.TypeDisability;
 
-import java.util.List;
+import java.util.Set;
 
 public interface ITypeDisabilityService {
-    List<TypeDisability> getAll();
+    Set<TypeDisability> getAll();
 }

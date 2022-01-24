@@ -4,18 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "enrollments_form", indexes = {
         @Index(name = "student_code", columnList = "student_code", unique = true)
 })
-@Getter
-@Setter
-public class EnrollmentsForm {
+public class EnrollmentForm {
     @Id
     @Column(name = "enrollment_form_id", nullable = false, length = 10)
     private String id;
@@ -28,7 +26,7 @@ public class EnrollmentsForm {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "tipe_of_birth_id", nullable = false)
-    private TypeOfBirth tipeOfBirth;
+    private TypeBirth tipeOfBirth;
 
     @Column(name = "is_complication_birth", nullable = false)
     private Boolean isComplicationBirth = false;
@@ -89,12 +87,13 @@ public class EnrollmentsForm {
     @JoinColumn(name = "blood_type_id", nullable = false)
     private BloodType bloodType;
 
-    @OneToMany(mappedBy = "enrollmentsForm")
-    private Set<StudentDisability> studentDisabilities = new HashSet<>();
-
     @ManyToMany
     @JoinTable(name = "parent_by_student",
-            joinColumns = { @JoinColumn(name = "enrollment_form_id") },
-            inverseJoinColumns = { @JoinColumn(name = "parent_information_id") })
-    private Set<ParentInformation> parentsInformation = new HashSet<>();
+            joinColumns = @JoinColumn(name = "enrollment_form_id"),
+            inverseJoinColumns = @JoinColumn(name = "parent_information_id"))
+    private Set<ParentInformation> parents = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "enrollmentForm")
+    private Set<StudentDisability> disabilities = new LinkedHashSet<>();
+
 }

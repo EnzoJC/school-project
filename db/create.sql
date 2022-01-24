@@ -446,11 +446,11 @@ CREATE TABLE students
 -- Table: students_disabilities
 CREATE TABLE students_disabilities
 (
-    type_disabiltiy_id          int          NOT NULL,
+    type_disability_id          int          NOT NULL,
     enrollment_form_id          varchar(10)  NOT NULL,
     have_disability_certificate boolean      NOT NULL,
     url_certificate             varchar(100) NULL,
-    CONSTRAINT students_disabilities_pk PRIMARY KEY (type_disabiltiy_id, enrollment_form_id)
+    CONSTRAINT students_disabilities_pk PRIMARY KEY (type_disability_id, enrollment_form_id)
 );
 
 -- Table: teacher_courses
@@ -726,7 +726,7 @@ ALTER TABLE schedules
 
 -- Reference: sd_td (table: students_disabilities)
 ALTER TABLE students_disabilities
-    ADD CONSTRAINT sd_td FOREIGN KEY sd_td (type_disabiltiy_id)
+    ADD CONSTRAINT sd_td FOREIGN KEY sd_td (type_disability_id)
         REFERENCES types_disabilities (type_disabilty_id);
 
 -- Reference: sds_ef (table: students_disabilities)

@@ -1,26 +1,27 @@
 package edu.colegiosprisma.school.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "students_disabilities")
+@EqualsAndHashCode
 @Getter
 @Setter
+@Entity
+@Table(name = "students_disabilities")
 public class StudentDisability {
     @EmbeddedId
     private StudentDisabilityId id;
 
     @ManyToOne
-    @MapsId("typeDisabiltiyId")
-    private TypeDisability typeDisability;
+    @MapsId("typeDisabilityId")
+    private EnrollmentForm enrollmentForm;
 
     @ManyToOne
     @MapsId("enrollmentFormId")
-    private EnrollmentsForm enrollmentsForm;
-
+    private TypeDisability typeDisability;
 
     @Column(name = "have_disability_certificate", nullable = false)
     private Boolean haveDisabilityCertificate = false;

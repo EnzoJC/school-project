@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class TypeOfBirth {
+public class TypeBirth {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tipe_of_birth_id", nullable = false)

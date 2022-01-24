@@ -54,7 +54,7 @@ public class StudentController {
         model.addAttribute("student", new Student());
         model.addAttribute("enrollment", new Enrollment());
 
-        return "postulante";
+        return "parent/postulante";
     }
 
     @PostMapping("/parent/postulante")
@@ -71,12 +71,12 @@ public class StudentController {
             if (student.getDocumentNumber().length() != student.getDocumentType().getLength()) {
                 model.addAttribute("alertaDocumento", "Revise bien su número de documento");
             }
-            return "postulante";
+            return "parent/postulante";
         }
         if (studentService.verifyDuplicate(student)) {
             if (student.getAge() > 18) {
                 model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
-                return "registro";
+                return "parent/registro";
             }
             studentService.create(student, enrollment); // Inserta en la base de datos
             return "redirect:/parent/admision";
@@ -93,7 +93,7 @@ public class StudentController {
             } else {
                 model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
             }
-            return "/postulante";
+            return "parent//postulante";
         }
     }
 
@@ -120,8 +120,8 @@ public class StudentController {
 
     private void lanzarMensajesAdvertencia(@Valid Student student, Model model) {
 
-            if (studentService.verifyDuplicate(student))
-                model.addAttribute("alertaDocumentNumber", "El " + student.getDocumentType().getName() + " ingresado ya existe");
+        if (studentService.verifyDuplicate(student))
+            model.addAttribute("alertaDocumentNumber", "El " + student.getDocumentType().getName() + " ingresado ya existe");
 
     }
 

@@ -5,7 +5,8 @@ import edu.colegiosprisma.school.repository.ITypeDisabilityRepository;
 import edu.colegiosprisma.school.service.ITypeDisabilityService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Service
 public class TypeDisabilityServImpl implements ITypeDisabilityService {
@@ -16,7 +17,7 @@ public class TypeDisabilityServImpl implements ITypeDisabilityService {
     }
 
     @Override
-    public List<TypeDisability> getAll() {
-        return typeDisabilityRepository.findAll();
+    public Set<TypeDisability> getAll() {
+        return new LinkedHashSet<>(typeDisabilityRepository.findAll());
     }
 }

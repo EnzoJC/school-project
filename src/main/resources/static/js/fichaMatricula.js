@@ -27,9 +27,11 @@ function updateFormSteps() {
     });
     formSteps[formStepsNum].classList.add("step-form-active");
 }
+
 function updateProgressbarBack() {
-    items[formStepsNum+1].classList.remove("active")
+    items[formStepsNum + 1].classList.remove("active")
 }
+
 function updateProgressbarNext() {
     items[formStepsNum].classList.add("active")
 }

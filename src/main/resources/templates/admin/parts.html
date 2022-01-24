@@ -1,73 +1,74 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="es">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    </head>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+</head>
 
-    <body>
-        <nav th:fragment="topnav" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand ps-3" href="login.html">Colegios Prismas</a>
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
-                <i class="fas fa-bars"></i>
-            </button>
-            <ul class="navbar-nav d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user fa-fw"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" th:href="@{/admin/perfil}">Ver perfil</a></li>
-                        <li>
-                            <form name="logoutForm" method="POST" th:action="@{/logout}" th:hidden="true">
-                            </form>
-                            <a id="logout-link" class="dropdown-item" href="#" onclick="document.forms['logoutForm'].submit()">Cerrar sesión</a>
-                        </li>
-                    </ul>
+<body>
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" th:fragment="topnav">
+    <a class="navbar-brand ps-3" href="login.html">Colegios Prismas</a>
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" href="#" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <ul class="navbar-nav d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
+        <li class="nav-item dropdown">
+            <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+               id="navbarDropdown" role="button">
+                <i class="fas fa-user fa-fw"></i>
+            </a>
+            <ul aria-labelledby="navbarDropdown" class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" th:href="@{/admin/perfil}">Ver perfil</a></li>
+                <li>
+                    <form method="POST" name="logoutForm" th:action="@{/logout}" th:hidden="true">
+                    </form>
+                    <a class="dropdown-item" href="#" id="logout-link" onclick="document.forms['logoutForm'].submit()">Cerrar
+                        sesión</a>
                 </li>
             </ul>
-        </nav>
-        <div id="layoutSidenav_nav" th:fragment="sideNav(nombresCompletos)">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Administraci&oacute;n</div>
-                        <a class="nav-link" href="admin.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                            Profesores
-                        </a>
-                        <a class="nav-link" href="admin.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-sort-numeric-up"></i></div>
-                            Grados
-                        </a>
-                        <a class="nav-link" href="admin.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-sort-numeric-up"></i></div>
-                            Secciones
-                        </a>
-                        <a class="nav-link" href="admin.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                            Aulas
-                        </a>
-                        <a class="nav-link" href="admin.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chalkboard"></i></div>
-                            Clases
-                        </a>
-                        <a class="nav-link" href="admin.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                            Cursos
-                        </a>
-                        <a class="nav-link" href="admin.html">
-                            <div class="sb-nav-link-icon"><i class="far fa-calendar-alt"></i></div>
-                            Horarios
-                        </a>
-                    </div>
-                </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Conectado como:</div>
-                    <span th:text="${nombresCompletos}"></span>
-                </div>
-            </nav>
+        </li>
+    </ul>
+</nav>
+<div id="layoutSidenav_nav" th:fragment="sideNav(nombresCompletos)">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                <div class="sb-sidenav-menu-heading">Administraci&oacute;n</div>
+                <a class="nav-link" href="admin.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    Profesores
+                </a>
+                <a class="nav-link" href="admin.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-sort-numeric-up"></i></div>
+                    Grados
+                </a>
+                <a class="nav-link" href="admin.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-sort-numeric-up"></i></div>
+                    Secciones
+                </a>
+                <a class="nav-link" href="admin.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Aulas
+                </a>
+                <a class="nav-link" href="admin.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-chalkboard"></i></div>
+                    Clases
+                </a>
+                <a class="nav-link" href="admin.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                    Cursos
+                </a>
+                <a class="nav-link" href="admin.html">
+                    <div class="sb-nav-link-icon"><i class="far fa-calendar-alt"></i></div>
+                    Horarios
+                </a>
+            </div>
         </div>
-    </body>
+        <div class="sb-sidenav-footer">
+            <div class="small">Conectado como:</div>
+            <span th:text="${nombresCompletos}"></span>
+        </div>
+    </nav>
+</div>
+</body>
 </html>
