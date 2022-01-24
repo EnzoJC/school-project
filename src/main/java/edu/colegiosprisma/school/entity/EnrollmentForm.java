@@ -96,4 +96,9 @@ public class EnrollmentForm {
     @OneToMany(mappedBy = "enrollmentForm")
     private Set<StudentDisability> disabilities = new LinkedHashSet<>();
 
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "student_user_id")
+    @MapsId
+    private Student student;
+
 }
