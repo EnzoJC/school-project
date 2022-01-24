@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <li th:fragment="itemWallet" class="nav-item" role="presentation">
+        <button
+                class="nav-link"
+                id="wallet-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#wallet"
+                type="button"
+                role="tab"
+                aria-controls="wallet"
+                aria-selected="true">
+            Yape
+        </button>
+    </li>
+
+    <div th:fragment="wallet(amount)" id="wallet" class="tab-pane fade pt-3">
+        <div class="text-center">
+            <img th:src="@{/img/yape.png}" class="rounded" width="250px" alt="">
+        </div>
+        <h6 class="mt-3">Número</h6>
+        <p>+51 984 315 062 (Mendoza Figueroa, Nadia Thais)</p>
+        <h6 class="mt-3">Monto total a pagar</h6>
+        <p th:text="'S/ ' + ${amount}"></p>
+        <p class="text-muted mt-3"> Nota: Después de realizar el depósito, el pago podrá ser visualizado después de 24 horas. </p>
+    </div>
+</body>
+</html>

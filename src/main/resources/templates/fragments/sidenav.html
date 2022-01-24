@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <a th:fragment="navLink(label, url, faviconClass)" class="nav-link" th:href="${url}">
+        <div class="sb-nav-link-icon"><i th:classappend="${faviconClass}"></i></div>
+        <span th:text="${label}"></span>
+    </a>
+
+    <div id="layoutSidenav_nav" th:fragment="sideNav(nombresCompletos)">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <div class="nav">
+                    <div class="sb-sidenav-menu-heading">Padres</div>
+                    <div th:replace="fragments/sidenav :: navLink(${'Admisión'}, ${'/parent/admision'}, ${'fas fa-project-diagram mr-2'})"></div>
+                    <div th:replace="fragments/sidenav :: navLink(${'Postulante'}, ${'/parent/postulante'}, ${'fas fa-plus mr-2'})"></div>
+                </div>
+            </div>
+            <div class="sb-sidenav-footer">
+                <div class="small">Conectado como:</div>
+                <span th:text="${nombresCompletos}"></span>
+            </div>
+        </nav>
+    </div>
+</body>
+</html>

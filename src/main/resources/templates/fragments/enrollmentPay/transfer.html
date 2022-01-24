@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <li th:fragment="itemTransfer" class="nav-item" role="presentation">
+        <button
+                class="nav-link"
+                id="transfer-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#transfer"
+                type="button"
+                role="tab"
+                aria-controls="transfer"
+                aria-selected="true">
+            Depósito
+        </button>
+    </li>
+
+    <div th:fragment="transfer(amount)" id="transfer" class="tab-pane fade pt-3">
+        <h6 class="pb-2">Número de cuenta bancaria BCP</h6>
+        <p>191-01791604-0-00 (Mendoza Figueroa, Nadia Thais)</p>
+        <h6 class="pb-2">Monto total a pagar</h6>
+        <p th:text="'S/ ' + ${amount}"></p>
+        <p class="text-muted"> Nota: Después de realizar el depósito, el pago podrá ser visualizado después de 24 horas. </p>
+    </div>
+</body>
+</html>

@@ -65,3 +65,16 @@
 #msform fieldset:not(:first-of-type) {
     display: none
 }
+.step-form{
+    display: none;
+}
+.step-form-active{
+    display: block;
+}
+#nextBtn{
+    float: right;
+}
+
+#Enviar{
+    float: right;
+}
