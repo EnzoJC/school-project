@@ -20,9 +20,9 @@
     </head>
 
     <body class="sb-nav-fixed">
-        <div th:replace="parts :: topnav"></div>
+        <div th:replace="fragments/topnav :: topNav(${'/parent/perfil'})"></div>
         <div id="layoutSidenav">
-            <div th:replace="parts :: sideNav(${nombresCompletos})"></div>
+            <div th:replace="fragments/sidenav :: sideNav(${nombresCompletos})"></div>
             <div id="layoutSidenav_content">
                 <main>
                     <form class="mx-3 my-3 needs-validation" th:action="@{/parent/postulante}" th:object="${student}" method="POST" novalidate>

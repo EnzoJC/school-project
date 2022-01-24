@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <li th:fragment="itemCreditCard" class="nav-item" role="presentation">
+        <button
+                class="nav-link active"
+                id="credit-card-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#credit-card"
+                type="button"
+                role="tab"
+                aria-controls="credit-card"
+                aria-selected="true">
+            Tarjeta
+        </button>
+    </li>
+
+    <div th:fragment="creditCard(idStudent, amount)" id="credit-card" class="tab-pane fade show active pt-3">
+        <form id="form-pay" role="form" th:action="@{/parent/admision/pay(idStudent=${idStudent})}" method="POST">
+            <div class="form-group mb-3">
+                <label for="full-names" class="h6">Nombres completos</label>
+                <input id="full-names" name="full-names" type="text" placeholder="Nombres completos"
+                       required class="form-control ">
+            </div>
+            <div class="form-group">
+                <label for="card-number" class="h6">Número de tarjeta</label>
+                <div class="input-group mb-3">
+                    <input id="card-number" name="card-number" type="text" placeholder="XXXX XXXX XXXX XXXX"
+                           onkeyup="this.value = tarjeta(this.value)" maxlength="19"
+                           class="form-control" aria-label="XXXX XXXX XXXX XXXX"
+                           aria-describedby="basic-tarjeta"
+                           required>
+                    <span class="input-group-text" id="basic-tarjeta">
+                        <i class="fab fa-cc-visa mx-1"></i>
+                        <i class="fab fa-cc-mastercard mx-1"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 mb-3">
+                    <div class="form-group">
+                        <label for="expiration-date" class="h6">Fecha de expiración</label>
+                        <div id="expiration-date" class="input-group">
+                            <input type="text" id="month" name="month" placeholder="MM" class="form-control" pattern="\d*" maxlength="2" required>
+                            <input type="text" id="year" name="year" placeholder="YY" class="form-control" pattern="\d*" maxlength="2" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 mb-3">
+                    <div class="form-group mb-4">
+                        <label for="cvv" data-toggle="tooltip"
+                               title="Los 3 dígitos que se encuentran en la parte trasera de su tarjeta" class="h6">
+                            CVV <i class="fa fa-question-circle d-inline"></i>
+                        </label>
+                        <input id="cvv" name="cvv" type="text" required class="form-control" pattern="\d*" maxlength="3" requiered>
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <button type="submit" id="pagar" class="btn btn-primary"
+                        th:text="'Pagar S/ ' + ${amount}">
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
