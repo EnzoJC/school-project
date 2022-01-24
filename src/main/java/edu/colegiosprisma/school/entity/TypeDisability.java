@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "types_disabilities")
 @Entity
@@ -17,4 +19,7 @@ public class TypeDisability {
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
+
+    @OneToMany(mappedBy = "enrollmentsForm")
+    private Set<StudentDisability> studentDisabilities = new HashSet<>();
 }

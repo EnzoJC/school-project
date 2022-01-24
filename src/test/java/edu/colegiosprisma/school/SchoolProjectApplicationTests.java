@@ -1,12 +1,15 @@
 package edu.colegiosprisma.school;
 
+import edu.colegiosprisma.school.entity.Parent;
 import edu.colegiosprisma.school.entity.Student;
 import edu.colegiosprisma.school.repository.IStudentRepository;
+import edu.colegiosprisma.school.service.IParentService;
 import edu.colegiosprisma.school.service.IStudentService;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
+
 
 @SpringBootTest
 public class SchoolProjectApplicationTests {
@@ -24,10 +27,8 @@ public class SchoolProjectApplicationTests {
 
         Boolean aBoolean = studentService.verifyDuplicate(student1);
 
-        Assert.isTrue(aBoolean,"No se encontro duplicado");
-
-        aBoolean = studentService.verifyDuplicate(student2);
-        Assert.isTrue(aBoolean,"Se encontro duplicado"); //error
+        Assertions.assertTrue(aBoolean);
+        //Assertions.assertEq
     }
 
 }

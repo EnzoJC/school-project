@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "parents_information", indexes = {
         @Index(name = "document_number_ak_2", columnList = "document_number", unique = true)
@@ -54,4 +56,10 @@ public class ParentInformation {
     @ManyToOne(optional = false)
     @JoinColumn(name = "religions_religion_id", nullable = false)
     private Religion religions;
+
+    @ManyToMany
+    @JoinTable(name = "parent_by_student",
+            joinColumns = { @JoinColumn(name = "enrollment_form_id") },
+            inverseJoinColumns = { @JoinColumn(name = "parent_information_id") })
+    private Set<EnrollmentsForm> enrollmentsForms = new HashSet<>();
 }

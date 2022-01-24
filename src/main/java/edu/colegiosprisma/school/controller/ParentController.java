@@ -2,7 +2,6 @@ package edu.colegiosprisma.school.controller;
 
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
-import edu.colegiosprisma.school.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +17,7 @@ import java.util.List;
 
 @Controller
 public class ParentController {
+    private final IEnrollmentService enrollmentService;
     private final IParentService parentService;
     private final IDocumentTypeService documentTypeService;
     private final INationalityService nationalityService;
@@ -35,14 +35,16 @@ public class ParentController {
     private final IEducationDegreeService educationDegreeService;
     private final IOccupationService occupationService;
 
+
     @Autowired
-    public ParentController(IParentService parentService, IDocumentTypeService documentTypeService,
+    public ParentController(IEnrollmentService enrollmentService, IParentService parentService, IDocumentTypeService documentTypeService,
                             INationalityService nationalityService, IGenderService genderService,
                             IEmailService emailService, IStudentService studentService, IDepartmentService departmentService,
                             IProvinceService provinceService, IDistrictService districtService, ILanguageService languageService,
                             IReligionService religionService, ITypeDisabilityService typeDisabilityService,
                             IBloodTypeService bloodTypeService, ITypeOfBirthService typeOfBirthService,
                             IEducationDegreeService educationDegreeService, IOccupationService occupationService) {
+        this.enrollmentService = enrollmentService;
         this.parentService = parentService;
         this.documentTypeService = documentTypeService;
         this.nationalityService = nationalityService;
@@ -168,7 +170,7 @@ public class ParentController {
         if (studentService.findById(studentId).isPresent()) {
             model.addAttribute("student", (Student) studentService.findById(studentId).get());
         }
-        model.addAttribute("enrollmentForm", new EnrollmentForm());
+        model.addAttribute("enrollmentForm", new EnrollmentsForm());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
         model.addAttribute("bloodTypes", bloodTypes);
         model.addAttribute("departments", departments);
@@ -184,8 +186,15 @@ public class ParentController {
     }
 
     @PostMapping("/parent/ficha-matricula")
-    public String guardarFichaMatricula(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm, Model model) {
-        return "";
+    public String guardarFichaMatricula(@ModelAttribute("enrollmentForm") EnrollmentsForm enrollmentForm, Model model) {
+
+       // enrollmentFormService.create(enrollmentForm); // pesistir parentinformations y luego persistir enrollmentForm bye bye
+
+        //Finalizamos cambiando el estado de enrollment
+        Student student = (Student) studentService.findById(enrollmentForm.getId()).get();
+        enrollmentService.updateStatusForNewStudent(student,3);
+
+        return "redirect:/parent/admision";
     }
 
     @GetMapping(value = "/parent/ficha-matricula/provincias")
