@@ -104,13 +104,14 @@ INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`
 INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Diciembre', 150, '2021-12-05', '2021-12-20', 10);
 INSERT INTO `payments` (`description`, `amount`, `payment_type_id`) VALUES ('Matrícula 2021', 200, 11);
 
-insert into `states` (`name`) values ('En espera');
-insert into `states` (`name`) values ('Pre-inscrito');
-insert into `states` (`name`) values ('Pendiente de validación');
-insert into `states` (`name`) values ('Matriculado');
-insert into `states` (`name`) values ('Pendiente de pago');
-insert into `states` (`name`) values ('Atrasado');
-insert into `states` (`name`) values ('Cancelado');
+insert into `states` (`state_id`, `name`) values (1, 'PRE_ENROLLED');
+insert into `states` (`state_id`, `name`) values (2, 'VALIDATION');
+insert into `states` (`state_id`, `name`) values (3, 'ENROLLED');
+insert into `states` (`state_id`, `name`) values (4, 'PENDING');
+insert into `states` (`state_id`, `name`) values (5, 'WAITING_CONFIRMATION');
+insert into `states` (`state_id`, `name`) values (6, 'APPROVED');
+insert into `states` (`state_id`, `name`) values (7, 'REJECTED');
+insert into `states` (`state_id`, `name`) values (8, 'LATE_PAYMENT');
 
 insert into `school` (`ruc`, `name`, `address`) values ('20600093470', 'Colegios Prisma' ,'San Martin De Porres');
 
