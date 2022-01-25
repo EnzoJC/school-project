@@ -73,17 +73,17 @@ public class StudentController {
             }
             return "parent/postulante";
         }
-        if (studentService.verifyDuplicate(student)) {
+        if (!studentService.verifyDuplicate(student)) {
             if (student.getAge() > 18) {
-                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
-                return "parent/registro";
+                model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
+                return "parent/postulante";
             }
             studentService.create(student, enrollment); // Inserta en la base de datos
             return "redirect:/parent/admision";
         } else {
 //            cargarOptions(model);
 //            lanzarMensajesAdvertencia(parent, model);
-            if (parent.getAge() < 18 && !studentService.verifyDuplicate(student)) {
+          /*  if (parent.getAge() < 18 && !studentService.verifyDuplicate(student)) {
                 cargarOptions(model);
                 lanzarMensajesAdvertencia(student, model);
                 model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
@@ -92,7 +92,8 @@ public class StudentController {
                 lanzarMensajesAdvertencia(student, model);
             } else {
                 model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
-            }
+            }*/
+
             return "parent//postulante";
         }
     }
