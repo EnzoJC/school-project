@@ -1,5 +1,6 @@
 package edu.colegiosprisma.school.entity;
 
+import edu.colegiosprisma.school.entity.validation.RangeAge;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
@@ -15,6 +16,7 @@ import java.util.List;
 @Setter
 // @PrimaryKeyJoinColumn permite que el id de la clase padre sea el id del student
 @PrimaryKeyJoinColumn(name = "student_id")
+@RangeAge(min = 5, max = 18, field = "birthDate")
 public class Student extends User {
     @Column(name = "student_email", nullable = false, length = 50)
     private String studentEmail;

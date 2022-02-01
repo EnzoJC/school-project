@@ -71,7 +71,7 @@
                                 <div class="col-lg-6 my-2">
                                     <label for="birth-date" class="form-label">Fecha De Nacimiento</label>
                                     <input id="birth-date" type="date" class="form-control" th:field="*{birthDate}" required>
-                                    <small class="form-text text-danger" th:text="${alertaEdad}"></small>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></small>
                                 </div>
                                 <div class="col-lg-6 my-2">
                                     <label for="nationality" class="form-label">Nacionalidad</label>

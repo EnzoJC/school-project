@@ -2,6 +2,7 @@ package edu.colegiosprisma.school.controller;
 
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
+import edu.colegiosprisma.school.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -82,7 +83,7 @@ public class ParentController {
         if (result.hasErrors()) {
             cargarOptions(model);
             lanzarMensajesAdvertencia(parent, model);
-            if (parent.getAge() < 18) {
+            if (Utils.getAge(parent.getBirthDate()) < 18) {
                 model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
             }
             if (parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) {
@@ -91,7 +92,7 @@ public class ParentController {
             return "parent/registro";
         }
         if (parentService.verifyDuplicate(parent).isEmpty()) {
-            if ((parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) && (parent.getAge() < 18)) {
+            if ((parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) && (Utils.getAge(parent.getBirthDate()) < 18)) {
                 cargarOptions(model);
                 model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
                 model.addAttribute("alertaDocumento", "Revise bien su número de documento");
@@ -100,7 +101,7 @@ public class ParentController {
                 cargarOptions(model);
                 model.addAttribute("alertaDocumento", "Revise bien su número de documento");
                 return "parent/registro";
-            } else if (parent.getAge() < 18) {
+            } else if (Utils.getAge(parent.getBirthDate()) < 18) {
                 cargarOptions(model);
                 model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
                 return "parent/registro";
@@ -110,7 +111,7 @@ public class ParentController {
             redirectAttributes.addFlashAttribute("mensaje", "Registro exitoso, sus credenciales han sido enviadas al correo registrado");
             return "redirect:/registro";
         } else {
-            if (parent.getAge() < 18 && !parentService.verifyDuplicate(parent).isEmpty()) {
+            if (Utils.getAge(parent.getBirthDate()) < 18 && !parentService.verifyDuplicate(parent).isEmpty()) {
                 cargarOptions(model);
                 lanzarMensajesAdvertencia(parent, model);
                 model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");

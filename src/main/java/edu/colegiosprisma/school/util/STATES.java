@@ -1,6 +1,6 @@
 package edu.colegiosprisma.school.util;
 
-public enum EnumStates {
+public enum STATES {
     // Estados para la matrícula
     PRE_ENROLLED(1),
     VALIDATION(2),
@@ -14,7 +14,7 @@ public enum EnumStates {
 
     private int value;
 
-    EnumStates(int value) {
+    STATES(int value) {
         this.value = value;
     }
     public int getValue() {

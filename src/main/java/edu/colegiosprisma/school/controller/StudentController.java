@@ -2,6 +2,7 @@ package edu.colegiosprisma.school.controller;
 
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
+import edu.colegiosprisma.school.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,19 +66,12 @@ public class StudentController {
         if (result.hasErrors()) {
             cargarOptions(model);
             lanzarMensajesAdvertencia(student, model);
-            if (student.getAge() > 18) {
-                model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
-            }
             if (student.getDocumentNumber().length() != student.getDocumentType().getLength()) {
                 model.addAttribute("alertaDocumento", "Revise bien su número de documento");
             }
             return "parent/postulante";
         }
         if (!studentService.verifyDuplicate(student)) {
-            if (student.getAge() > 18) {
-                model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
-                return "parent/postulante";
-            }
             studentService.create(student, enrollment); // Inserta en la base de datos
             return "redirect:/parent/admision";
         } else {
