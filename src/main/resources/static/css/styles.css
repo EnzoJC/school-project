@@ -469,3 +469,17 @@ html, body {
         height: auto;
     }
 }
+
+.listado {
+    margin-left: 3rem;
+    margin-right: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.tabla {
+    margin-left: 3rem;
+    margin-right: 3rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
