@@ -1,5 +1,6 @@
 package edu.colegiosprisma.school.entity;
 
+import edu.colegiosprisma.school.entity.validation.RangeAge;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @Setter
 // @PrimaryKeyJoinColumn permite que el id del padre sea el id del parent
 @PrimaryKeyJoinColumn(name = "parent_id")
+@RangeAge(min = 18, max = 99, fieldDate = "birthDate", message = "Debe ser mayor de 18 años")
 public class Parent extends User {
     @OneToMany(mappedBy = "parent")
     List<Student> students;

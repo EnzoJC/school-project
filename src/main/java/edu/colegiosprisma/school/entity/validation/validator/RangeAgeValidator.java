@@ -9,22 +9,29 @@ import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 
 public class RangeAgeValidator implements ConstraintValidator<RangeAge, Object> {
-    private String field;
+    private String fieldDate;
     private int min;
     private int max;
 
     @Override
     public void initialize(RangeAge constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
-        this.field = constraintAnnotation.field();
+        this.fieldDate = constraintAnnotation.fieldDate();
         this.min = constraintAnnotation.min();
         this.max = constraintAnnotation.max();
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-        LocalDate localDate = (LocalDate) new BeanWrapperImpl(value).getPropertyValue(field);
+        LocalDate localDate = (LocalDate) new BeanWrapperImpl(value).getPropertyValue(fieldDate);
         int edad = Utils.getAge(localDate);
-        return localDate != null && edad < max && edad >= min;
+        boolean isValid = localDate != null && edad < max && edad >= min;
+        if (!isValid) {
+            context.disableDefaultConstraintViolation(); // Permite agregar más mensajes de error a la validación de la constraint
+            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()) // Agrega el mensaje de error
+                    .addPropertyNode(fieldDate) // Agrega el nodo del campo que no cumple la constraint
+                    .addConstraintViolation(); // Agrega la constraint que no cumple el campo en particular
+        }
+        return isValid;
     }
 }

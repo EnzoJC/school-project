@@ -8,6 +8,7 @@ import edu.colegiosprisma.school.repository.IRoleRepository;
 import edu.colegiosprisma.school.service.IParentService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
@@ -54,23 +55,36 @@ public class ParentServImpl implements IParentService {
     }
 
     @Override
-    public List<Integer> verifyDuplicate(Parent parent) {
-        User parentWithDocumentNumber = parentRepository.findByDocumentNumber(parent.getDocumentNumber());
-        Parent parentWithEmail = parentRepository.findByEmail(parent.getEmail());
-        Parent parentWithPhone = parentRepository.findByPhone(parent.getPhone());
+    public Boolean isDuplicate(Parent parent, Model model) {
+        boolean flag = false;
+        if (isDuplicatePhone(parent.getPhone())) {
+            model.addAttribute("duplicatePhone", "El número de teléfono ya existe");
+            flag = true;
+        }
+        if (isDuplicateEmail(parent.getEmail())) {
+            model.addAttribute("duplicateEmail", "El correo ya existe");
+            flag = true;
+        }
+        if (isDuplicateDocumentNumber(parent.getDocumentNumber())) {
+            model.addAttribute("duplicateDocumentNumber", "El número de documento ya existe");
+            flag = true;
+        }
+        return flag;
+    }
 
-        List<Integer> lista = new ArrayList<>();
+    @Override
+    public Boolean isDuplicatePhone(String phone) {
+        return parentRepository.findByPhone(phone) != null? true : false;
+    }
 
-        if (parentWithDocumentNumber != null) {
-            lista.add(1);
-        }
-        if (parentWithEmail != null) {
-            lista.add(2);
-        }
-        if (parentWithPhone != null) {
-            lista.add(3);
-        }
-        return lista;
+    @Override
+    public Boolean isDuplicateEmail(String email) {
+        return parentRepository.findByEmail(email) != null? true : false;
+    }
+
+    @Override
+    public Boolean isDuplicateDocumentNumber(String documentNumber) {
+        return parentRepository.findByDocumentNumber(documentNumber) != null? true : false;
     }
 
     @Override

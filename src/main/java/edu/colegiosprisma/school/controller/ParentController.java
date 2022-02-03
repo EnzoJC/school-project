@@ -80,49 +80,17 @@ public class ParentController {
 
     @PostMapping("/registro")
     public String registrar(@Valid Parent parent, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
-        if (result.hasErrors()) {
+        if (result.hasErrors() || parentService.isDuplicate(parent, model)) {
             cargarOptions(model);
-            lanzarMensajesAdvertencia(parent, model);
-            if (Utils.getAge(parent.getBirthDate()) < 18) {
-                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
-            }
-            if (parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) {
-                model.addAttribute("alertaDocumento", "Revise bien su número de documento");
-            }
             return "parent/registro";
-        }
-        if (parentService.verifyDuplicate(parent).isEmpty()) {
-            if ((parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) && (Utils.getAge(parent.getBirthDate()) < 18)) {
-                cargarOptions(model);
-                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
-                model.addAttribute("alertaDocumento", "Revise bien su número de documento");
-                return "parent/registro";
-            } else if (parent.getDocumentNumber().length() != parent.getDocumentType().getLength()) {
-                cargarOptions(model);
-                model.addAttribute("alertaDocumento", "Revise bien su número de documento");
-                return "parent/registro";
-            } else if (Utils.getAge(parent.getBirthDate()) < 18) {
-                cargarOptions(model);
-                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
-                return "parent/registro";
-            }
+        } else {
             parentService.create(parent);
             emailService.send(parent, "mail/credentials");
-            redirectAttributes.addFlashAttribute("mensaje", "Registro exitoso, sus credenciales han sido enviadas al correo registrado");
+            // redirectAttributes.addFlashAttribute() este metodo sirve para agregar un mensaje de exito al momento de redireccionar
+            redirectAttributes.addFlashAttribute(
+                    "mensaje",
+                    "Registro exitoso, sus credenciales han sido enviadas al correo registrado");
             return "redirect:/registro";
-        } else {
-            if (Utils.getAge(parent.getBirthDate()) < 18 && !parentService.verifyDuplicate(parent).isEmpty()) {
-                cargarOptions(model);
-                lanzarMensajesAdvertencia(parent, model);
-                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
-            } else if (!parentService.verifyDuplicate(parent).isEmpty()) {
-                cargarOptions(model);
-                lanzarMensajesAdvertencia(parent, model);
-            } else {
-                cargarOptions(model);
-                model.addAttribute("alertaEdad", "Debe ser mayor a 18 años");
-            }
-            return "parent/registro";
         }
     }
 
@@ -221,17 +189,6 @@ public class ParentController {
         model.addAttribute("documentTypeList", documentTypeList);
         model.addAttribute("genderList", genderList);
         model.addAttribute("nationalityList", nationalityList);
-    }
-
-    private void lanzarMensajesAdvertencia(@Valid Parent parent, Model model) {
-        for (int i = 0; i < parentService.verifyDuplicate(parent).size(); i++) {
-            if (parentService.verifyDuplicate(parent).get(i) == 1)
-                model.addAttribute("alertaDocumentNumber", "El " + parent.getDocumentType().getName() + " ingresado ya existe");
-            if (parentService.verifyDuplicate(parent).get(i) == 2)
-                model.addAttribute("alertaEmail", "El correo ingresado ya existe");
-            if (parentService.verifyDuplicate(parent).get(i) == 3)
-                model.addAttribute("alertaPhone", "El teléfono ingresado ya existe");
-        }
     }
 
     private Parent getCurrentParent() {

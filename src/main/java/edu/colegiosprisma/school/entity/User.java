@@ -1,5 +1,6 @@
 package edu.colegiosprisma.school.entity;
 
+import edu.colegiosprisma.school.entity.validation.IdentityCard;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +21,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
+@IdentityCard(message = "Revise bien su número de documento de identidad", fieldType = "documentType", fieldLength = "documentNumber")
 public class User {
     private static final String REGEX_FOR_NAMES = "^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]{2,25}(\\s{1}[a-zA-ZÀ-ÿ\\u00f1\\u00d1]{2,25})?$";
     @Id
@@ -50,7 +52,7 @@ public class User {
     private DocumentType documentType;
 
     @NotEmpty(message = "El número de documento es obligatorio")
-    @Pattern(regexp = "^[0-9]{8,12}$", message = "El número de documento debe contener solo números")
+    @Pattern(regexp = "^[0-9]+$", message = "El número de documento debe contener solo números")
     @Column(name = "document_number", nullable = false, length = 20)
     private String documentNumber;
 
