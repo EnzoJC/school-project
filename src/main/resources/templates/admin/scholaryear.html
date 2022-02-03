@@ -20,42 +20,51 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="listado">
-                <h3>Lista de tipos de pagos</h3>
+                <h3>Lista de años</h3>
                 <div class="tabla">
                     <!-- Botón que abre el modal agregar padre -->
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregarTipoPago">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregarAnio">
                         Agregar
                     </button>
                     <table class="table">
                         <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Tipo de pago</th>
+                            <th scope="col">Año</th>
+                            <th scope="col">Fecha de inicio</th>
+                            <th scope="col">Fecha de fin</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <th scope="row">1</th>
-                            <td>Mensualidad de marzo</td>
+                            <td>2020</td>
+                            <td>2020-03-01</td>
+                            <td>2020-12-15</td>
                             <td>
-                                <button type="button" class="btn btn-warning fas fa-edit" data-bs-toggle="modal" data-bs-target="#modalEditarTipoPago"></button>
-                                <button type="button" class="btn btn-danger fas fa-trash-alt" data-bs-toggle="modal" data-bs-target="#modalEliminarTipoPago"></button>
+                                <button type="button" class="btn btn-warning fas fa-edit" data-bs-toggle="modal" data-bs-target="#modalEditarAnio"></button>
+                                <button type="button" class="btn btn-danger fas fa-trash-alt" data-bs-toggle="modal" data-bs-target="#modalEliminarAnio"></button>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">2</th>
-                            <td>Mensualidad de abril</td>
+                            <td>2021</td>
+                            <td>2021-03-01</td>
+                            <td>2021-12-15</td>
                             <td>
-                                <button type="button" class="btn btn-warning fas fa-edit" data-bs-toggle="modal" data-bs-target="#modalEditarTipoPago"></button>
-                                <button type="button" class="btn btn-danger fas fa-trash-alt" data-bs-toggle="modal" data-bs-target="#modalEliminarTipoPago"></button>
+                                <button type="button" class="btn btn-warning fas fa-edit" data-bs-toggle="modal" data-bs-target="#modalEditarAnio"></button>
+                                <button type="button" class="btn btn-danger fas fa-trash-alt" data-bs-toggle="modal" data-bs-target="#modalEliminarAnio"></button>
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mensualidad de mayo</td>
+                            <th scope="row">3</th>
+                            <td>2022</td>
+                            <td>2022-03-01</td>
+                            <td>2022-12-15</td>
                             <td>
-                                <button type="button" class="btn btn-warning fas fa-edit" data-bs-toggle="modal" data-bs-target="#modalEditarTipoPago"></button>
-                                <button type="button" class="btn btn-danger fas fa-trash-alt" data-bs-toggle="modal" data-bs-target="#modalEliminarTipoPago"></button>
+                                <button type="button" class="btn btn-warning fas fa-edit" data-bs-toggle="modal" data-bs-target="#modalEditarAnio"></button>
+                                <button type="button" class="btn btn-danger fas fa-trash-alt" data-bs-toggle="modal" data-bs-target="#modalEliminarAnio"></button>
                             </td>
                         </tr>
                         </tbody>
@@ -63,19 +72,31 @@
                 </div>
             </div>
             <!-- Modal Agregar -->
-            <div class="modal fade" id="modalAgregarTipoPago" tabindex="-1" aria-hidden="true">
+            <div class="modal fade" id="modalAgregarAnio" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="agregarTipoPago">Agregar tipo de pago</h5>
+                            <h5 class="modal-title" id="agregarAnio">Agregar Año</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form class="form-horizontal row">
-                                <div class='col-xl-12 col-md-12 my-2'>
+                                <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
-                                        <label for="name">Tipo de pago</label>
-                                        <input id="name" type="text" class="form-control">
+                                        <label for="year">Año</label>
+                                        <input id="year" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="start-date">Fecha de inicio</label>
+                                        <input id="start-date" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="finish-date">Fecha de fin</label>
+                                        <input id="finish-date" type="date" class="form-control">
                                     </div>
                                 </div>
                             </form>
@@ -88,19 +109,31 @@
                 </div>
             </div>
             <!-- Modal Editar-->
-            <div class="modal fade" id="modalEditarTipoPago" tabindex="-1" aria-hidden="true">
+            <div class="modal fade" id="modalEditarAnio" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editarTipoPago">Editar tipo de pago</h5>
+                            <h5 class="modal-title" id="editarAnio">Editar matrícula</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form class="form-horizontal row">
-                                <div class='col-xl-12 col-md-12 my-2'>
+                                <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
-                                        <label for="edit-name">Tipo de pago</label>
-                                        <input id="edit-name" type="text" class="form-control">
+                                        <label for="edit-year">Año</label>
+                                        <input id="edit-year" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="edit-start-date">Fecha de inicio</label>
+                                        <input id="edit-start-date" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="edit-finish-date">Fecha de fin</label>
+                                        <input id="edit-finish-date" type="date" class="form-control">
                                     </div>
                                 </div>
                             </form>
@@ -113,11 +146,11 @@
                 </div>
             </div>
             <!-- Modal Eliminar-->
-            <div class="modal fade" id="modalEliminarTipoPago" tabindex="-1" aria-hidden="true">
+            <div class="modal fade" id="modalEliminarAnio" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="eliminarTipoPago">Eliminar tipo de pago</h5>
+                            <h5 class="modal-title" id="eliminarAnio">Eliminar padre</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
