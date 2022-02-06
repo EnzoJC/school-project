@@ -6,6 +6,7 @@ import edu.colegiosprisma.school.service.INationalityService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NationalityServImpl implements INationalityService {
@@ -18,5 +19,20 @@ public class NationalityServImpl implements INationalityService {
     @Override
     public List<Nationality> getAll() {
         return nationalityRepository.findAll();
+    }
+
+    @Override
+    public Optional<Nationality> findById(int id) {
+        return nationalityRepository.findById(id);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        nationalityRepository.deleteById(id);
+    }
+
+    @Override
+    public Nationality update(Nationality nationality, int id) {
+        return null;
     }
 }

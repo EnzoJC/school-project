@@ -6,6 +6,7 @@ import edu.colegiosprisma.school.service.IEducationDegreeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EducationDegreeServImpl implements IEducationDegreeService {
@@ -18,5 +19,20 @@ public class EducationDegreeServImpl implements IEducationDegreeService {
     @Override
     public List<EducationDegree> getAll() {
         return educationDegreeRepository.findAll();
+    }
+
+    @Override
+    public Optional<EducationDegree> findById(int id) {
+        return educationDegreeRepository.findById(id);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        educationDegreeRepository.deleteById(id);
+    }
+
+    @Override
+    public EducationDegree update(EducationDegree educationDegree, int id) {
+        return null;
     }
 }

@@ -6,6 +6,7 @@ import edu.colegiosprisma.school.service.ILanguageService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LanguageServImpl implements ILanguageService {
@@ -18,5 +19,20 @@ public class LanguageServImpl implements ILanguageService {
     @Override
     public List<Language> getAll() {
         return languageRepository.findAll();
+    }
+
+    @Override
+    public Optional<Language> findById(int id) {
+        return languageRepository.findById(id);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        languageRepository.deleteById(id);
+    }
+
+    @Override
+    public Language update(Language language, int id) {
+        return null;
     }
 }

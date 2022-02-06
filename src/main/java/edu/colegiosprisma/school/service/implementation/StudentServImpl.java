@@ -1,9 +1,6 @@
 package edu.colegiosprisma.school.service.implementation;
 
-import edu.colegiosprisma.school.entity.Enrollment;
-import edu.colegiosprisma.school.entity.Role;
-import edu.colegiosprisma.school.entity.Student;
-import edu.colegiosprisma.school.entity.User;
+import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.repository.IRoleRepository;
 import edu.colegiosprisma.school.repository.IStudentRepository;
 import edu.colegiosprisma.school.service.IEnrollmentService;
@@ -11,14 +8,13 @@ import edu.colegiosprisma.school.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class StudentServImpl implements IStudentService {
@@ -76,5 +72,39 @@ public class StudentServImpl implements IStudentService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Student findByUsername(String user) {
+        return (Student) studentRepository.findByUsername(user);
+    }
+
+    @Override
+    public Set<Student> getAll() {
+        return new LinkedHashSet<Student>((Collection<? extends Student>) studentRepository.findAll());
+    }
+
+    @Override
+    public void deleteById(String id) {
+        studentRepository.deleteById(id);
+    }
+
+    @Override
+    public Student update(Student student, String id) {
+        return null;
+    }
+
+    public Boolean isDuplicate(Student student, Model model) {
+        boolean flag = false;
+
+        if (isDuplicateDocumentNumber(student.getDocumentNumber())) {
+            model.addAttribute("duplicateDocumentNumber", "El número de documento ya existe");
+            flag = true;
+        }
+        return flag;
+    }
+    @Override
+    public Boolean isDuplicateDocumentNumber(String documentNumber) {
+        return studentRepository.findByDocumentNumber(documentNumber) != null? true : false;
     }
 }

@@ -14,10 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ParentServImpl implements IParentService {
@@ -74,17 +71,17 @@ public class ParentServImpl implements IParentService {
 
     @Override
     public Boolean isDuplicatePhone(String phone) {
-        return parentRepository.findByPhone(phone) != null? true : false;
+        return parentRepository.findByPhone(phone) != null;
     }
 
     @Override
     public Boolean isDuplicateEmail(String email) {
-        return parentRepository.findByEmail(email) != null? true : false;
+        return parentRepository.findByEmail(email) != null;
     }
 
     @Override
     public Boolean isDuplicateDocumentNumber(String documentNumber) {
-        return parentRepository.findByDocumentNumber(documentNumber) != null? true : false;
+        return parentRepository.findByDocumentNumber(documentNumber) != null;
     }
 
     @Override
@@ -102,5 +99,21 @@ public class ParentServImpl implements IParentService {
         p.setEmail(parent.getEmail());
         p.setAddress(parent.getAddress());
         return parentRepository.save(p);
+    }
+
+    @Override
+    public Optional<User> findById(String parentId) {
+        return parentRepository.findById(parentId);
+    }
+
+
+    @Override
+    public Set<Parent> getAll() {
+        return new HashSet<Parent>((Collection<? extends Parent>) parentRepository.findAll());
+    }
+
+    @Override
+    public void deleteById(String id) {
+        parentRepository.deleteById(id);
     }
 }
