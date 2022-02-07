@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <title>Administración - Inicio</title>
+
+    <link th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} " th:rel="stylesheet"/>
+    <link as="style" rel="preload" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link th:href="@{/webjars/font-awesome/5.15.4/css/all.css}" th:rel="stylesheet"/>
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/png"/>
+</head>
+
+<body class="sb-nav-fixed">
+<div th:replace="fragments/topnav :: topNav(${'/admin/perfil'})"></div>
+<div id="layoutSidenav">
+    <div th:replace="/fragments/sidenavAdmin :: sideNav(${nombresCompletos})"></div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="listado">
+                <h3>Lista de transacciones</h3>
+                <div class="tabla">
+                    <!-- Botón que abre el modal agregar padre -->
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregarAnio">
+                        Agregar
+                    </button>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Fecha de emisión</th>
+                            <th scope="col">Fecha de expiración</th>
+                            <th scope="col">Día de pago</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">BV01-000001</th>
+                            <td>2022-01-20</td>
+                            <td>2022-01-23</td>
+                            <td>2022-02-01</td>
+                            <td>Pagado</td>
+                            <td>
+                                <button type="button" class="btn btn-warning fas fa-edit" data-bs-toggle="modal" data-bs-target="#modalEditarAnio"></button>
+                                <button type="button" class="btn btn-danger fas fa-trash-alt" data-bs-toggle="modal" data-bs-target="#modalEliminarAnio"></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">BV01-000002</th>
+                            <td>2022-01-20</td>
+                            <td>2022-01-23</td>
+                            <td>2022-02-01</td>
+                            <td>Pagado</td>
+                            <td>
+                                <button type="button" class="btn btn-warning fas fa-edit" data-bs-toggle="modal" data-bs-target="#modalEditarAnio"></button>
+                                <button type="button" class="btn btn-danger fas fa-trash-alt" data-bs-toggle="modal" data-bs-target="#modalEliminarAnio"></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">BV01-000003</th>
+                            <td>2022-01-20</td>
+                            <td>2022-01-23</td>
+                            <td>2022-02-01</td>
+                            <td>Pagado</td>
+                            <td>
+                                <button type="button" class="btn btn-warning fas fa-edit" data-bs-toggle="modal" data-bs-target="#modalEditarAnio"></button>
+                                <button type="button" class="btn btn-danger fas fa-trash-alt" data-bs-toggle="modal" data-bs-target="#modalEliminarAnio"></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Modal Agregar -->
+            <div class="modal fade" id="modalAgregarAnio" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="agregarAnio">Agregar año</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal row">
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="issue-date">Fecha de emisión</label>
+                                        <input id="issue-date" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="expiration-date">Fecha de expiración</label>
+                                        <input id="expiration-date" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="payment-date">Día de pago</label>
+                                        <input id="payment-date" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="description">Descripción</label>
+                                        <input id="description" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="school-ruc">RUC</label>
+                                        <input id="school-ruc" type="number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="state">Estado</label>
+                                        <input id="state" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="state-id">ID matrícula</label>
+                                        <input id="state-id" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary">Registrar ahora</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Editar-->
+            <div class="modal fade" id="modalEditarAnio" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editarAnio">Editar año</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal row">
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="edit-issue-date">Fecha de emisión</label>
+                                        <input id="edit-issue-date" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="edit-expiration-date">Fecha de expiración</label>
+                                        <input id="edit-expiration-date" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="edit-payment-date">Día de pago</label>
+                                        <input id="edit-payment-date" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="edit-description">Descripción</label>
+                                        <input id="edit-description" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="edit-school-ruc">RUC</label>
+                                        <input id="edit-school-ruc" type="number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="edit-state">Estado</label>
+                                        <input id="edit-state" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class='col-xl-6 col-md-12 my-2'>
+                                    <div class="form-group">
+                                        <label for="state-id">ID matrícula</label>
+                                        <input id="edit-state-id" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary">Editar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Eliminar-->
+            <div class="modal fade" id="modalEliminarAnio" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="eliminarAnio">Eliminar año</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Está seguro de eliminar?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>
