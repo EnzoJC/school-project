@@ -1,6 +1,7 @@
 package edu.colegiosprisma.school.entity;
 
 import edu.colegiosprisma.school.entity.validation.IdentityCard;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;

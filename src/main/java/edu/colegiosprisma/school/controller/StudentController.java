@@ -2,7 +2,6 @@ package edu.colegiosprisma.school.controller;
 
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
-import edu.colegiosprisma.school.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,9 +46,9 @@ public class StudentController {
     }
 
     @GetMapping("/parent/postulante")
-    public String agregar(Model model) {
-        Parent parent = getCurrentParent();
-        cargarOptions(model);
+    public String register(Model model) {
+        Parent parent = studentService.getParentLogged();
+        loadOptions(model);
 
         model.addAttribute("nombresCompletos", parent.getGivenNames());
         model.addAttribute("student", new Student());
@@ -59,47 +58,25 @@ public class StudentController {
     }
 
     @PostMapping("/parent/postulante")
-    public String registrar(@Valid Student student, BindingResult result, Enrollment enrollment, Model model) {
-        Parent parent = getCurrentParent();
-        student.setParent(parent);
+    public String register(@Valid Student student, BindingResult result, Enrollment enrollment, Model model) {
 
-        if (result.hasErrors()) {
-            cargarOptions(model);
-            lanzarMensajesAdvertencia(student, model);
-            if (student.getDocumentNumber().length() != student.getDocumentType().getLength()) {
-                model.addAttribute("alertaDocumento", "Revise bien su número de documento");
-            }
+        if (result.hasErrors() || studentService.isDuplicate(student, model)) {
+            loadOptions(model);
             return "parent/postulante";
-        }
-        if (!studentService.verifyDuplicate(student)) {
+        } else {
             studentService.create(student, enrollment); // Inserta en la base de datos
             return "redirect:/parent/admision";
-        } else {
-//            cargarOptions(model);
-//            lanzarMensajesAdvertencia(parent, model);
-          /*  if (parent.getAge() < 18 && !studentService.verifyDuplicate(student)) {
-                cargarOptions(model);
-                lanzarMensajesAdvertencia(student, model);
-                model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
-            } else if (!studentService.verifyDuplicate(student)) {
-                cargarOptions(model);
-                lanzarMensajesAdvertencia(student, model);
-            } else {
-                model.addAttribute("alertaEdad", "Debe ser menor a 18 años");
-            }*/
-
-            return "parent//postulante";
         }
     }
 
     @GetMapping(value = "/parent/postulante/grados")
     public @ResponseBody
-    List<Grade> getGradosPorNivel(@RequestParam(value = "levelId") Integer levelId) {
+    List<Grade> getGradesByLevel(@RequestParam(value = "levelId") Integer levelId) {
         Optional<Level> level = levelService.findLevelById(levelId);
         return level.isPresent() ? gradeService.getAllGradesByLevel(level.get()) : new ArrayList<>();
     }
 
-    private void cargarOptions(Model model) {
+    private void loadOptions(Model model) {
         List<DocumentType> documentTypeList = documentTypeService.getAll();
         List<Gender> genderList = genderService.getAll();
         List<Nationality> nationalityList = nationalityService.getAll();
@@ -111,18 +88,5 @@ public class StudentController {
         model.addAttribute("nationalityList", nationalityList);
         model.addAttribute("relationshipList", relationshipList);
         model.addAttribute("levelList", levelList);
-    }
-
-    private void lanzarMensajesAdvertencia(@Valid Student student, Model model) {
-
-        if (studentService.verifyDuplicate(student))
-            model.addAttribute("alertaDocumentNumber", "El " + student.getDocumentType().getName() + " ingresado ya existe");
-
-    }
-
-    private Parent getCurrentParent() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        return parentService.findByUsername(userDetails.getUsername());
     }
 }

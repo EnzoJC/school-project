@@ -1,6 +1,7 @@
 package edu.colegiosprisma.school.entity;
 
 import edu.colegiosprisma.school.entity.validation.RangeAge;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -37,7 +37,6 @@ public class ParentController {
     private final IEducationDegreeService educationDegreeService;
     private final IOccupationService occupationService;
 
-
     @Autowired
     public ParentController(IEnrollmentService enrollmentService, IParentService parentService, IDocumentTypeService documentTypeService,
                             INationalityService nationalityService, IGenderService genderService,
@@ -66,7 +65,7 @@ public class ParentController {
     }
 
     @GetMapping("/registro")
-    public String agregar(Model model) {
+    public String register(Model model) {
         List<DocumentType> documentTypeList = documentTypeService.getAll();
         List<Gender> genderList = genderService.getAll();
         List<Nationality> nationalityList = nationalityService.getAll();
@@ -79,9 +78,9 @@ public class ParentController {
     }
 
     @PostMapping("/registro")
-    public String registrar(@Valid Parent parent, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+    public String register(@Valid Parent parent, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors() || parentService.isDuplicate(parent, model)) {
-            cargarOptions(model);
+            loadOptions(model);
             return "parent/registro";
         } else {
             parentService.create(parent);
@@ -95,7 +94,7 @@ public class ParentController {
     }
 
     @GetMapping({"/parent", "/parent/admision"})
-    public String admision(Model model) {
+    public String showStudents(Model model) {
         Parent parent = getCurrentParent();
         model.addAttribute("listaEstudiantes", parent.getStudents());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
@@ -103,7 +102,7 @@ public class ParentController {
     }
 
     @GetMapping("/parent/perfil")
-    public String editarPerfil(Model model) {
+    public String updateProfile(Model model) {
         Parent parent = getCurrentParent();
         model.addAttribute("parent", parent);
         model.addAttribute("nombresCompletos", parent.getGivenNames());
@@ -111,7 +110,7 @@ public class ParentController {
     }
 
     @PostMapping("/parent/perfil")
-    public String actualizarPerfil(@ModelAttribute("parent") Parent parent) {
+    public String updateProfile(@ModelAttribute("parent") Parent parent) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         String id = userDetails.getUsername();
@@ -120,7 +119,7 @@ public class ParentController {
     }
 
     @GetMapping("/parent/ficha-matricula")
-    public String cargarFichaMatricula(@RequestParam(name = "id") String studentId, Model model) {
+    public String loadEnrollmentSheet(@RequestParam(name = "id") String studentId, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Parent parent = parentService.findByUsername(userDetails.getUsername());
@@ -156,7 +155,7 @@ public class ParentController {
     }
 
     @PostMapping("/parent/ficha-matricula")
-    public String guardarFichaMatricula(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm, Model model) {
+    public String saveEnrollmentSheet(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm, Model model) {
 
         // enrollmentFormService.create(enrollmentForm); // pesistir parentinformations y luego persistir enrollmentForm bye bye
 
@@ -169,19 +168,19 @@ public class ParentController {
 
     @GetMapping(value = "/parent/ficha-matricula/provincias")
     public @ResponseBody
-    List<Province> getProvinciasPorDepartamento(@RequestParam(value = "id") String id) {
+    List<Province> getProvincesByDepartment(@RequestParam(value = "id") String id) {
         Department department = departmentService.findById(id);
         return provinceService.getAllProvincesByDepartment(department);
     }
 
     @GetMapping(value = "/parent/ficha-matricula/distritos")
     public @ResponseBody
-    List<District> getDistritosPorProvincia(@RequestParam(value = "id") String id) {
+    List<District> getDistrictsByProvince(@RequestParam(value = "id") String id) {
         Province province = provinceService.findById(id);
         return districtService.getAllDistrictsByProvince(province);
     }
 
-    private void cargarOptions(Model model) {
+    private void loadOptions(Model model) {
         List<DocumentType> documentTypeList = documentTypeService.getAll();
         List<Gender> genderList = genderService.getAll();
         List<Nationality> nationalityList = nationalityService.getAll();

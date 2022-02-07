@@ -20,11 +20,11 @@ public interface IParentService {
 
     Parent findByUsername(String username);
 
-    Parent update(Parent parent, String id);
+    Parent update(Parent newParent, String id);
 
     Optional<User> findById(String parentId);
 
-    Set<Parent> getAll();
+    Set<User> getAll();
 
     void deleteById(String id);
 }

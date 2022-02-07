@@ -13,14 +13,18 @@ public interface IStudentService {
     Student create(Student student, Enrollment enrollment);
 
     Boolean isDuplicate(Student student, Model model);
-    public Boolean isDuplicateDocumentNumber(String documentNumber);
+
+    Boolean isDuplicateDocumentNumber(String documentNumber);
 
     Optional<User> findById(String studentId);
 
-    Boolean verifyDuplicate(Student student);
-
     Student findByUsername(String user);
-    Set<Student> getAll();
+
+    Set<User> getAll();
+
     void deleteById(String id);
+
     Student update(Student student, String id);
+
+    Parent getParentLogged();
 }
