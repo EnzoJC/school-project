@@ -25,4 +25,14 @@ public class ProvinceServImpl implements IProvinceService {
     public Province findById(String id) {
         return provinceRepository.findById(id).isPresent() ? provinceRepository.findById(id).get() : new Province();
     }
+
+    @Override
+    public void deleteById(String id) {
+        provinceRepository.deleteById(id);
+    }
+
+    @Override
+    public Province update(Province province, String id) {
+        return null;
+    }
 }

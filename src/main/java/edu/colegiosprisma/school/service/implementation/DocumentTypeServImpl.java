@@ -6,6 +6,7 @@ import edu.colegiosprisma.school.service.IDocumentTypeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DocumentTypeServImpl implements IDocumentTypeService {
@@ -18,5 +19,20 @@ public class DocumentTypeServImpl implements IDocumentTypeService {
     @Override
     public List<DocumentType> getAll() {
         return documentTypeRepository.findAll();
+    }
+
+    @Override
+    public Optional<DocumentType> findById(int id) {
+        return documentTypeRepository.findById(id);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        documentTypeRepository.deleteById(id);
+    }
+
+    @Override
+    public DocumentType update(DocumentType documentType, int id) {
+        return null;
     }
 }

@@ -27,4 +27,14 @@ public class DepartmentServImpl implements IDepartmentService {
         }
         return new Department();
     }
+
+    @Override
+    public void deleteById(String id) {
+        departmentRepository.deleteById(id);
+    }
+
+    @Override
+    public Department update(Department department, String id) {
+        return null;
+    }
 }

@@ -25,4 +25,14 @@ public class LevelServImpl implements ILevelService {
     public Optional<Level> findLevelById(Integer id) {
         return levelRepository.findById(id);
     }
+
+    @Override
+    public void deleteById(Integer id) {
+        levelRepository.deleteById(id);
+    }
+
+    @Override
+    public Level update(Level level, Integer id) {
+        return null;
+    }
 }

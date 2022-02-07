@@ -1,22 +1,24 @@
 package edu.colegiosprisma.school.service.implementation;
 
-import edu.colegiosprisma.school.entity.Enrollment;
-import edu.colegiosprisma.school.entity.Role;
-import edu.colegiosprisma.school.entity.Student;
-import edu.colegiosprisma.school.entity.User;
+import edu.colegiosprisma.school.entity.*;
+import edu.colegiosprisma.school.repository.IParentRepository;
 import edu.colegiosprisma.school.repository.IRoleRepository;
 import edu.colegiosprisma.school.repository.IStudentRepository;
 import edu.colegiosprisma.school.service.IEnrollmentService;
 import edu.colegiosprisma.school.service.IStudentService;
+import edu.colegiosprisma.school.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,16 +27,18 @@ public class StudentServImpl implements IStudentService {
     private final IStudentRepository studentRepository;
     private final IRoleRepository roleRepository;
     private final IEnrollmentService enrollmentService;
+    private final IParentRepository parentRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
     public StudentServImpl(IStudentRepository studentRepository, IRoleRepository roleRepository,
-                           IEnrollmentService enrollmentService) {
+                           IEnrollmentService enrollmentService, IParentRepository parentRepository) {
         this.studentRepository = studentRepository;
         this.roleRepository = roleRepository;
         this.enrollmentService = enrollmentService;
+        this.parentRepository = parentRepository;
     }
 
     @Override
@@ -50,13 +54,11 @@ public class StudentServImpl implements IStudentService {
         student.setId(id);
         student.setType("Student");
         student.setUsername(id);
-        student.setPassword(new BCryptPasswordEncoder(4).encode(student.getDocumentNumber()));
+        student.setPassword(PasswordUtil.encode(student.getDocumentNumber()));
         student.setStudentEmail(id + "@colegiosprisma.edu.pe");
-        Set<Role> listaRolesStudent = new HashSet<>();
-        Role auxRole = roleRepository.findByName("ROLE_STUDENT");
-        listaRolesStudent.add(auxRole);
+        Set<Role> listaRolesStudent = Set.of(roleRepository.findByName("ROLE_STUDENT"));
         student.setRoles(listaRolesStudent);
-
+        student.setParent(getParentLogged());
         Student s = studentRepository.save(student);
         enrollmentService.create(enrollment, s);
         return student;
@@ -68,13 +70,43 @@ public class StudentServImpl implements IStudentService {
     }
 
     @Override
-    public Boolean verifyDuplicate(Student student) {
-        User studentWithDocumentNumber = studentRepository.findByDocumentNumber(student.getDocumentNumber());
+    public Student findByUsername(String user) {
+        return (Student) studentRepository.findByUsername(user);
+    }
 
-        if (studentWithDocumentNumber != null) {
-            System.out.println("Student with document number: " + studentWithDocumentNumber.getDocumentNumber() + " already exists");
+    @Override
+    public Set<User> getAll() {
+        return new LinkedHashSet<>(studentRepository.findAll());
+    }
+
+    @Override
+    public void deleteById(String id) {
+        studentRepository.deleteById(id);
+    }
+
+    @Override
+    public Student update(Student student, String id) {
+        return null;
+    }
+
+    @Override
+    public Boolean isDuplicateDocumentNumber(String documentNumber) {
+        return studentRepository.findByDocumentNumber(documentNumber) != null;
+    }
+
+    @Override
+    public Boolean isDuplicate(Student student, Model model) {
+        if (isDuplicateDocumentNumber(student.getDocumentNumber())) {
+            model.addAttribute("duplicateDocumentNumber", "El número de documento ya existe");
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Parent getParentLogged() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        return (Parent) parentRepository.findByUsername(userDetails.getUsername());
     }
 }

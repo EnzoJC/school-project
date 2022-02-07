@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -71,5 +72,25 @@ public class EnrollmentServImpl implements IEnrollmentService {
         enrollment.setState(state.isPresent() ? state.get() : new State());
         enrollmentRepository.save(enrollment);
         return enrollment;
+    }
+
+    @Override
+    public Optional<Enrollment> findById(int id) {
+        return enrollmentRepository.findById(id);
+    }
+
+    @Override
+    public Set<Enrollment> getAll() {
+        return new HashSet<>(enrollmentRepository.findAll());
+    }
+
+    @Override
+    public void deleteById(int id) {
+        enrollmentRepository.deleteById(id);
+    }
+
+    @Override
+    public Enrollment update(Enrollment enrollment, int id) {
+        return null;
     }
 }

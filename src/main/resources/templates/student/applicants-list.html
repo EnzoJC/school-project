@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Padres - Inicio</title>
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
+    <link rel="preload" th:href="@{/css/styles.css}" as="style">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/5.15.4/css/all.css}"/>
+    <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}"/>
+</head>
+
+    <body class="sb-nav-fixed">
+        <div th:replace="fragments/top-nav :: topNav(${'/parent/parent-profile'})"></div>
+        <div id="layoutSidenav">
+            <div th:replace="/fragments/side-nav :: sideNav(${nombresCompletos})"></div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-lg text-center p-5" th:if="${#lists.isEmpty(listaEstudiantes)}">
+                        <img class="p-5 image-park" th:src="@{/img/parque-vacio.svg}" width="550px"/>
+                        <p class="fs-4 mt-4">Aún no tienes estudiantes registrados :(</p>
+                    </div>
+                    <div class="card tarjeta px-4" th:each="estudiante : ${listaEstudiantes}">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <span th:text="${estudiante.givenNames} + ' ' + ${estudiante.firstLastName} + ' ' + ${estudiante.secondLastName}"></span>
+                            </h5>
+                            <div class="row align-items-center">
+                                <div class="col-lg-1 my-2">
+                                    <div class="text-center"><img th:src="${estudiante.gender.name == 'Masculino' ? '/img/boy.png' : '/img/girl.png'}" alt="" width="64px" height="auto" src=""></div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <p class="mb-0"><span class="fw-bold" th:text="${estudiante.documentType.name} + ': '"></span><span th:text="${estudiante.documentNumber}" class="idNumber"></span></p>
+                                    <p class="mb-0"><span class="fw-bold">Grado: </span><span th:each="enrollment : ${estudiante.enrollments}" th:text="${enrollment.grade.name}"></span></p>
+                                </div>
+                                <div class="col-lg-4">
+                                    <p class="mb-0"><span class="fw-bold">Edad: </span> <span th:text="${T(edu.colegiosprisma.school.util.Utils).getAge(estudiante.birthDate)}"></span></p>
+                                    <p class="mb-0"><span class="fw-bold">Parentesco: </span> <span th:text="${estudiante.relationship.name}"></span></p>
+                                </div>
+                                <div class="col-lg-3 my-2">
+                                    <div class="d-grid gap-2">
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay"
+                                                th:if="${estudiante.enrollments.get(0).state.id == 1}">
+                                            Pagar matrícula
+                                        </button>
+                                        <a th:if="${estudiante.enrollments.get(0).state.id == 2}" class="btn btn-success"
+                                           th:href="@{'/parent/enrollment-form' + '?id=' + ${estudiante.id}}" role="button">Llenar ficha de Matrícula</a>
+
+                                        <div th:if="${estudiante.enrollments.get(0).state.id == 1}">
+                                            <div th:replace="fragments/enrollment-pay/modal-pay :: modalPay(${estudiante.id})"></div>
+                                                 ${estudiante.id},
+                                                 ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()})">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/scripts.js}"></script>
+<script th:src="@{/js/validations/admision.js}"></script>
+</body>
+</html>

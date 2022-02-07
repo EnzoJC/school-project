@@ -6,6 +6,7 @@ import edu.colegiosprisma.school.service.IReligionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReligionServImpl implements IReligionService {
@@ -18,5 +19,20 @@ public class ReligionServImpl implements IReligionService {
     @Override
     public List<Religion> getAll() {
         return religionRepository.findAll();
+    }
+
+    @Override
+    public Optional<Religion> findById(int id) {
+        return religionRepository.findById(id);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        religionRepository.deleteById(id);
+    }
+
+    @Override
+    public Religion update(Religion religion, int id) {
+        return null;
     }
 }

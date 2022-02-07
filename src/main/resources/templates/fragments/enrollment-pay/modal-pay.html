@@ -15,15 +15,15 @@
                         <div class="card-body">
                             <div class="bg-white shadow-sm pt-4 ps-2 pe-2 pb-2">
                                 <ul role="tablist" class="nav bg-light nav-pills rounded nav-fill mb-3">
-                                    <div th:replace="fragments/enrollmentPay/card :: itemCreditCard"></div>
-                                    <div th:replace="fragments/enrollmentPay/transfer :: itemTransfer"></div>
-                                    <div th:replace="fragments/enrollmentPay/wallet :: itemWallet"></div>
+                                    <div th:replace="fragments/enrollment-pay/card :: itemCreditCard"></div>
+                                    <div th:replace="fragments/enrollment-pay/transfer :: itemTransfer"></div>
+                                    <div th:replace="fragments/enrollment-pay/wallet :: itemWallet"></div>
                                 </ul>
                             </div>
                             <div class="tab-content">
-                                <div th:replace="fragments/enrollmentPay/card :: creditCard(${idStudent}, ${amount})"></div>
-                                <div th:replace="fragments/enrollmentPay/transfer :: transfer(${amount})"></div>
-                                <div th:replace="fragments/enrollmentPay/wallet :: wallet(${amount})"></div>
+                                <div th:replace="fragments/enrollment-pay/card :: creditCard(${idStudent}, ${amount})"></div>
+                                <div th:replace="fragments/enrollment-pay/transfer :: transfer(${amount})"></div>
+                                <div th:replace="fragments/enrollment-pay/wallet :: wallet(${amount})"></div>
                             </div>
                         </div>
                     </div>

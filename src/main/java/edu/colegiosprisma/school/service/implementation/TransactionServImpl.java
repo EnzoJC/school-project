@@ -13,6 +13,8 @@ import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -71,5 +73,20 @@ public class TransactionServImpl implements ITransactionService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Optional<Transaction> getById(String id) {
+        return transactionRepository.findById(id);
+    }
+
+    @Override
+    public Set<Transaction> getAll() {
+        return new LinkedHashSet<>(transactionRepository.findAll());
+    }
+
+    @Override
+    public Transaction update(Transaction transaction, String id) {
+        return null;
     }
 }

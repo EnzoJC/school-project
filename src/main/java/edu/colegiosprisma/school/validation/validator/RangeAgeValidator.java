@@ -1,6 +1,6 @@
-package edu.colegiosprisma.school.entity.validation.validator;
+package edu.colegiosprisma.school.validation.validator;
 
-import edu.colegiosprisma.school.entity.validation.RangeAge;
+import edu.colegiosprisma.school.validation.RangeAge;
 import edu.colegiosprisma.school.util.Utils;
 import org.springframework.beans.BeanWrapperImpl;
 

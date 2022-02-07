@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -20,7 +21,22 @@ public class TypeBirthServImpl implements ITypeBirthService {
     }
 
     @Override
+    public Optional<TypeBirth> getById(int id) {
+        return typeBirthRepository.findById(id);
+    }
+
+    @Override
     public Set<TypeBirth> getAll() {
         return new LinkedHashSet<>(typeBirthRepository.findAll());
+    }
+
+    @Override
+    public void deleteById(int id) {
+        typeBirthRepository.deleteById(id);
+    }
+
+    @Override
+    public TypeBirth update(TypeBirth typeBirth, int id) {
+        return null;
     }
 }
