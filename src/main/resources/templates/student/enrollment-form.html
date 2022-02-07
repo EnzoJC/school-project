@@ -26,9 +26,9 @@
     </head>
 
     <body class="sb-nav-fixed">
-        <div th:replace="fragments/topnav :: topNav(${'/parent/perfil'})"></div>
+        <div th:replace="fragments/top-nav :: topNav(${'/parent/perfil'})"></div>
         <div id="layoutSidenav">
-            <div th:replace="fragments/sidenav :: sideNav(${nombresCompletos})"></div>
+            <div th:replace="fragments/side-nav :: sideNav(${nombresCompletos})"></div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-md my-3 px-4">
@@ -495,8 +495,8 @@
         <script type='text/javascript'>
             $('#department').change(
                 function () {
-                    $.getJSON("http://localhost:8080/parent/ficha-matricula/provincias", {
-                        id: $(this).val(),
+                    $.getJSON("http://localhost:8080/api/province", {
+                        department: $(this).val(),
                         ajax: 'true'
                     }, function (data) {
                         let html = '';
@@ -510,8 +510,8 @@
                 });
             $('#province').change(
                 function () {
-                    $.getJSON("http://localhost:8080/parent/ficha-matricula/distritos", {
-                        id: $(this).val(),
+                    $.getJSON("http://localhost:8080/api/districts", {
+                        province: $(this).val(),
                         ajax: 'true'
                     }, function (data) {
                         let html = '';

@@ -14,9 +14,9 @@
     </head>
 
     <body class="sb-nav-fixed">
-        <div th:replace="fragments/topnav :: topNav(${'/parent/perfil'})"></div>
+        <div th:replace="fragments/top-nav :: topNav(${'/parent/parent-profile'})"></div>
         <div id="layoutSidenav">
-            <div th:replace="/fragments/sidenav :: sideNav(${nombresCompletos})"></div>
+            <div th:replace="/fragments/side-nav :: sideNav(${nombresCompletos})"></div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-lg text-center p-5" th:if="${#lists.isEmpty(listaEstudiantes)}">
@@ -47,10 +47,10 @@
                                             Pagar matrícula
                                         </button>
                                         <a th:if="${estudiante.enrollments.get(0).state.id == 2}" class="btn btn-success"
-                                           th:href="@{'/parent/ficha-matricula' + '?id=' + ${estudiante.id}}" role="button">Llenar ficha de Matrícula</a>
+                                           th:href="@{'/parent/enrollment-form' + '?id=' + ${estudiante.id}}" role="button">Llenar ficha de Matrícula</a>
 
                                         <div th:if="${estudiante.enrollments.get(0).state.id == 1}">
-                                            <div th:replace="fragments/enrollmentPay/modalPay :: modalPay(
+                                            <div th:replace="fragments/enrollment-pay/modal-pay :: modalPay(
                                                  ${estudiante.id},
                                                  ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()})">
                                             </div>

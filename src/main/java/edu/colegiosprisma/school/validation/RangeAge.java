@@ -1,6 +1,6 @@
-package edu.colegiosprisma.school.entity.validation;
+package edu.colegiosprisma.school.validation;
 
-import edu.colegiosprisma.school.entity.validation.validator.RangeAgeValidator;
+import edu.colegiosprisma.school.validation.validator.RangeAgeValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

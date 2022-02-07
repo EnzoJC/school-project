@@ -2,7 +2,6 @@ package edu.colegiosprisma.school.controller;
 
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
-import edu.colegiosprisma.school.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,7 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -27,8 +29,6 @@ public class ParentController {
     private final IEmailService emailService;
     private final IStudentService studentService;
     private final IDepartmentService departmentService;
-    private final IProvinceService provinceService;
-    private final IDistrictService districtService;
     private final ILanguageService languageService;
     private final IReligionService religionService;
     private final ITypeDisabilityService typeDisabilityService;
@@ -40,8 +40,7 @@ public class ParentController {
     @Autowired
     public ParentController(IEnrollmentService enrollmentService, IParentService parentService, IDocumentTypeService documentTypeService,
                             INationalityService nationalityService, IGenderService genderService,
-                            IEmailService emailService, IStudentService studentService, IDepartmentService departmentService,
-                            IProvinceService provinceService, IDistrictService districtService, ILanguageService languageService,
+                            IEmailService emailService, IStudentService studentService, IDepartmentService departmentService, ILanguageService languageService,
                             IReligionService religionService, ITypeDisabilityService typeDisabilityService,
                             IBloodTypeService bloodTypeService, ITypeBirthService typeBirthService,
                             IEducationDegreeService educationDegreeService, IOccupationService occupationService) {
@@ -53,8 +52,6 @@ public class ParentController {
         this.emailService = emailService;
         this.studentService = studentService;
         this.departmentService = departmentService;
-        this.provinceService = provinceService;
-        this.districtService = districtService;
         this.languageService = languageService;
         this.religionService = religionService;
         this.typeDisabilityService = typeDisabilityService;
@@ -64,7 +61,7 @@ public class ParentController {
         this.occupationService = occupationService;
     }
 
-    @GetMapping("/registro")
+    @GetMapping("/register")
     public String register(Model model) {
         List<DocumentType> documentTypeList = documentTypeService.getAll();
         List<Gender> genderList = genderService.getAll();
@@ -74,14 +71,14 @@ public class ParentController {
         model.addAttribute("documentTypeList", documentTypeList);
         model.addAttribute("genderList", genderList);
         model.addAttribute("nationalityList", nationalityList);
-        return "parent/registro";
+        return "parent/parent-register-form";
     }
 
-    @PostMapping("/registro")
+    @PostMapping("/register")
     public String register(@Valid Parent parent, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors() || parentService.isDuplicate(parent, model)) {
             loadOptions(model);
-            return "parent/registro";
+            return "parent/parent-register-form";
         } else {
             parentService.create(parent);
             emailService.send(parent, "mail/credentials");
@@ -89,37 +86,37 @@ public class ParentController {
             redirectAttributes.addFlashAttribute(
                     "mensaje",
                     "Registro exitoso, sus credenciales han sido enviadas al correo registrado");
-            return "redirect:/registro";
+            return "redirect:/register";
         }
     }
 
-    @GetMapping({"/parent", "/parent/admision"})
+    @GetMapping({"/parent", "/parent/applicants-list"})
     public String showStudents(Model model) {
         Parent parent = getCurrentParent();
         model.addAttribute("listaEstudiantes", parent.getStudents());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
-        return "parent/admision";
+        return "student/applicants-list";
     }
 
-    @GetMapping("/parent/perfil")
+    @GetMapping("/parent/parent-profile")
     public String updateProfile(Model model) {
         Parent parent = getCurrentParent();
         model.addAttribute("parent", parent);
         model.addAttribute("nombresCompletos", parent.getGivenNames());
-        return "parent/perfilParent";
+        return "parent/parent-profile";
     }
 
-    @PostMapping("/parent/perfil")
+    @PostMapping("/parent/parent-profile")
     public String updateProfile(@ModelAttribute("parent") Parent parent) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         String id = userDetails.getUsername();
         parentService.update(parent, id);
-        return "redirect:/parent/perfil";
+        return "redirect:/parent/parent-profile";
     }
 
-    @GetMapping("/parent/ficha-matricula")
-    public String loadEnrollmentSheet(@RequestParam(name = "id") String studentId, Model model) {
+    @GetMapping("/parent/enrollment-form")
+    public String loadEnrollmentForm(@RequestParam(name = "id") String studentId, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Parent parent = parentService.findByUsername(userDetails.getUsername());
@@ -151,11 +148,11 @@ public class ParentController {
         model.addAttribute("typeBirths", typeBirths);
         model.addAttribute("documentTypes", documentTypes);
 
-        return "parent/fichaMatricula";
+        return "student/enrollment-form";
     }
 
-    @PostMapping("/parent/ficha-matricula")
-    public String saveEnrollmentSheet(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm, Model model) {
+    @PostMapping("/parent/enrollment-form")
+    public String saveEnrollmentForm(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm, Model model) {
 
         // enrollmentFormService.create(enrollmentForm); // pesistir parentinformations y luego persistir enrollmentForm bye bye
 
@@ -163,21 +160,7 @@ public class ParentController {
         Student student = (Student) studentService.findById(enrollmentForm.getId()).get();
         enrollmentService.updateStatusForNewStudent(student, 3);
 
-        return "redirect:/parent/admision";
-    }
-
-    @GetMapping(value = "/parent/ficha-matricula/provincias")
-    public @ResponseBody
-    List<Province> getProvincesByDepartment(@RequestParam(value = "id") String id) {
-        Department department = departmentService.findById(id);
-        return provinceService.getAllProvincesByDepartment(department);
-    }
-
-    @GetMapping(value = "/parent/ficha-matricula/distritos")
-    public @ResponseBody
-    List<District> getDistrictsByProvince(@RequestParam(value = "id") String id) {
-        Province province = provinceService.findById(id);
-        return districtService.getAllDistrictsByProvince(province);
+        return "redirect:/parent/applicants-list";
     }
 
     private void loadOptions(Model model) {

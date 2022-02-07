@@ -1,7 +1,7 @@
-package edu.colegiosprisma.school.entity.validation.validator;
+package edu.colegiosprisma.school.validation.validator;
 
 import edu.colegiosprisma.school.entity.DocumentType;
-import edu.colegiosprisma.school.entity.validation.IdentityCard;
+import edu.colegiosprisma.school.validation.IdentityCard;
 import org.springframework.beans.BeanWrapperImpl;
 
 import javax.validation.ConstraintValidator;

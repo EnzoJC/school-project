@@ -1,6 +1,6 @@
-package edu.colegiosprisma.school.entity.validation;
+package edu.colegiosprisma.school.validation;
 
-import edu.colegiosprisma.school.entity.validation.validator.IndentityCardValidator;
+import edu.colegiosprisma.school.validation.validator.IndentityCardValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
