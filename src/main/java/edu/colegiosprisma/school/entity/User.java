@@ -10,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -90,4 +91,12 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+
+    public int getAge() {
+        int year = birthDate.getYear();
+        int month = birthDate.getMonthValue();
+        int day = birthDate.getDayOfMonth();
+        return Period.between(LocalDate.of(year, month, day), LocalDate.now()).getYears();
+    }
 }
