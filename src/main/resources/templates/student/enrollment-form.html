@@ -40,7 +40,7 @@
                             <li class="item" id="datosPadre"><strong>Datos del padre</strong></li>
                             <li class="item" id="datosMadre"><strong>Datos de la madre</strong></li>
                         </ul>
-                        <form id="miForm" th:action="@{/parent/ficha-matricula}" th:object="${enrollmentForm}" method="POST">
+                        <form id="miForm" th:action="@{/parent/enrollment-form}" th:object="${enrollmentForm}" method="POST">
                             <div class="tab step-form step-form-active" id="step-1">
                                 <h5 class="fs-title">Datos personales del estudiante</h5>
                                 <div class="row mb-3">
@@ -87,7 +87,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="department" class="form-label">Departamento</label>
-                                            <select id="department" class="form-control">
+                                            <select id="department" class="form-control" >
                                                 <option class="seleccionado" value="" selected> Seleccione el Departamento</option>
                                                 <option th:each="department : ${departments}" th:value="${department.id}" th:text="${department.name}"></option>
                                             </select>
@@ -145,7 +145,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="number-siblings" class="form-label">Numero de hermanos</label>
-                                            <input id="number-siblings" type="number" min="0" max="20" class="form-control">
+                                            <input id="number-siblings" type="number" min="0" max="20" class="form-control" th:field="*{siblings}">
                                         </div>
                                     </div>
                                 </div>
@@ -153,14 +153,14 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="position-siblings" class="form-label">Lugar que ocupa</label>
-                                            <input id="position-siblings" type="number" min="1" max="20" class="form-control">
+                                            <input id="position-siblings" type="number" min="1" max="20" class="form-control" th:field="*{orderSibling}>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="form-group">
                                                 <label for="disability" class="form-label">Discapacidad</label>
-                                                <select id="disability" class="form-control">
+                                                <select id="disability" class="form-control" th:field="*{disabilities}>
                                                     <option class="seleccionado" value="" selected>Seleccione su Discapacidad</option>
                                                     <option th:each="disability : ${typeDisabilities}" th:value="${disability.id}" th:text="${disability.name}"></option>
                                                 </select>
@@ -181,7 +181,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="allergy" class="form-label">Alergias</label>
-                                            <input id="allergy" type="text" class="form-control">
+                                            <input id="allergy" type="text" class="form-control" th:field="*{allergy}>
                                         </div>
                                     </div>
                                 </div>
@@ -210,14 +210,14 @@
                                         <div class="form-group">
                                             <label for="raised_head" class="form-label">¿A qué edad
                                                 el estudiante levantó la cabeza por primera vez?</label>
-                                            <input id="raised_head" type="text" class="form-control">
+                                            <input id="raised_head" type="text" class="form-control" th:field="*{raisedHead}>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="sit_down" class="form-label">¿A qué edad
                                                 el estudiante se sentó por primera vez?</label>
-                                            <input id="sit_down" type="text" class="form-control">
+                                            <input id="sit_down" type="text" class="form-control" th:field="*{sitDown}>
                                         </div>
                                     </div>
                                 </div>
@@ -226,14 +226,14 @@
                                         <div class="form-group">
                                             <label for="crawl" class="form-label">¿A qué edad
                                                 el estudiante gateó por primera vez?</label>
-                                            <input id="crawl" type="text" class="form-control">
+                                            <input id="crawl" type="text" class="form-control" th:field="*{crawl}>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="stoop_up" class="form-label">¿A qué edad
                                                 el estudiante se paró por primera vez?</label>
-                                            <input id="stoop_up" type="text" class="form-control">
+                                            <input id="stoop_up" type="text" class="form-control" th:field="*{stoopUp}>
                                         </div>
                                     </div>
                                 </div>
@@ -242,14 +242,14 @@
                                         <div class="form-group">
                                             <label for="walk" class="form-label">¿A qué edad
                                                 el estudiante caminó por primera vez?</label>
-                                            <input id="walk" type="text" class="form-control">
+                                            <input id="walk" type="text" class="form-control" th:field="*{walk}>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="sphinter" class="form-label">¿A qué edad
                                                 el estudiante controló su esfínter por primera vez?</label>
-                                            <input id="sphinter" type="text" class="form-control">
+                                            <input id="sphinter" type="text" class="form-control" th:field="*{sphinter}>
                                         </div>
                                     </div>
                                 </div>
@@ -257,13 +257,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="first_words" class="form-label">¿A qué edad el estudiante dijo sus primeras palabras?</label>
-                                            <input id="first_words" type="text" class="form-control">
+                                            <input id="first_words" type="text" class="form-control" th:field="*{firstWords}>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="speak_fluently" class="form-label">¿A que edad el estudiante hablo con fluidez?</label>
-                                            <input id="speak_fluently" type="text" class="form-control">
+                                            <input id="speak_fluently" type="text" class="form-control" th:field="*{speakFluently}>
                                         </div>
                                     </div>
                                 </div>
@@ -282,13 +282,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="given-names-father" class="form-label">Nombres</label>
-                                            <input id="given-names-father" type="text" class="form-control">
+                                            <input id="given-names-father" type="text" class="form-control" th:field="*{parents[0].givenNames}>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="first-last-name-father" class="form-label">Primer Apellido</label>
-                                            <input id="first-last-name-father" type="text" class="form-control">
+                                            <input id="first-last-name-father" type="text" class="form-control" th:field="*{parents[0].firstLastName}>
                                         </div>
                                     </div>
                                 </div>
@@ -296,7 +296,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="second-last-name-father" class="form-label">Segundo apellido</label>
-                                            <input id="second-last-name-father" type="text" class="form-control">
+                                            <input id="second-last-name-father" type="text" class="form-control" th:field="*{parents[0].secondLastName}>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -493,36 +493,49 @@
         <script th:src="@{/js/fichaMatricula.js}"></script>
         <script src=""></script>
         <script type='text/javascript'>
-            $('#department').change(
-                function () {
-                    $.getJSON("http://localhost:8080/api/province", {
-                        department: $(this).val(),
-                        ajax: 'true'
-                    }, function (data) {
-                        let html = '';
-                        let len = data.length;
-                        for (let i = 0; i < len; i++) {
-                            html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                        }
-                        html += '</option>';
-                        $('#province').html(html);
-                    });
-                });
             $('#province').change(
                 function () {
-                    $.getJSON("http://localhost:8080/api/districts", {
-                        province: $(this).val(),
-                        ajax: 'true'
-                    }, function (data) {
-                        let html = '';
-                        let len = data.length;
-                        for (let i = 0; i < len; i++) {
-                            html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                        }
-                        html += '</option>';
-                        $('#district').html(html);
-                    });
+                    updateDistrics();
                 });
+            $('#department').change(
+                function () {
+                    updateProvinces();
+                    setTimeout(function(){
+                        updateDistrics()
+                    }, 100);
+                });
+            function updateProvinces(){
+                var p;
+                $.getJSON("http://localhost:8080/api/province", {
+                    department: $('#department').val(),
+                    ajax: 'true'
+                }, function (data) {
+                    let html = '';
+                    let len = data.length;
+                    p= data;
+                    for (let i = 0; i < len; i++) {
+                        html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                    }
+                    html += '</option>';
+                    $('#province').html(html);
+                });
+
+
+            }
+            function updateDistrics(){
+                $.getJSON("http://localhost:8080/api/districts", {
+                    province: $('#province').val(),
+                    ajax: 'true'
+                }, function (data) {
+                    let html = '';
+                    let len = data.length;
+                    for (let i = 0; i < len; i++) {
+                        html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                    }
+                    html += '</option>';
+                    $('#district').html(html);
+                });
+            }
         </script>
     </body>
 </html>

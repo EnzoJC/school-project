@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +37,8 @@ public class ParentController {
     private final ITypeBirthService typeBirthService;
     private final IEducationDegreeService educationDegreeService;
     private final IOccupationService occupationService;
+    private final IParentInformationService parentInformationService;
+    private final IEnrollmentFormService enrollmentFormService;
 
     @Autowired
     public ParentController(IEnrollmentService enrollmentService, IParentService parentService, IDocumentTypeService documentTypeService,
@@ -43,7 +46,7 @@ public class ParentController {
                             IEmailService emailService, IStudentService studentService, IDepartmentService departmentService, ILanguageService languageService,
                             IReligionService religionService, ITypeDisabilityService typeDisabilityService,
                             IBloodTypeService bloodTypeService, ITypeBirthService typeBirthService,
-                            IEducationDegreeService educationDegreeService, IOccupationService occupationService) {
+                            IEducationDegreeService educationDegreeService, IOccupationService occupationService, IParentInformationService parentInformationService, IEnrollmentFormService enrollmentFormService) {
         this.enrollmentService = enrollmentService;
         this.parentService = parentService;
         this.documentTypeService = documentTypeService;
@@ -59,6 +62,8 @@ public class ParentController {
         this.typeBirthService = typeBirthService;
         this.educationDegreeService = educationDegreeService;
         this.occupationService = occupationService;
+        this.parentInformationService = parentInformationService;
+        this.enrollmentFormService = enrollmentFormService;
     }
 
     @GetMapping("/register")
@@ -152,13 +157,18 @@ public class ParentController {
     }
 
     @PostMapping("/parent/enrollment-form")
-    public String saveEnrollmentForm(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm, Model model) {
+    public String saveEnrollmentForm(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm,@ModelAttribute("student") Student student, Model model) {
 
         // enrollmentFormService.create(enrollmentForm); // pesistir parentinformations y luego persistir enrollmentForm bye bye
+        Iterator iter = enrollmentForm.getParents().iterator();
+        ParentInformation p1= (ParentInformation) iter.next();
+        ParentInformation p2= (ParentInformation) iter.next();
+        parentInformationService.create(p1);
+        parentInformationService.create(p2);
+        enrollmentFormService.create(enrollmentForm,student);
+        //Finalizamos cambiando el estado de enrollmen
 
-        //Finalizamos cambiando el estado de enrollment
-        Student student = (Student) studentService.findById(enrollmentForm.getId()).get();
-        enrollmentService.updateStatusForNewStudent(student, 3);
+        enrollmentService.updateStatusForNewStudent(student, 2);
 
         return "redirect:/parent/applicants-list";
     }
