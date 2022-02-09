@@ -43,17 +43,17 @@
                                 <div class="col-lg-3 my-2">
                                     <div class="d-grid gap-2">
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay"
-                                                th:if="${estudiante.enrollments.get(0).state.id == 0}">
+                                                th:if="${estudiante.enrollments.get(0).state.id == 1}">
                                             Pagar matrícula
                                         </button>
-                                        <a th:if="${estudiante.enrollments.get(0).state.id == 1}" class="btn btn-success"
+                                        <a th:if="${estudiante.enrollments.get(0).state.id == 2}" class="btn btn-success"
                                            th:href="@{'/parent/enrollment-form' + '?id=' + ${estudiante.id}}" role="button">Llenar ficha de Matrícula</a>
 
-                                        <div th:if="${estudiante.enrollments.get(0).state.id == 2}" class="btn btn-success"
+                                        <div th:if="${estudiante.enrollments.get(0).state.id == 3}" class="btn btn-success"
                                              th:href="@{'/parent/enrollment-form' + '?id=' + ${estudiante.id}}" role="button">Esperando Confirmacion</a>
                                             <div th:replace="fragments/enrollment-pay/modal-pay :: modalPay(
                                                  ${estudiante.id},
-                                                 ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()})">
+                                                 ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()})"></div>
                                     </div>
                                 </div>
                             </div>
