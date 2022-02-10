@@ -63,16 +63,22 @@ public class TransactionServImpl implements ITransactionService {
     }
 
     @Override
-    public Boolean pay(Student student, State state) {
+    public Boolean pay(Student student, State state, String description) {
         Enrollment enrollment = enrollmentRepository.findByStudentAndCurrentYearIsTrue(student);
         Transaction transaction = transactionRepository.findByEnrollmentAndState(enrollment, state);
         if (transaction != null) {
-            transaction.setState(stateRepository.findById(7).isPresent() ? stateRepository.findById(7).get() : new State()); // 7 = pagado
+            updateTransaccionAsPaid(transaction);
             transaction.setPaymentDate(LocalDate.now());
+            transaction.setDescription(description);
             transactionRepository.save(transaction);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void updateTransaccionAsPaid(Transaction transaction) {
+        transaction.setState(stateRepository.findById(7).isPresent() ? stateRepository.findById(7).get() : new State()); // 7 = pagado
     }
 
     @Override

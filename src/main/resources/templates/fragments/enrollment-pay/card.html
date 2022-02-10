@@ -16,8 +16,9 @@
         </button>
     </li>
 
-    <div th:fragment="creditCard(idStudent, amount)" id="credit-card" class="tab-pane fade show active pt-3">
-        <form id="form-pay" role="form" th:action="@{/parent/admision/pay(idStudent=${idStudent})}" method="POST">
+    <div th:fragment="creditCard(idStudent, amount,description)" id="credit-card" class="tab-pane fade show active pt-3">
+        <form id="form-pay" role="form" th:action="@{/parent/admision/pay(idStudent=${idStudent},description=${description})}" method="POST">
+            <input id="description" type="hidden" name="description" th:value="${description}">
             <div class="form-group mb-3">
                 <label for="full-names" class="h6">Nombres completos</label>
                 <input id="full-names" name="full-names" type="text" placeholder="Nombres completos"

@@ -100,6 +100,7 @@ public class ParentController {
         Parent parent = getCurrentParent();
         model.addAttribute("listaEstudiantes", parent.getStudents());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
+        model.addAttribute("description","");
         return "student/applicants-list";
     }
 

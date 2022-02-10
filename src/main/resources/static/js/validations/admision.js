@@ -57,3 +57,6 @@ function tarjeta(valor) {
     }
     return valor;
 }
+document.getElementById('pagar').on('click',function(){
+    document.getElementById('#description').val("Pagado con Tarjeta");
+});

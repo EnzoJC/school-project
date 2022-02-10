@@ -1,13 +1,8 @@
 package edu.colegiosprisma.school;
 
-import edu.colegiosprisma.school.entity.Student;
-import edu.colegiosprisma.school.entity.Parent;
-import edu.colegiosprisma.school.entity.User;
+import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.repository.IStudentRepository;
-import edu.colegiosprisma.school.service.IEmailService;
-import edu.colegiosprisma.school.service.IParentService;
-import edu.colegiosprisma.school.service.IStudentService;
-import edu.colegiosprisma.school.service.IUserService;
+import edu.colegiosprisma.school.service.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +14,7 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 public class SchoolProjectApplicationTests {
@@ -193,6 +189,27 @@ public class SchoolProjectApplicationTests {
         Parent aux = parentService.update(parent, parent.getId());
 
         Assert.isTrue(parent.getGivenNames().equals(aux.getGivenNames()),"actualizacación correcta");
+
+    }
+    @Autowired
+    ITransactionService transactionService;
+    @Autowired
+    IStateService stateService;
+    @Autowired
+    IEnrollmentService enrollmentService;
+
+    @Test
+    void verificarActualizacionDePago(){
+        Student student= studentService.findByUsername("S020220015");
+        State state = stateService.findById(5); // 5: Pendiente de pago
+        String description="pagado con Tarjeta";
+        transactionService.pay(student,state,description);
+        Transaction transaction=transactionService.getAll().stream().collect(Collectors.toList()).get(
+                transactionService.getAll().stream().collect(Collectors.toList()).size()-1
+        );
+        enrollmentService.updateStatusForNewStudent(student, 2); // 2: Pre-inscrito
+
+        Assert.isTrue(transaction.getState().getId()==7,"No se Actualizo Estado de Transaccion de Pago");
 
     }
 

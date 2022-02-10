@@ -26,11 +26,11 @@ public class TransactionController {
     }
 
     @PostMapping("parent/admision/pay")
-    public String pagarMatriculaNuevoEstudiante(@RequestParam("idStudent") String idStudent) {
+    public String pagarMatriculaNuevoEstudiante(@RequestParam("idStudent") String idStudent,@RequestParam("description") String description) {
         if (studentService.findById(idStudent).isPresent()) {
             Student student = (Student) studentService.findById(idStudent).get();
             State state = stateService.findById(5); // 5: Pendiente de pago
-            if (transactionService.pay(student, state))
+            if (transactionService.pay(student, state,description))
                 enrollmentService.updateStatusForNewStudent(student, 2); // 2: Pre-inscrito
         }
         return "redirect:/parent/applicants-list";

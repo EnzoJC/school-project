@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="col-lg-3 my-2">
                                     <div class="d-grid gap-2">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay"
+                                        <button type="button" class="btn btn-primary realizarPago" data-bs-toggle="modal" data-bs-target="#pay"
                                                 th:if="${estudiante.enrollments.get(0).state.id == 1}">
                                             Pagar matrícula
                                         </button>
@@ -51,7 +51,8 @@
                                         <div th:if="${estudiante.enrollments.get(0).state.id == 1}">
                                             <div th:replace="fragments/enrollment-pay/modal-pay :: modalPay(
                                                  ${estudiante.id},
-                                                 ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()})">
+                                                 ${estudiante.enrollments.get(0).transactions.get(0).getTotalPaid().toString()},
+                                                 ${description})">
                                             </div>
                                         </div>
                                     </div>

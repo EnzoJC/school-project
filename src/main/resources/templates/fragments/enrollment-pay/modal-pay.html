@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head></head>
 <body>
-    <div th:fragment="modalPay(idStudent, amount)" class="modal fade" id="pay" tabindex="-1" role="dialog" aria-labelledby="modalPay" aria-hidden="true">
+    <div th:fragment="modalPay(idStudent, amount,description)" class="modal fade" id="pay" tabindex="-1" role="dialog" aria-labelledby="modalPay" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -20,8 +20,9 @@
                                     <div th:replace="fragments/enrollment-pay/wallet :: itemWallet"></div>
                                 </ul>
                             </div>
+
                             <div class="tab-content">
-                                <div th:replace="fragments/enrollment-pay/card :: creditCard(${idStudent}, ${amount})"></div>
+                                <div th:replace="fragments/enrollment-pay/card :: creditCard(${idStudent}, ${amount},${description})"></div>
                                 <div th:replace="fragments/enrollment-pay/transfer :: transfer(${amount})"></div>
                                 <div th:replace="fragments/enrollment-pay/wallet :: wallet(${amount})"></div>
                             </div>

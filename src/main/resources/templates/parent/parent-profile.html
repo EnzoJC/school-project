@@ -25,7 +25,7 @@
                             <div class="card mb-4">
                                 <div class="card-header">Detalles del perfil</div>
                                 <div class="card-body px-0">
-                                    <form class="container-fluid" th:action="@{/parent/perfil}" th:object="${parent}"
+                                    <form class="container-fluid" th:action="@{/parent/parent-profile}" th:object="${parent}"
                                           method="POST">
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
@@ -77,7 +77,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-success mt-4">Guardar cambios</button>
+                                        <button id="submit" type="submit" class="btn btn-success mt-4">Guardar cambios</button>
                                     </form>
                                 </div>
                             </div>
