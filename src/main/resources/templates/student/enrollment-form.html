@@ -153,14 +153,14 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="position-siblings" class="form-label">Lugar que ocupa</label>
-                                            <input id="position-siblings" type="number" min="1" max="20" class="form-control" th:field="*{orderSibling}>
+                                            <input id="position-siblings" type="number" min="1" max="20" class="form-control" th:field="*{orderSibling}" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="form-group">
                                                 <label for="disability" class="form-label">Discapacidad</label>
-                                                <select id="disability" class="form-control" th:field="*{disabilities}>
+                                                <select id="disability" class="form-control" th:field="*{disabilities}">
                                                     <option class="seleccionado" value="" selected>Seleccione su Discapacidad</option>
                                                     <option th:each="disability : ${typeDisabilities}" th:value="${disability.id}" th:text="${disability.name}"></option>
                                                 </select>
@@ -181,7 +181,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="allergy" class="form-label">Alergias</label>
-                                            <input id="allergy" type="text" class="form-control" th:field="*{allergy}>
+                                            <input id="allergy" type="text" class="form-control" th:field="*{allergy}">
                                         </div>
                                     </div>
                                 </div>
@@ -189,7 +189,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="blood-type" class="form-label">Tipo de sangre</label>
-                                            <select id="blood-type" class="form-control" th:field="*{bloodType}">
+                                            <select id="blood-type" class="form-control" th:field="*{bloodType}" >
                                                 <option class="seleccionado" value="" selected>Seleccione el tipo de sangre</option>
                                                 <option th:each="bloodType : ${bloodTypes}" th:value="${bloodType.id}" th:text="${bloodType.name}"></option>
                                             </select>
@@ -198,7 +198,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="tipe-of-birth" class="form-label">Tipo de nacimiento</label>
-                                            <select id="tipe-of-birth" class="form-control" th:field="*{tipeBirth}">
+                                            <select id="tipe-of-birth" class="form-control">
                                                 <option class="seleccionado" value="" selected>Tipo de nacimiento</option>
                                                 <option th:each="birth : ${typeBirths}" th:value="${birth.id}" th:text="${birth.name}"></option>
                                             </select>
@@ -210,14 +210,14 @@
                                         <div class="form-group">
                                             <label for="raised_head" class="form-label">¿A qué edad
                                                 el estudiante levantó la cabeza por primera vez?</label>
-                                            <input id="raised_head" type="text" class="form-control" th:field="*{raisedHead}>
+                                            <input id="raised_head" type="text" class="form-control" th:field="*{raisedHead}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="sit_down" class="form-label">¿A qué edad
                                                 el estudiante se sentó por primera vez?</label>
-                                            <input id="sit_down" type="text" class="form-control" th:field="*{sitDown}>
+                                            <input id="sit_down" type="text" class="form-control" th:field="*{sitDown}" >
                                         </div>
                                     </div>
                                 </div>
@@ -226,14 +226,14 @@
                                         <div class="form-group">
                                             <label for="crawl" class="form-label">¿A qué edad
                                                 el estudiante gateó por primera vez?</label>
-                                            <input id="crawl" type="text" class="form-control" th:field="*{crawl}>
+                                            <input id="crawl" type="text" class="form-control" th:field="*{crawl}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="stoop_up" class="form-label">¿A qué edad
                                                 el estudiante se paró por primera vez?</label>
-                                            <input id="stoop_up" type="text" class="form-control" th:field="*{stoopUp}>
+                                            <input id="stoop_up" type="text" class="form-control" th:field="*{stoopUp}">
                                         </div>
                                     </div>
                                 </div>
@@ -242,14 +242,14 @@
                                         <div class="form-group">
                                             <label for="walk" class="form-label">¿A qué edad
                                                 el estudiante caminó por primera vez?</label>
-                                            <input id="walk" type="text" class="form-control" th:field="*{walk}>
+                                            <input id="walk" type="text" class="form-control" th:field="*{walk}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="sphinter" class="form-label">¿A qué edad
                                                 el estudiante controló su esfínter por primera vez?</label>
-                                            <input id="sphinter" type="text" class="form-control" th:field="*{sphinter}>
+                                            <input id="sphinter" type="text" class="form-control" th:field="*{sphinter}" >
                                         </div>
                                     </div>
                                 </div>
@@ -257,13 +257,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="first_words" class="form-label">¿A qué edad el estudiante dijo sus primeras palabras?</label>
-                                            <input id="first_words" type="text" class="form-control" th:field="*{firstWords}>
+                                            <input id="first_words" type="text" class="form-control" th:field="*{firstWords}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="speak_fluently" class="form-label">¿A que edad el estudiante hablo con fluidez?</label>
-                                            <input id="speak_fluently" type="text" class="form-control" th:field="*{speakFluently}>
+                                            <input id="speak_fluently" type="text" class="form-control" th:field="*{speakFluently}">
                                         </div>
                                     </div>
                                 </div>
@@ -282,13 +282,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="given-names-father" class="form-label">Nombres</label>
-                                            <input id="given-names-father" type="text" class="form-control" th:field="*{parents[0].givenNames}>
+                                            <input id="given-names-father" type="text" class="form-control"  >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="first-last-name-father" class="form-label">Primer Apellido</label>
-                                            <input id="first-last-name-father" type="text" class="form-control" th:field="*{parents[0].firstLastName}>
+                                            <input id="first-last-name-father" type="text" class="form-control" >
                                         </div>
                                     </div>
                                 </div>
@@ -296,7 +296,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="second-last-name-father" class="form-label">Segundo apellido</label>
-                                            <input id="second-last-name-father" type="text" class="form-control" th:field="*{parents[0].secondLastName}>
+                                            <input id="second-last-name-father" type="text" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -360,7 +360,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="religion-father" class="form-label">Tipo de Religion</label>
-                                            <select id="religion-father" class="form-control" th:field="*{religion}">
+                                            <select id="religion-father" class="form-control">
                                                 <option class="seleccionado" value="" selected> Seleccione Religion</option>
                                                 <option th:each="religion : ${religions}" th:value="${religion.id}" th:text="${religion.name}"></option>
                                             </select>
@@ -473,7 +473,7 @@
                                         <button type="button" id="prevBtn" class="btn btn-primary">Atrás</button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button type="button" id="Enviar" class="btn btn-primary">Enviar</button>
+                                        <button type="submit" id="Enviar" class="btn btn-primary">Enviar</button>
                                     </div>
                                 </div>
                             </div>
@@ -489,7 +489,7 @@
             </div>
         </div>
         <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
-        <script th:src="@{/js/scripts.js}"></script>
+        <!--<script th:src="@{/js/scripts.js}"></script>-->
         <script th:src="@{/js/fichaMatricula.js}"></script>
         <script src=""></script>
         <script type='text/javascript'>

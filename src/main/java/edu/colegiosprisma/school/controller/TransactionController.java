@@ -31,7 +31,7 @@ public class TransactionController {
             Student student = (Student) studentService.findById(idStudent).get();
             State state = stateService.findById(5); // 5: Pendiente de pago
             if (transactionService.pay(student, state))
-                enrollmentService.updateStatusForNewStudent(student, 1); // 2: Pre-inscrito
+                enrollmentService.updateStatusForNewStudent(student, 2); // 2: Pre-inscrito
         }
         return "redirect:/parent/applicants-list";
     }
