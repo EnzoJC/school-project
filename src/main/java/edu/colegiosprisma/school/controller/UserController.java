@@ -35,16 +35,6 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/admin")
-    public String admin(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        User user = userService.findByUsername(userDetails.getUsername());
-
-        model.addAttribute("nombresCompletos", user.getGivenNames());
-        return "/admin/admin";
-    }
-
     @GetMapping("/access-denied")
     public String accessDenied() {
         return "/error/403";

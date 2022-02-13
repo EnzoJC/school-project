@@ -114,7 +114,7 @@ public class SchoolProjectApplicationTests {
     public void LogAccountTest(){
         User user = new User();
         user.setId("P020220001");
-        user.setPassword("72402304");
+        user.setPassword("78017132");
 
         User user2 = userService.findByUsername(user.getId());
         boolean b = false;
@@ -200,7 +200,7 @@ public class SchoolProjectApplicationTests {
 
     @Test
     void verificarActualizacionDePago(){
-        Student student= studentService.findByUsername("S020220015");
+        Student student= studentService.findByUsername("S020220017");
         State state = stateService.findById(5); // 5: Pendiente de pago
         String description="pagado con Tarjeta";
         transactionService.pay(student,state,description);

@@ -143,6 +143,9 @@ public class ParentController {
             model.addAttribute("student", (Student) studentService.findById(studentId).get());
         }
         model.addAttribute("enrollmentForm", new EnrollmentForm());
+        model.addAttribute("fatherInformation",new ParentInformation());
+        model.addAttribute("motherInformation",new ParentInformation());
+        model.addAttribute("typeDisability",new TypeDisability());
         model.addAttribute("nombresCompletos", parent.getGivenNames());
         model.addAttribute("bloodTypes", bloodTypes);
         model.addAttribute("departments", departments);
@@ -158,14 +161,17 @@ public class ParentController {
     }
 
     @PostMapping("/parent/enrollment-form")
-    public String saveEnrollmentForm(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm,@ModelAttribute("student") Student student, Model model) {
-
+    public String saveEnrollmentForm(@ModelAttribute("enrollmentForm") EnrollmentForm enrollmentForm,@ModelAttribute("student") Student student,
+            @ModelAttribute("fatherInformation") ParentInformation fatherInformation,
+            @ModelAttribute("motherInformation") ParentInformation motherInformation,
+                                     @ModelAttribute("typeDisability") TypeDisability typeDisability,
+            Model model) {
+        System.out.println("paso");
         // enrollmentFormService.create(enrollmentForm); // pesistir parentinformations y luego persistir enrollmentForm bye bye
-        Iterator iter = enrollmentForm.getParents().iterator();
-        ParentInformation p1= (ParentInformation) iter.next();
-        ParentInformation p2= (ParentInformation) iter.next();
-        parentInformationService.create(p1);
-        parentInformationService.create(p2);
+        parentInformationService.create(fatherInformation);
+        parentInformationService.create(motherInformation);
+        enrollmentForm.getParents().add(fatherInformation);
+        enrollmentForm.getParents().add(motherInformation);
         enrollmentFormService.create(enrollmentForm,student);
         //Finalizamos cambiando el estado de enrollmen
 
