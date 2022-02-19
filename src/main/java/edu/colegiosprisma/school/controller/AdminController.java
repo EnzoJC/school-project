@@ -2,15 +2,12 @@ package edu.colegiosprisma.school.controller;
 
 import edu.colegiosprisma.school.entity.User;
 import edu.colegiosprisma.school.service.IUserService;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.Locale;
 
 @Controller
 public class AdminController {
@@ -69,6 +66,7 @@ public class AdminController {
         model.addAttribute("nombresCompletos", user.getGivenNames());
         return "/admin/schoolyear";
     }
+
     @GetMapping("/admin/transacciones")
     public String transacciones(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -78,6 +76,7 @@ public class AdminController {
         model.addAttribute("nombresCompletos", user.getGivenNames());
         return "/admin/transaction";
     }
+
     @GetMapping("/admin/pagos")
     public String pagos(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -87,6 +86,7 @@ public class AdminController {
         model.addAttribute("nombresCompletos", user.getGivenNames());
         return "/admin/payments";
     }
+
     @GetMapping("/admin/debts")
     public String deudas(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -96,8 +96,6 @@ public class AdminController {
         model.addAttribute("nombresCompletos", user.getGivenNames());
         return "/admin/debts";
     }
-
-
 
 
 }

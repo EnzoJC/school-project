@@ -81,8 +81,7 @@
                         <label for="nationality">Nacionalidad</label>
                         <select id="nationality" class="form-control" th:field="*{nationality}" required>
                             <option class="seleccionado" value="" selected>Seleccione una nacionalidad</option>
-                            <option th:each="nationality : ${nationalityList}" th:value="${nationality.id}"
-                                    th:text="${nationality.name}"></option>
+                            <option th:each="nationality : ${nationalityList}" th:value="${nationality.id}" th:text="${nationality.name}"></option>
                         </select>
                     </div>
                 </div>

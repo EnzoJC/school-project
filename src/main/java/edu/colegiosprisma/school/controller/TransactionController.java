@@ -6,24 +6,21 @@ import edu.colegiosprisma.school.service.IEnrollmentService;
 import edu.colegiosprisma.school.service.IStateService;
 import edu.colegiosprisma.school.service.IStudentService;
 import edu.colegiosprisma.school.service.ITransactionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class TransactionController {
-    private final ITransactionService transactionService;
-    private final IEnrollmentService enrollmentService;
-    private final IStudentService studentService;
-    private final IStateService stateService;
-
-    public TransactionController(ITransactionService transactionService, IEnrollmentService enrollmentService,
-                                 IStudentService studentService, IStateService stateService) {
-        this.transactionService = transactionService;
-        this.enrollmentService = enrollmentService;
-        this.studentService = studentService;
-        this.stateService = stateService;
-    }
+    @Autowired
+    private ITransactionService transactionService;
+    @Autowired
+    private IEnrollmentService enrollmentService;
+    @Autowired
+    private IStudentService studentService;
+    @Autowired
+    private IStateService stateService;
 
     @PostMapping("parent/admision/pay")
     public String pagarMatriculaNuevoEstudiante(@RequestParam("idStudent") String idStudent,@RequestParam("description") String description) {

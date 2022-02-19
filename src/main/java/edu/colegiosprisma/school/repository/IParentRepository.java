@@ -1,6 +1,10 @@
 package edu.colegiosprisma.school.repository;
 
 import edu.colegiosprisma.school.entity.Parent;
+import edu.colegiosprisma.school.entity.User;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface IParentRepository extends IUserRepository {
     Parent findByDocumentNumberOrEmailOrPhone(String documentNumber, String email, String phone);
@@ -13,4 +17,6 @@ public interface IParentRepository extends IUserRepository {
     // findByStudent: permite buscar un parent por un teléfono
     Parent findByPhone(String phone);
 //    Parent findByEmailOrPhoneOr(String email);
+
+    List<Parent> findAllByType(String type);
 }

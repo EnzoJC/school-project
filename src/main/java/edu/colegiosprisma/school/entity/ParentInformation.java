@@ -3,6 +3,7 @@ package edu.colegiosprisma.school.entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ public class ParentInformation {
     @Column(name = "is_alive", nullable = false)
     private Boolean isAlive = false;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 

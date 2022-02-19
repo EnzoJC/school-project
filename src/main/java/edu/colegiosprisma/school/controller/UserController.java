@@ -2,6 +2,7 @@ package edu.colegiosprisma.school.controller;
 
 import edu.colegiosprisma.school.entity.User;
 import edu.colegiosprisma.school.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,11 +15,8 @@ import java.util.Locale;
 
 @Controller
 public class UserController {
-    private final IUserService userService;
-
-    public UserController(IUserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private IUserService userService;
 
     @GetMapping({"/", "/login"})
     public String getLogin() throws Exception {
@@ -28,7 +26,6 @@ public class UserController {
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             User loggedInUser = userService.findByUsername(userDetails.getUsername());
             String role = loggedInUser.getRoles().iterator().next().getName();
-            // quitar de un String los 4 primeros caracteres
             role = role.substring(5).toLowerCase(Locale.ROOT);
             return "redirect:/" + role;
         }
@@ -38,9 +35,5 @@ public class UserController {
     @GetMapping("/access-denied")
     public String accessDenied() {
         return "/error/403";
-    }
-
-    public void foo() {
-        // this method is intentionally left blank
     }
 }

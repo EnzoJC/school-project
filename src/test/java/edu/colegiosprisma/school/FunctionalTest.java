@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FunctionalTest {
 
-    public void loginGo(WebDriver driver){
+    public void loginGo(WebDriver driver) {
 
         driver.get("http://localhost:8080/");
 
@@ -29,7 +29,7 @@ public class FunctionalTest {
 
     @Test
     public void Login() {
-        System.setProperty("webdriver.chrome.driver","C:\\Users\\alexa\\Desktop\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\alexa\\Desktop\\chromedriver.exe");
 
         WebDriver driver = new ChromeDriver();
 
@@ -41,9 +41,9 @@ public class FunctionalTest {
     }
 
     @Test
-    public void ResgisterAlumno(){
+    public void ResgisterAlumno() {
 
-        System.setProperty("webdriver.chrome.driver","C:\\Users\\alexa\\Desktop\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\alexa\\Desktop\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         loginGo(driver);
         driver.get("http://localhost:8080/parent/applicants-form");
@@ -113,10 +113,11 @@ public class FunctionalTest {
         driver.findElement(By.id("submit")).click();
 
     }
-    @Test
-    public void RealizarPago(){
 
-        System.setProperty("webdriver.chrome.driver","C:\\Users\\alexa\\Desktop\\chromedriver.exe");
+    @Test
+    public void RealizarPago() {
+
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\alexa\\Desktop\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         loginGo(driver);
         driver.get("http://localhost:8080/parent/applicants-list");
@@ -147,10 +148,11 @@ public class FunctionalTest {
         driver.findElement(By.className("pagar")).click();
 
     }
-    @Test
-    public void ActualizaUsuario(){
 
-        System.setProperty("webdriver.chrome.driver","C:\\Users\\alexa\\Desktop\\chromedriver.exe");
+    @Test
+    public void ActualizaUsuario() {
+
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\alexa\\Desktop\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         loginGo(driver);
         driver.get("http://localhost:8080/parent/parent-profile");
@@ -189,9 +191,9 @@ public class FunctionalTest {
     }
 
     @Test
-    public void crearCuenta(){
+    public void crearCuenta() {
 
-        System.setProperty("webdriver.chrome.driver","C:\\Users\\alexa\\Desktop\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\alexa\\Desktop\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         driver.get("http://localhost:8080/register");
 
