@@ -4,6 +4,7 @@ import edu.colegiosprisma.school.entity.Parent;
 import edu.colegiosprisma.school.entity.User;
 import org.springframework.ui.Model;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public interface IParentService {
 
     Optional<User> findById(String parentId);
 
-    Set<User> getAll();
+    List<Parent> getAll();
 
     void deleteById(String id);
 }

@@ -15,10 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ParentServImpl implements IParentService {
@@ -113,8 +110,8 @@ public class ParentServImpl implements IParentService {
 
 
     @Override
-    public Set<User> getAll() {
-        return new HashSet<>(parentRepository.findAll());
+    public List<Parent> getAll() {
+        return parentRepository.findAllByType("Parent");
     }
 
     @Override
