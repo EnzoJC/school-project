@@ -1,5 +1,7 @@
 package edu.colegiosprisma.school.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import edu.colegiosprisma.school.validation.RangeAge;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +23,7 @@ public class Student extends User {
     @Column(name = "student_email", nullable = false, length = 50)
     private String studentEmail;
 
+    @JsonBackReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "parent_id", nullable = false)
     private Parent parent;
@@ -33,6 +36,7 @@ public class Student extends User {
     @JoinColumn(name = "last_grade_id")
     private Grade lastGrade;
 
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     @Where(clause = "current_year = true")
     private List<Enrollment> enrollments;

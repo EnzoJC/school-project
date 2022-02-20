@@ -1,5 +1,6 @@
 package edu.colegiosprisma.school.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
@@ -41,6 +42,7 @@ public class Enrollment {
     @JoinColumn(name = "grade_id", nullable = false)
     private Grade grade;
 
+    @JsonBackReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;

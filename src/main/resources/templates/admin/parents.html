@@ -10,6 +10,7 @@
     <link as="style" rel="preload" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link th:href="@{/webjars/font-awesome/5.15.4/css/all.css}" th:rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
     <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/png"/>
 
 </head>
@@ -17,7 +18,7 @@
 <body class="sb-nav-fixed">
 <div th:replace="fragments/top-nav :: topNav(${'/admin/admin-profile'})"></div>
 <div id="layoutSidenav">
-    <div th:replace="/fragments/sidenavAdmin :: sideNav(${nombresCompletos})"></div>
+    <div th:replace="/fragments/sidenavAdmin :: sideNav(${fullNames})"></div>
     <div id="layoutSidenav_content">
         <main>
             <div class="listado">
@@ -38,9 +39,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="item: ${listaPadres}">
+                            <tr th:each="item: ${parentList}">
                                 <td th:text="${item.id}"></td>
-                                <td th:text="${item.givenNames} + ${item.secondLastName}"></td>
+                                <td th:text="${item.givenNames} +' '+ ${item.firstLastName}+' '+ ${item.secondLastName  }"></td>
                                 <td th:text="${item.documentNumber}"></td>
                                 <td>
                                     <button th:id="${item.id}"
@@ -67,87 +68,87 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form class="form-horizontal row">
+                            <form class="form-horizontal row" th:action="@{/admin/padres/nuevo}" th:object="${parent}" method="POST">
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="given-names">Nombres</label>
-                                        <input id="given-names" type="text" class="form-control">
+                                        <input id="given-names" type="text" class="form-control" th:field="*{givenNames}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="first-last-name">Primer Apellido</label>
-                                        <input id="first-last-name" type="text" class="form-control">
+                                        <input id="first-last-name" type="text" class="form-control" th:field="*{firstLastName}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="second-last-name">Segundo Apellido</label>
-                                        <input id="second-last-name" type="text" class="form-control">
+                                        <input id="second-last-name" type="text" class="form-control" th:field="*{secondLastName}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="document-type">Tipo de documento</label>
-                                        <!--por ahora-->
-                                        <input id="document-type" type="text" class="form-control">
-                                        <!--<select id="document-type" class="form-control">
+                                        <!--por ahora
+                                        <input id="document-type" type="text" class="form-control">-->
+                                        <select id="document-type" class="form-control" th:field="*{documentType}">
                                             <option class="seleccionado" value="" selected>Seleccione un tipo de documento</option>
                                             <option th:each="doc : ${documentTypeList}" th:value="${doc.id}" th:text="${doc.name}"></option>
-                                        </select>-->
+                                        </select>
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="document-number">Número de documento</label>
-                                        <input id="document-number" type="text" class="form-control">
+                                        <input id="document-number" type="text" class="form-control" th:field="*{documentNumber}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="birth-date">Fecha de nacimiento</label>
-                                        <input id="birth-date" type="date" class="form-control"d>
+                                        <input id="birth-date" type="date" class="form-control" th:field="*{birthDate}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="address">Dirección</label>
-                                        <input id="address" type="text" class="form-control">
+                                        <input id="address" type="text" class="form-control" th:field="*{address}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="gender">Género</label>
-                                        <!--por ahora-->
-                                        <input id="gender" type="text" class="form-control">
-                                        <!--<select id="gender" class="form-control" th:field="*{gender}" required>
+                                        <!--por ahora
+                                        <input id="gender" type="text" class="form-control">-->
+                                        <select id="gender" class="form-control" th:field="*{gender}" required>
                                             <option class="seleccionado" value="" selected>Seleccione un género</option>
                                             <option th:each="gender : ${genderList}" th:value="${gender.id}" th:text="${gender.name}"></option>
-                                        </select>-->
+                                        </select>
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="nationality">Nacionalidad</label>
-                                        <!--por ahora-->
-                                        <input id="nationality" type="text" class="form-control">
-                                        <!--<select id="nationality" class="form-control" th:field="*{nationality}" required>
+                                        <!--por ahora
+                                        <input id="nationality" type="text" class="form-control">-->
+                                        <select id="nationality" class="form-control" th:field="*{nationality}" required>
                                             <option class="seleccionado" value="" selected>Seleccione una nacionalidad</option>
                                             <option th:each="nationality : ${nationalityList}" th:value="${nationality.id}"
                                                     th:text="${nationality.name}"></option>
-                                        </select>-->
+                                        </select>
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="phone-number">Celular</label>
-                                        <input id="phone-number" type="text" class="form-control">
+                                        <input id="phone-number" type="text" class="form-control" th:field="*{phone}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="email-address">Correo electrónico</label>
-                                        <input id="email-address" type="text" class="form-control">
+                                        <input id="email-address" type="text" class="form-control" th:field="*{email}">
                                     </div>
                                 </div>
                                 <!--<div class="col-12 mt-3">
@@ -156,11 +157,11 @@
                                     <div class="alert alert-danger" role="alert" th:text="${alertaPhone}" th:if="${alertaPhone}"></div>
                                     <div class="alert alert-primary" role="alert" th:text="${mensaje}" th:if="${mensaje}"></div>
                                 </div>-->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Registrar ahora</button>
+                                </div>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary">Registrar ahora</button>
                         </div>
                     </div>
                 </div>
@@ -174,88 +175,88 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form class="form-horizontal row" th:action="@{/admin/padres/editar}" th:object="${padre}" method="POST">
+                            <form class="form-horizontal row" th:action="@{/admin/padres/editar}" th:object="${parent}" method="POST">
                                 <input type="hidden" th:field="*{id}" />
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-given-names">Nombres</label>
-                                        <input id="edit-given-names" type="text" class="form-control">
+                                        <input id="edit-given-names" type="text" class="form-control" th:field="*{givenNames}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-first-last-name">Primer Apellido</label>
-                                        <input id="edit-first-last-name" type="text" class="form-control">
+                                        <input id="edit-first-last-name" type="text" class="form-control" th:field="*{firstLastName}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-second-last-name">Segundo Apellido</label>
-                                        <input id="edit-second-last-name" type="text" class="form-control">
+                                        <input id="edit-second-last-name" type="text" class="form-control" th:field="*{secondLastName}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-document-type">Tipo de documento</label>
-                                        <!--por ahora-->
-                                        <input id="edit-document-type" type="text" class="form-control">
-                                        <!--<select id="document-type" class="form-control">
+                                        <!--por ahora
+                                        <input id="edit-document-type" type="text" class="form-control" >-->
+                                        <select id="edit-document-type" class="form-control" th:field="*{documentType}">
                                             <option class="seleccionado" value="" selected>Seleccione un tipo de documento</option>
                                             <option th:each="doc : ${documentTypeList}" th:value="${doc.id}" th:text="${doc.name}"></option>
-                                        </select>-->
+                                        </select>
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-document-number">Número de documento</label>
-                                        <input id="edit-document-number" type="text" class="form-control">
+                                        <input id="edit-document-number" type="text" class="form-control" th:field="*{documentNumber}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-birth-date">Fecha de nacimiento</label>
-                                        <input id="edit-birth-date" type="date" class="form-control"d>
+                                        <input id="edit-birth-date" type="date" class="form-control" th:field="*{birthDate}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-address">Dirección</label>
-                                        <input id="edit-address" type="text" class="form-control">
+                                        <input id="edit-address" type="text" class="form-control" th:field="*{address}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-gender">Género</label>
-                                        <!--por ahora-->
-                                        <input id="edit-gender" type="text" class="form-control">
-                                        <!--<select id="gender" class="form-control" th:field="*{gender}" required>
+                                        <!--por ahora
+                                        <input id="edit-gender" type="text" class="form-control">-->
+                                        <select id="edit-gender" class="form-control" th:field="*{gender}" required>
                                             <option class="seleccionado" value="" selected>Seleccione un género</option>
                                             <option th:each="gender : ${genderList}" th:value="${gender.id}" th:text="${gender.name}"></option>
-                                        </select>-->
+                                        </select>
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-nationality">Nacionalidad</label>
-                                        <!--por ahora-->
-                                        <input id="edit-nationality" type="text" class="form-control">
-                                        <!--<select id="nationality" class="form-control" th:field="*{nationality}" required>
+                                        <!--por ahora
+                                        <input id="edit-nationality" type="text" class="form-control">-->
+                                        <select id="edit-nationality" class="form-control" th:field="*{nationality}" required>
                                             <option class="seleccionado" value="" selected>Seleccione una nacionalidad</option>
                                             <option th:each="nationality : ${nationalityList}" th:value="${nationality.id}"
                                                     th:text="${nationality.name}"></option>
-                                        </select>-->
+                                        </select>
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-phone-number">Celular</label>
-                                        <input id="edit-phone-number" type="text" class="form-control">
+                                        <input id="edit-phone-number" type="text" class="form-control" th:field="*{phone}">
                                     </div>
                                 </div>
                                 <div class='col-xl-6 col-md-12 my-2'>
                                     <div class="form-group">
                                         <label for="edit-email-address">Correo electrónico</label>
-                                        <input id="edit-email-address" type="text" class="form-control">
+                                        <input id="edit-email-address" type="text" class="form-control" th:field="*{email}">
                                     </div>
                                 </div>
                                 <!--<div class="col-12 mt-3">
@@ -264,11 +265,11 @@
                                     <div class="alert alert-danger" role="alert" th:text="${alertaPhone}" th:if="${alertaPhone}"></div>
                                     <div class="alert alert-primary" role="alert" th:text="${mensaje}" th:if="${mensaje}"></div>
                                 </div>-->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                </div>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Editar</button>
                         </div>
                     </div>
                 </div>
@@ -278,6 +279,9 @@
 </div>
 <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
 <script th:src="@{/js/scripts.js}"></script>
-<script th:inline="javascript" th:src="@{/js/adminParent.js}"></script>
+<script th:src="@{/js/adminParent.js}"></script>
+<script >
+
+</script>
 </body>
 </html>

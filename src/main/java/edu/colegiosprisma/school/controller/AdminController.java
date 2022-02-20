@@ -4,9 +4,7 @@ import edu.colegiosprisma.school.entity.Enrollment;
 import edu.colegiosprisma.school.entity.Parent;
 import edu.colegiosprisma.school.entity.Student;
 import edu.colegiosprisma.school.entity.User;
-import edu.colegiosprisma.school.service.IEnrollmentService;
-import edu.colegiosprisma.school.service.IParentService;
-import edu.colegiosprisma.school.service.IUserService;
+import edu.colegiosprisma.school.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -49,6 +47,12 @@ public class AdminController {
 
     @Autowired
     public IParentService parentService;
+    @Autowired
+    public IDocumentTypeService documentTypeService;
+    @Autowired
+    public IGenderService genderService;
+    @Autowired
+    public INationalityService nationalityService;
 
     @GetMapping("/admin/padres")
     public String parents(Model model) {
@@ -56,13 +60,19 @@ public class AdminController {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         User user = userService.findByUsername(userDetails.getUsername());
 
-        model.addAttribute("nombresCompletos", user.getGivenNames())
-                .addAttribute("listaPadres", parentService.getAll())
-                .addAttribute("padre",new Parent());
+        model.addAttribute("fullNames", user.getGivenNames())
+                .addAttribute("parentList", parentService.getAll())
+                .addAttribute("parent",new Parent());
+        loadOptionsRegisterForm(model);
         return "/admin/parents";
     }
+    private void loadOptionsRegisterForm(Model model) {
+        model.addAttribute("documentTypeList", documentTypeService.getAll())
+                .addAttribute("genderList", genderService.getAll())
+                .addAttribute("nationalityList", nationalityService.getAll());
+    }
 
-    @PostMapping("/admin/padres")
+    @PostMapping("/admin/padres/nuevo")
     public String agregarpadre(Parent parent) {
         parentService.create(parent);
         return "redirect:/admin/padres";

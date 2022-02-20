@@ -1,8 +1,10 @@
 package edu.colegiosprisma.school.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import edu.colegiosprisma.school.validation.RangeAge;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -22,7 +24,8 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "parent_id")
 @RangeAge(min = 18, max = 99, fieldDate = "birthDate", message = "Debe ser mayor de 18 años")
 public class Parent extends User {
-    @OneToMany(mappedBy = "parent")
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
     List<Student> students;
 
     @Column(name = "occupation", length = 50)
