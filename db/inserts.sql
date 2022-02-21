@@ -58,6 +58,7 @@ INSERT INTO `relationships`(`name`) VALUES ('Abuela');
 INSERT INTO `school_years` (`year`, `start_date`, `finish_date`) VALUES (2019, '2019-03-01', '2019-12-15');
 INSERT INTO `school_years` (`year`, `start_date`, `finish_date`) VALUES (2020, '2020-03-01', '2020-12-15');
 INSERT INTO `school_years` (`year`, `start_date`, `finish_date`) VALUES (2021, '2021-03-01', '2021-12-15');
+INSERT INTO `school_years` (`year`, `start_date`, `finish_date`) VALUES (2022, '2022-03-01', '2022-12-15');
 
 INSERT INTO `levels`(`name`, `description`) VALUES ('Inicial', 'Inicial');
 INSERT INTO `levels`(`name`, `description`) VALUES ('Primaria', 'Primaria');
@@ -92,17 +93,17 @@ INSERT INTO `payment_types` (`name`) VALUES ('Matrícula');
 INSERT INTO `payment_types` (`name`) VALUES ('Gasto administrativo');
 INSERT INTO `payment_types` (`name`) VALUES ('Multa');
 
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Marzo', 250, '2021-03-20', '2021-03-31', 1);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Abril', 250, '2021-04-20', '2021-04-30', 2);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Mayo', 250, '2021-05-20', '2021-05-31', 3);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Junio', 250, '2021-06-20', '2021-06-30', 4);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Julio', 250, '2021-07-20', '2021-07-31', 5);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Agosto', 250, '2021-08-20', '2021-08-31', 6);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Septiembre', 250, '2021-09-20', '2021-09-30', 7);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Octubre', 250, '2021-10-20', '2021-10-31', 8);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Noviembre', 250, '2021-11-20', '2021-11-30', 9);
-INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Diciembre', 150, '2021-12-05', '2021-12-20', 10);
-INSERT INTO `payments` (`description`, `amount`, `payment_type_id`) VALUES ('Matrícula 2021', 200, 11);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Marzo', 250, '2022-03-20', '2022-03-31', 1);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Abril', 250, '2022-04-20', '2022-04-30', 2);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Mayo', 250, '2022-05-20', '2022-05-31', 3);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Junio', 250, '2022-06-20', '2022-06-30', 4);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Julio', 250, '2022-07-20', '2022-07-31', 5);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Agosto', 250, '2022-08-20', '2022-08-31', 6);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Septiembre', 250, '2022-09-20', '2022-09-30', 7);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Octubre', 250, '2022-10-20', '2022-10-31', 8);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Noviembre', 250, '2022-11-20', '2022-11-30', 9);
+INSERT INTO `payments` (`description`, `amount`, `start_date`, `expiration_date`, `payment_type_id`) VALUES ('Mensualidad de Diciembre', 150, '2022-12-05', '2022-12-20', 10);
+INSERT INTO `payments` (`description`, `amount`, `payment_type_id`) VALUES ('Matrícula 2022', 200, 11);
 
 insert into `states` (`state_id`, `name`) values (1, 'PRE_ENROLLED');
 insert into `states` (`state_id`, `name`) values (2, 'VALIDATION');
@@ -2220,7 +2221,7 @@ INSERT INTO `districts` (`district_id`, `name`, `province_id`) VALUES
 ('250305', 'Alexander Von Humboldt', '2503'),
 ('250401', 'Purus', '2504');
 
-insert into languages (language_id, name) values
+insert into languages (name) values
 ('Achuar'),
 ('Aimara'),
 ('Amahuaca'),
@@ -2283,12 +2284,13 @@ insert into religions (name) values
 ('Ninguna'),
 ('Testigos de Jehová');
 
-insert into types_disabilities (type_disabilty_id, name) values
+insert into types_disabilities (name) values
 ('Discapacidad Intelectual'),
 ('Discapacidad Auditiva'),
 ('Discapacidad Visual'),
 ('Discapacidad Motora'),
 ('Sordoceguera');
+('No tiene');
 
 insert into blood_types (name) values
 ('A+'),

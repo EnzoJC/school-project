@@ -1,4 +1,4 @@
-package edu.colegiosprisma.school.controller;
+package edu.colegiosprisma.school.controller.dto;
 
 import edu.colegiosprisma.school.entity.ParentInformation;
 import lombok.Getter;

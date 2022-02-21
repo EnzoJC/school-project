@@ -1,5 +1,6 @@
 package edu.colegiosprisma.school.controller;
 
+import edu.colegiosprisma.school.controller.dto.ParentInformationDto;
 import edu.colegiosprisma.school.entity.*;
 import edu.colegiosprisma.school.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Set;
 
 @Controller
 public class ParentController {
@@ -108,6 +107,7 @@ public class ParentController {
         if (studentService.findById(studentId).isPresent()) {
             Student student = (Student) studentService.findById(studentId).get();
             model.addAttribute("student", student);
+            model.addAttribute("studentId", studentId);
         }
         loadOptionsEnrollmentForm(model);
         ParentInformationDto parentInformationDto = new ParentInformationDto();
@@ -116,23 +116,16 @@ public class ParentController {
 
         model.addAttribute("enrollmentForm", new EnrollmentForm())
                 .addAttribute("parentInformationDtoList", parentInformationDto)
-                .addAttribute("nombresCompletos", getCurrentParent().getGivenNames())
-                .addAttribute("typeDisability", new TypeDisability());
+                .addAttribute("nombresCompletos", getCurrentParent().getGivenNames());
 
         return "student/enrollment-form";
     }
 
     @PostMapping("/parent/enrollment-form")
-    public String saveEnrollmentForm(EnrollmentForm enrollmentForm,
-                                     Student student,
-                                     ParentInformationDto parentInformationDto,
-                                     TypeDisability typeDisability,
-                                     Model model) {
+    public String saveEnrollmentForm(EnrollmentForm enrollmentForm, ParentInformationDto parentInformationDto, String studentId, Model model) {
         loadOptionsEnrollmentForm(model);
-        Student student1 = student;
-        System.out.println(student1);
+        System.out.println(studentId);
 //        enrollmentService.updateStatusForNewStudent(student, 2);
-
         return "redirect:/parent/applicants-list";
     }
 

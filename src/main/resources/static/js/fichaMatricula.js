@@ -49,7 +49,7 @@ $('#department').change(
     });
 
 function updateProvinces() {
-    var p;
+    let p;
     $.getJSON("http://localhost:8080/api/province", {
         department: $('#department').val(),
         ajax: 'true'

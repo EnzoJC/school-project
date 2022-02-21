@@ -40,7 +40,7 @@
                 <div class='col-xl-6 col-md-12 my-2'>
                     <div class="form-group">
                         <label for="document-type">Tipo de documento</label>
-                        <select id="document-type" class="form-control" th:field="*{documentType}" required>
+                        <select id="document-type" class="form-select" th:field="*{documentType}" required>
                             <option class="seleccionado" value="" selected>Seleccione un tipo de documento</option>
                             <option th:each="doc : ${documentTypeList}" th:value="${doc.id}" th:text="${doc.name}"></option>
                         </select>
@@ -70,7 +70,7 @@
                 <div class='col-xl-6 col-md-12 my-2'>
                     <div class="form-group">
                         <label for="gender">Género</label>
-                        <select id="gender" class="form-control" th:field="*{gender}" required>
+                        <select id="gender" class="form-select" th:field="*{gender}" required>
                             <option class="seleccionado" value="" selected>Seleccione un género</option>
                             <option th:each="gender : ${genderList}" th:value="${gender.id}" th:text="${gender.name}"></option>
                         </select>
@@ -79,7 +79,7 @@
                 <div class='col-xl-6 col-md-12 my-2'>
                     <div class="form-group">
                         <label for="nationality">Nacionalidad</label>
-                        <select id="nationality" class="form-control" th:field="*{nationality}" required>
+                        <select id="nationality" class="form-select" th:field="*{nationality}" required>
                             <option class="seleccionado" value="" selected>Seleccione una nacionalidad</option>
                             <option th:each="nationality : ${nationalityList}" th:value="${nationality.id}" th:text="${nationality.name}"></option>
                         </select>

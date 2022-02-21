@@ -7,18 +7,33 @@
         <title>Padres - Ficha de Matrícula</title>
 
         <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
-        <link rel="preload" th:href="@{/css/styles.css}" as="style">
-        <link rel="stylesheet" th:href="@{/css/styles.css}">
-        <link rel="stylesheet" th:href="@{/css/ficha-matricula.css}">
+        <link th:rel="preload" th:href="@{/css/styles.css}" as="style">
+        <link th:rel="stylesheet" th:href="@{/css/styles.css}">
+        <link th:rel="stylesheet" th:href="@{/css/ficha-matricula.css}">
         <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/5.15.4/css/all.css}"/>
         <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/5.15.4/css/regular.css}"/>
         <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/5.15.4/css/fontawesome.css}"/>
-        <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+        <link th:rel="stylesheet" th:href="@{/webjars/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css}"/>
         <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}"/>
+
+        <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
         <style>
             /*.tab {*/
             /*    display: none;*/
             /*}*/
+            .dropup .dropdown-toggle::after {
+                content: none;
+            }
+            .dropdown-toggle::after {
+                content: none;
+            }
+            .bootstrap-select>.dropdown-toggle.bs-placeholder,
+            .bootstrap-select>.dropdown-toggle.bs-placeholder:active,
+            .bootstrap-select>.dropdown-toggle.bs-placeholder:focus,
+            .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
+                color: #212529;
+            }
             .seleccionado {
                 display: none;
             }
@@ -32,7 +47,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-md my-3 px-4">
-                        <h2 class="text-center"><strong>Registro de ficha de Matrículas</strong></h2>
+                        <h2 class="text-center"><strong>Registro de ficha de Matrícula</strong></h2>
                         <!-- progressbar -->
                         <ul id="progressbar" class="px-0 text-center">
                             <li class="active item" id="datosEstudiante"><strong>Datos del estudiante</strong></li>
@@ -47,15 +62,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="given-names" class="form-label">Nombres</label>
-                                            <input id="given-names" type="text" class="form-control"
-                                                   th:value="${student.givenNames}" disabled>
+                                            <input id="given-names" type="text" class="form-control" th:value="${student.givenNames}" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="first-last-name" class="form-label">Primer Apellido</label>
-                                            <input id="first-last-name" type="text" class="form-control"
-                                                   th:value="${student.firstLastName}" disabled>
+                                            <input id="first-last-name" type="text" class="form-control" th:value="${student.firstLastName}" disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -63,8 +76,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="second-last-name" class="form-label">Segundo Apellido</label>
-                                            <input id="second-last-name" type="text" class="form-control"
-                                                   th:value="${student.secondLastName}" disabled>
+                                            <input id="second-last-name" type="text" class="form-control" th:value="${student.secondLastName}" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -80,14 +92,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="birth-date" class="form-label">Fecha de nacimiento</label>
-                                            <input id="birth-date" type="date" class="form-control"
-                                                   th:value="${student.birthDate}" disabled>
+                                            <input id="birth-date" type="date" class="form-control" th:value="${student.birthDate}" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="department" class="form-label">Departamento</label>
-                                            <select id="department" class="form-control" >
+                                            <select id="department" class="form-select" >
                                                 <option class="seleccionado" value="" selected> Seleccione el Departamento</option>
                                                 <option th:each="department : ${departmentList}" th:value="${department.id}" th:text="${department.name}"></option>
                                             </select>
@@ -98,7 +109,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="province" class="form-label">Provincia</label>
-                                            <select id="province" class="form-control">
+                                            <select id="province" class="form-select">
                                                 <option class="seleccionado" value="" selected>Seleccione la provincia</option>
                                             </select>
                                         </div>
@@ -106,7 +117,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="district" class="form-label">Distrito</label>
-                                            <select id="district" class="form-control" th:field="*{district}">
+                                            <select id="district" class="form-select" th:field="*{district}">
                                                 <option class="seleccionado" value="" selected>Seleccione el Distrito</option>
                                             </select>
                                         </div>
@@ -116,7 +127,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="mother-tongue" class="form-label">Lengua materna</label>
-                                            <select id="mother-tongue" class="form-control" th:field="*{motherTongue}">
+                                            <select id="mother-tongue" class="form-select" th:field="*{motherTongue}">
                                                 <option class="seleccionado" value="" selected>Seleccione su primera lengua</option>
                                                 <option th:each="language : ${languageList}" th:value="${language.id}" th:text="${language.name}"></option>
                                             </select>
@@ -125,7 +136,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="second-language" class="form-label">Segunda lengua</label>
-                                            <select id="second-language" class="form-control" th:field="*{secondLanguage}">
+                                            <select id="second-language" class="form-select" th:field="*{secondLanguage}">
                                                 <option class="seleccionado" value="" selected>Seleccione su segunda lengua</option>
                                                 <option th:each="language : ${languageList}" th:value="${language.id}" th:text="${language.name}"></option>
                                             </select>
@@ -136,7 +147,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="religion-student" class="form-label">Religion</label>
-                                            <select id="religion-student" class="form-control" th:field="*{religion}">
+                                            <select id="religion-student" class="form-select" th:field="*{religion}">
                                                 <option class="seleccionado" value="" selected>Seleccione su Religion</option>
                                                 <option th:each="religion : ${religionList}" th:value="${religion.id}" th:text="${religion.name}"></option>
                                             </select>
@@ -158,13 +169,11 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <div class="form-group">
-                                                <label for="disability" class="form-label">Discapacidad</label>
-                                                <select id="disability" class="form-control">
-                                                    <option class="seleccionado" value="" selected>Seleccione su Discapacidad</option>
-                                                    <option th:each="disability : ${typeDisabilityList}" th:value="${disability.id}" th:text="${disability.name}"></option>
-                                                </select>
-                                            </div>
+                                            <label for="disabilities" class="form-label">Discapacidad(es)</label>
+                                            <select id="disabilities" class="form-control selectpicker" th:field="*{disabilities}" multiple title="Seleccione una discapacidad"
+                                            data-style="" data-style-base="form-select">
+                                                <option th:each="disability : ${typeDisabilityList}" th:value="${disability.id}" th:text="${disability.name}"></option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -189,7 +198,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="blood-type" class="form-label">Tipo de sangre</label>
-                                            <select id="blood-type" class="form-control" th:field="*{bloodType}" >
+                                            <select id="blood-type" class="form-select" th:field="*{bloodType}" >
                                                 <option class="seleccionado" value="" selected>Seleccione el tipo de sangre</option>
                                                 <option th:each="bloodType : ${bloodTypeList}" th:value="${bloodType.id}" th:text="${bloodType.name}"></option>
                                             </select>
@@ -198,7 +207,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="tipe-of-birth" class="form-label">Tipo de nacimiento</label>
-                                            <select id="tipe-of-birth" class="form-control">
+                                            <select id="tipe-of-birth" class="form-select">
                                                 <option class="seleccionado" value="" selected>Tipo de nacimiento</option>
                                                 <option th:each="birth : ${typeBirthList}" th:value="${birth.id}" th:text="${birth.name}"></option>
                                             </select>
@@ -340,7 +349,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="education-degree-father" class="form-label">Grado de instrucción</label>
-                                            <select id="education-degree-father" class="form-control"  th:field="${parentInformationDtoList.parentInformationList[0].educationDegree}">
+                                            <select id="education-degree-father" class="form-select"  th:field="${parentInformationDtoList.parentInformationList[0].educationDegree}">
                                                 <option class="seleccionado" value="" selected> Seleccione tipo de instrucción</option>
                                                 <option th:each="educationDegree : ${educationDegreeList}" th:value="${educationDegree.id}" th:text="${educationDegree.name}"></option>
                                             </select>
@@ -349,7 +358,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="occupation-father" class="form-label">Ocupación</label>
-                                            <select id="occupation-father" class="form-control" th:field="${parentInformationDtoList.parentInformationList[0].occupation}">
+                                            <select id="occupation-father" class="form-select" th:field="${parentInformationDtoList.parentInformationList[0].occupation}">
                                                 <option class="seleccionado" value="" selected> Seleccione Ocupación</option>
                                                 <option th:each="occupation : ${occupationList}" th:value="${occupation.id}" th:text="${occupation.name}"></option>
                                             </select>
@@ -360,7 +369,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="religion-father" class="form-label">Tipo de Religion</label>
-                                            <select id="religion-father" class="form-control" th:field="${parentInformationDtoList.parentInformationList[0].religionsReligion}">
+                                            <select id="religion-father" class="form-select" th:field="${parentInformationDtoList.parentInformationList[0].religionsReligion}">
                                                 <option class="seleccionado" value="" selected> Seleccione Religion</option>
                                                 <option th:each="religion : ${religionList}" th:value="${religion.id}" th:text="${religion.name}"></option>
                                             </select>
@@ -441,7 +450,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="education-degree-mother" class="form-label">Grado de instrucción</label>
-                                            <select id="education-degree-mother" class="form-control" th:field="${parentInformationDtoList.parentInformationList[1].educationDegree}">
+                                            <select id="education-degree-mother" class="form-select" th:field="${parentInformationDtoList.parentInformationList[1].educationDegree}">
                                                 <option class="seleccionado" value="" selected>Seleccione tipo de instrucción</option>
                                                 <option th:each="educationDegree : ${educationDegreeList}" th:value="${educationDegree.id}" th:text="${educationDegree.name}"></option>
                                             </select>
@@ -450,7 +459,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="occupation-mother" class="form-label">Ocupación</label>
-                                            <select id="occupation-mother" class="form-control" th:field="${parentInformationDtoList.parentInformationList[1].occupation}">
+                                            <select id="occupation-mother" class="form-select" th:field="${parentInformationDtoList.parentInformationList[1].occupation}">
                                                 <option class="seleccionado" value="" selected> Seleccione Ocupación</option>
                                                 <option th:each="occupation : ${occupationList}" th:value="${occupation.id}" th:text="${occupation.name}"></option>
                                             </select>
@@ -461,7 +470,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="religion-mother" class="form-label">Tipo de Religion</label>
-                                            <select id="religion-mother" class="form-control" th:field="${parentInformationDtoList.parentInformationList[1].religionsReligion}">
+                                            <select id="religion-mother" class="form-select" th:field="${parentInformationDtoList.parentInformationList[1].religionsReligion}">
                                                 <option class="seleccionado" value="" selected>Seleccione Religion</option>
                                                 <option th:each="religion : ${religionList}" th:value="${religion.id}" th:text="${religion.name}"></option>
                                             </select>
@@ -488,7 +497,10 @@
                 </main>
             </div>
         </div>
-        <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+        <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap-select/1.14.0-beta2/js/bootstrap-select.js}"></script>
+        <script th:src="@{/webjars/bootstrap-select/1.14.0-beta2/js/i18n/defaults-es_CL.js}"></script>
         <script th:src="@{/js/scripts.js}"></script>
         <script th:src="@{/js/fichaMatricula.js}"></script>
     </body>
